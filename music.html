@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Music — David Petry | Drummer &amp; Percussionist, Denver</title>
+<meta name="description" content="David Petry — professional drummer and percussionist. 20 years teaching and performing: Montreux and North Sea Jazz Festivals, Netflix and PBS sync credits, Denver jazz scene, AI music production on Suno.">
+<meta property="og:title" content="Music — David Petry">
+<meta property="og:description" content="Two decades of performance, education, and studio work — plus AI music production on Suno.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23080a0e'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Georgia,serif' font-style='italic' fill='%23e8a030' text-anchor='middle'%3EDP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #080a0e;
+  --bg2:       #0d1018;
+  --bg3:       #111520;
+  --surface:   #141824;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #d8dce8;
+  --muted:     #6b7591;
+  --muted2:    #7c86a8;
+  --amber:     #e8a030;
+  --amber-dim: rgba(232,160,48,0.12);
+  --amber-glow:rgba(232,160,48,0.04);
+  --teal:      #2dd4bf;
+  --teal-dim:  rgba(45,212,191,0.1);
+  --red:       #e85050;
+  --white:     #f0f2f8;
+  --nav-h:     64px;
+  --radius:    6px;
+  /* Modular type scale (~1.25 ratio) */
+  --fs-xs:   11px;
+  --fs-sm:   13px;
+  --fs-base: 16px;
+  --fs-lg:   18px;
+  --fs-xl:   22px;
+  --fs-2xl:  28px;
+  --fs-3xl:  40px;
+  --fs-4xl:  64px;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Outfit', sans-serif;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --display: 'Bebas Neue', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--text); font-family:var(--sans); font-size:var(--fs-base); line-height:1.75; }
+a { color:inherit; text-decoration:none; cursor:pointer; }
+a:focus-visible { outline:2px solid var(--amber); outline-offset:3px; }
+.skip-link{position:absolute;top:-100px;left:16px;z-index:2000;background:var(--amber);color:var(--bg);padding:10px 18px;border-radius:var(--radius);font-family:var(--mono);font-size:var(--fs-sm);font-weight:600;text-transform:uppercase;transition:top 0.2s;}
+.skip-link:focus{top:16px;}
+
+p { line-height:1.8; margin-bottom:16px; max-width:72ch; }
+h2 { font-family:var(--serif); font-size:clamp(var(--fs-3xl),5vw,var(--fs-4xl)); font-weight:600; line-height:1.1; color:var(--white); margin-bottom:28px; }
+h2 em, h1 em { color:var(--amber); font-style:italic; }
+h3 { font-family:var(--serif); font-size:var(--fs-xl); font-weight:600; color:var(--white); margin-bottom:10px; }
+section { padding:64px 40px; max-width:1100px; margin:0 auto; }
+img { max-width:100%; display:block; }
+.pagehead { max-width:1100px; margin:0 auto; padding:calc(var(--nav-h) + 40px) 40px 0; }
+.back { display:inline-flex; align-items:center; gap:8px; font-family:var(--mono); font-size:var(--fs-sm); color:var(--muted2); min-height:44px; }
+.back:hover { color:var(--amber); }
+h1 { font-family:var(--serif); font-size:clamp(var(--fs-3xl),6vw,var(--fs-4xl)); font-weight:600; color:var(--white); line-height:1.05; margin:8px 0 4px; }
+.lede { color:var(--muted2); font-size:var(--fs-lg); max-width:60ch; }
+.section-label {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before {
+  content: '//';
+  color: var(--muted);
+}
+.ed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+#about .about-grid,
+  .suno-grid,
+  .book-hero,
+  .ed-grid,
+  .eng-grid { grid-template-columns: 1fr; gap: 40px; }
+.ed-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ed-card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.ed-card:hover {
+  border-color: var(--teal);
+  transform: translateY(-2px);
+}
+.ed-card h3 { font-size: var(--fs-lg); margin-bottom: 8px; }
+.ed-card p { font-size: var(--fs-sm); color: var(--muted2); margin: 0; }
+.timeline {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 44px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px; top: 12px; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg,
+    var(--teal) 0%,
+    rgba(62,201,167,0.5) 45%,
+    rgba(232,160,48,0.35) 75%,
+    transparent 100%);
+}
+.timeline-item {
+  padding: 13px 0 20px;
+  position: relative;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-year {
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--teal);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 8px;
+  background: rgba(62,201,167,0.07);
+  border: 1px solid rgba(62,201,167,0.22);
+  border-radius: 3px;
+  padding: 4px 10px 4px 8px;
+}
+.timeline-item p {
+  font-size: var(--fs-base);
+  color: var(--text);
+  margin: 0;
+  line-height: 1.65;
+  max-width: 440px;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 760px;
+}
+.gallery-grid { grid-template-columns: repeat(2, 1fr); }
+.gallery-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+.gallery-tile {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+  display: flex;
+  align-items: flex-end;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.gallery-tile:hover {
+  border-color: var(--amber);
+  transform: translateY(-2px);
+}
+.gallery-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gallery-caption {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.05em;
+  color: var(--white);
+  background: linear-gradient(0deg, rgba(8,10,14,0.85) 0%, transparent 100%);
+}
+.music-sub { margin-top: 56px; }
+.music-sub { margin-top: 44px; }
+.subhead {
+  font-family: var(--serif);
+  font-size: var(--fs-2xl);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 20px;
+}
+#music-engineering {
+  background: var(--bg2);
+  max-width: none;
+  padding: 100px 40px;
+}
+#suno, #music-engineering { padding: 72px 20px; }
+.eng-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.eng-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.eng-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.eng-card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--teal);
+  background: var(--bg3);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  transition: transform 0.2s, background 0.2s;
+}
+.eng-card:hover {
+  background: var(--surface);
+  transform: translateY(-2px);
+}
+.eng-card h3 { color: var(--teal); margin-bottom: 8px; font-size: var(--fs-lg); }
+.eng-card p { font-size: var(--fs-sm); color: var(--muted2); margin: 0; }
+#suno {
+  background: var(--bg2);
+  max-width: none;
+  padding: 100px 40px;
+  position: relative;
+}
+.suno-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.suno-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+.suno-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.suno-tag {
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  padding: 5px 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(232,160,48,0.25);
+  color: var(--amber);
+  background: var(--amber-dim);
+}
+.suno-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.suno-stats { grid-template-columns: 1fr 1fr; }
+.suno-stat {
+  background: var(--bg3);
+  padding: 20px;
+}
+.suno-stat-val {
+  font-family: var(--display);
+  font-size: var(--fs-2xl);
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.suno-stat-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.platforms {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.platform-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg3);
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  transition: border-color 0.2s, background 0.2s;
+}
+.platform-link:hover {
+  border-color: var(--amber);
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+.platform-name { color: var(--white); font-weight: 500; }
+.platform-handle { color: var(--muted2); font-size: var(--fs-xs); }
+.platform-arrow { color: var(--muted); font-size: var(--fs-sm); }
+.cta-band {
+  margin-top: 40px;
+  padding: 28px 32px;
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, rgba(232,160,48,0.06), transparent 60%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.cta-band-title {
+  font-family: var(--serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.cta-band-sub {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.05em;
+  color: var(--muted2);
+}
+a:focus-visible,
+button:focus-visible,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.btn-primary {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--amber);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.divider {
+  width: calc(100% - 80px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  opacity: 0.3;
+  margin: 0 auto;
+  max-width: 1100px;
+}
+@media (max-width:900px) { section { padding:48px 20px; } .pagehead { padding:32px 20px 0; } .ed-grid, .suno-grid, .eng-grid { grid-template-columns:1fr; } .gallery-grid { grid-template-columns:repeat(2,1fr); } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition-duration:0.01ms !important; animation-duration:0.01ms !important; } }
+
+/* Sticky mini-nav (subpages) */
+.mini-nav{position:fixed;top:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:rgba(8,10,14,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding-left:40px;padding-right:40px;}
+.mini-logo{font-family:var(--serif);font-style:italic;font-weight:700;font-size:var(--fs-xl);color:var(--amber);min-height:44px;display:inline-flex;align-items:center;}
+.mini-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.mini-links a{font-family:var(--mono);font-size:var(--fs-xs);font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--text);padding:13px 11px;border-radius:var(--radius);transition:color 0.2s,background 0.2s;}
+.mini-links a:hover{color:var(--amber);background:rgba(232,160,48,0.1);}
+.mini-links a.current{color:var(--amber);}
+.mini-cta{font-family:var(--mono);font-size:var(--fs-xs);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--amber);padding:10px 18px;border-radius:var(--radius);margin-left:8px;min-height:40px;display:inline-flex;align-items:center;box-shadow:0 4px 16px rgba(232,160,48,0.25);transition:box-shadow 0.2s,transform 0.2s;}
+.mini-cta:hover{box-shadow:0 4px 24px rgba(232,160,48,0.4);transform:translateY(-1px);}
+@media (max-width:560px){.mini-nav{padding-left:16px;padding-right:16px;}.mini-links a{padding:13px 8px;font-size:10.5px;}.mini-cta{padding:9px 12px;font-size:10.5px;}}
+/* Back to top */
+.back-to-top{position:fixed;bottom:calc(28px + env(safe-area-inset-bottom,0px));right:calc(28px + env(safe-area-inset-right,0px));width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1px solid var(--border2);border-radius:50%;color:var(--amber);font-size:var(--fs-lg);z-index:999;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity 0.25s,transform 0.25s,border-color 0.2s;}
+.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0);}
+.back-to-top:hover{border-color:var(--amber);background:rgba(232,160,48,0.1);}
+</style>
+<meta property="og:image" content="https://david-petry.netlify.app/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<nav class="mini-nav" aria-label="Site">
+  <a href="index.html" class="mini-logo" aria-label="David Petry home">DP</a>
+  <ul class="mini-links">
+    <li><a href="music.html" class="current">Music</a></li>
+    <li><a href="drum-exercises.html">Exercises</a></li>
+    <li><a href="index.html#lessons" class="mini-cta">Book a Session</a></li>
+  </ul>
+</nav>
+<main id="main-content">
+<div class="pagehead">
+  <h1>Music <em>Life</em></h1>
+  <p class="lede">Two decades performing, teaching, and producing — from Denver's jazz rooms to Montreux, and now the AI frontier.</p>
+</div>
+
+<section id="music-education">
+  <div class="section-label">Music Education</div>
+  <h2>Nearly 20 years<br><em>in the classroom</em></h2>
+  <div class="ed-grid">
+    <div class="ed-cards reveal">
+      <div class="ed-card">
+        <h3>Individualized Instruction</h3>
+        <p>Taught students across all skill levels — developing a consultative approach to identifying where a learner is, where they need to go, and how to get them there.</p>
+      </div>
+      <div class="ed-card">
+        <h3>Curriculum Design</h3>
+        <p>Built structured learning paths for David Petry Music — designing curricula that scaled across instruments, ages, and learning styles, with clear milestones and measurable outcomes.</p>
+      </div>
+      <div class="ed-card">
+        <h3>Client Retention</h3>
+        <p>Sustained a loyal client base for nearly two decades through word-of-mouth reputation alone — a direct result of teaching that actually works.</p>
+      </div>
+      <div class="ed-card" style="border-color: rgba(232,160,48,0.2); background: var(--amber-dim);">
+        <h3 style="color:var(--amber)">Teaching is how I think about technology</h3>
+        <p>Every AI implementation is ultimately a learning problem. Twenty years of teaching taught me how to close the gap between confusion and confidence — with patience, clarity, and deep respect for where people actually are.</p>
+      </div>
+    </div>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <div class="timeline-year">1993–99</div>
+        <p>BS Music Education K–12 (Instrumental), Ball State University</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1999</div>
+        <p>Outstanding Graduate Student in Jazz Studies — University of Denver</p>
+      </div>
+      <div class="timeline-item milestone">
+        <div class="timeline-year">1999</div>
+        <p>Founded David Petry Music in Denver, CO</p>
+      </div>
+      <div class="timeline-item milestone">
+        <div class="timeline-year">Global</div>
+        <p>Performed at Montreux Jazz Festival (Switzerland) and North Sea Jazz Festival (Netherlands)</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2016</div>
+        <p>Closed school after nearly 20 years — relocated to Budapest, Hungary</p>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2016</div>
+        <p>Lived and worked in Budapest, Hungary — broadened perspective on culture, communication, and adaptability</p>
+      </div>
+    </div>
+  </div>
+
+<div id="gallery" class="music-sub">
+<h3 class="subhead">Off Stage</h3>
+  <p style="font-size:var(--fs-base);max-width:620px;">A look at life and work beyond the kit — performance photos from the archive are on their way.</p>
+  <div class="gallery-grid reveal" style="margin-top:32px;">
+    <div class="gallery-tile">
+      <img src="gallery-beach.jpg" alt="Dave Petry walking in the surf at Ocean Beach pier, San Diego, holding a hat" loading="lazy">
+      <div class="gallery-caption">Ocean Beach · San Diego, CA</div>
+    </div>
+    <div class="gallery-tile">
+      <img src="gallery-artwork.jpg" alt="Original digital dot-work portrait artwork, signed David Petry" loading="lazy">
+      <div class="gallery-caption">Original artwork · Signed digital dot-work</div>
+    </div>
+  </div>
+</div>
+<div id="shared-stage" class="music-sub">
+<h3 class="subhead">Shared the Stage</h3>
+  <p style="font-size:var(--fs-base);max-width:620px;">Artists, mentors, and fellow musicians I've performed and collaborated with — and the stages that shaped two decades of playing.</p>
+
+  <div class="section-label" style="margin-top:48px;">Collaborators &amp; Colleagues</div>
+  <p class="collab-list reveal" style="font-size:var(--fs-lg); line-height:2; max-width:820px;">
+    Pat Bianchi, Malcolm Lynn Baker, Jerry Bergonzi, John Kenzie, Mike Marlier, Kenny Walker, Dave Hansen, Eric Gunnison, Al Hood, Art Bouton, Dave DeMichelis
+  </p>
+
+  <div class="section-label" style="margin-top:48px;">Stages &amp; Venues</div>
+  <p class="collab-list reveal" style="font-size:var(--fs-lg); line-height:2; max-width:820px;">
+    Bluebird Theater, Oriental Theater, Fillmore Denver, Gothic Theater, El Chapultepec, Cervantes, Red Rocks Amphitheater, Fox Theater Boulder, Boulder Theater, Oregon Country Fair, Double Diamond Aspen, ESPN X Games Snowmass, Montreux Jazz Festival, North Sea Jazz Festival
+  </p>
+</div>
+<div id="denver-roots" class="music-sub">
+<h3 class="subhead">Denver Roots</h3>
+  <p>From 1999 to 2016, Denver's music community was my professional and social home — live dates and recording sessions across jazz, funk, and club projects along the Front Range. That scene runs on the heartbeat of <strong>KUVO 89.3</strong>, the community-built jazz station broadcasting from the historic Five Points neighborhood since 1985 — a Colorado Music Hall of Fame inductee and one of the last great jazz stations in America. It's a big part of why touring artists stop in Denver, and why its jazz rooms survive.</p>
+</div>
+
+</section>
+
+<div class="divider"></div>
+
+<div id="music-engineering" style="position:relative;z-index:1;">
+<section class="eng-inner">
+  <div class="section-label">Music Engineering</div>
+  <h2>Studio craft meets<br><em>systems thinking</em></h2>
+  <div class="eng-grid">
+    <div class="reveal">
+      <p style="font-size:var(--fs-base)">My engineering background runs parallel to my performance and teaching career. Graduate studies at the <strong>Lamont School of Music</strong> included audio production alongside jazz performance — giving me both the musical and technical vocabulary of the studio.</p>
+      <p>I work in <strong>Logic Pro</strong> as my primary DAW, with experience across the full signal chain: recording, editing, mixing, arrangement, and mastering.</p>
+      <p>The overlap between audio engineering and systems engineering is real: both require precise signal flow thinking, an understanding of how components interact, and the discipline to isolate variables when something isn't working.</p>
+    </div>
+    <div class="eng-cards reveal">
+      <div class="eng-card">
+        <h3>Logic Pro / DAW Production</h3>
+        <p>Full-cycle production in Logic Pro — recording, MIDI sequencing, mixing, mastering, and sound design across multiple genres.</p>
+      </div>
+      <div class="eng-card">
+        <h3>Audio Post-Production</h3>
+        <p>Editing and finishing AI-generated audio for publication — EQ, compression, spatial processing, and final export at professional standards.</p>
+      </div>
+      <div class="eng-card">
+        <h3>Arrangement & Composition</h3>
+        <p>Deep musical theory background (jazz harmony, counterpoint, orchestration) applied to both traditional composition and AI-directed generation.</p>
+      </div>
+      <div class="eng-card">
+        <h3>Signal Chain & Systems Thinking</h3>
+        <p>Understanding how audio flows through a system maps directly to data pipelines, network architecture, and AI workflow design.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<div id="suno" style="position:relative;z-index:1;">
+<section class="suno-inner">
+  <div class="section-label">A Side Note · AI Music</div>
+  <h2 style="font-size:clamp(var(--fs-2xl), 3.5vw, var(--fs-3xl));">Also experimenting with <em>Suno</em></h2>
+  <div class="suno-grid">
+    <div class="reveal">
+      <p style="font-size:var(--fs-base);color:var(--muted2);">Alongside the human music background above, I've also spent time since Feb. 2026 as an <strong style="color:var(--text);">independent AI music producer on the Suno platform</strong> — a side practice that doubles as a real-world testbed for prompt engineering and generative AI workflow design.</p>
+      <p>Every track is a prompt engineering problem: genre, mood, instrumentation, lyrical structure, tempo, and texture all have to be encoded into language that a generative model can act on with precision.</p>
+      <p>I then perform <strong>end-to-end audio production</strong> on the AI-generated output — editing, mixing, and finishing each piece — bringing a lifetime of musical ear and studio sensibility to the human-AI creative loop.</p>
+      <div class="suno-tags" style="margin-top:24px">
+        <span class="suno-tag">Generative AI</span>
+        <span class="suno-tag">Prompt Engineering</span>
+        <span class="suno-tag">LLM Workflows</span>
+        <span class="suno-tag">Audio Production</span>
+        <span class="suno-tag">Creative AI</span>
+        <span class="suno-tag">Iterative Testing</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="suno-stats">
+        <div class="suno-stat">
+          <div class="suno-stat-val">Feb</div>
+          <div class="suno-stat-label">2026 Platform Start</div>
+        </div>
+        <div class="suno-stat">
+          <div class="suno-stat-val">Full</div>
+          <div class="suno-stat-label">End-to-End Production</div>
+        </div>
+        <div class="suno-stat">
+          <div class="suno-stat-val">Multi</div>
+          <div class="suno-stat-label">Genre Range</div>
+        </div>
+        <div class="suno-stat">
+          <div class="suno-stat-val">Live</div>
+          <div class="suno-stat-label">Published Works</div>
+        </div>
+      </div>
+      <div class="platforms">
+        <a href="https://suno.com/@davepetry" target="_blank" rel="noopener noreferrer" class="platform-link">
+          <span class="platform-name">Suno</span>
+          <span class="platform-handle">@davepetry</span>
+          <span class="platform-arrow">↗</span>
+        </a>
+        <a href="https://soundcloud.com/david-petry" target="_blank" rel="noopener noreferrer" class="platform-link">
+          <span class="platform-name">SoundCloud</span>
+          <span class="platform-handle">david-petry</span>
+          <span class="platform-arrow">↗</span>
+        </a>
+        <a href="https://www.reverbnation.com/davidpetrymusic" target="_blank" rel="noopener noreferrer" class="platform-link">
+          <span class="platform-name">ReverbNation</span>
+          <span class="platform-handle">davidpetrymusic</span>
+          <span class="platform-arrow">↗</span>
+        </a>
+        <a href="https://music.youtube.com/channel/UCDavidPetryMusic" target="_blank" rel="noopener noreferrer" class="platform-link">
+          <span class="platform-name">YouTube Music</span>
+          <span class="platform-handle">David "Dave" Petry</span>
+          <span class="platform-arrow">↗</span>
+        </a>
+        <a href="https://open.spotify.com/artist/6vH4LIQKIsUnqdETGEliLf?si=-9P-3sjLTHigbRDdm2ow1g" target="_blank" rel="noopener noreferrer" class="platform-link">
+          <span class="platform-name">Spotify</span>
+          <span class="platform-handle">David "Dave" Petry</span>
+          <span class="platform-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="divider"></div>
+
+<section id="drum-exercises">
+  <div class="section-label">Free Downloads</div>
+  <h2>Free <em>Exercises</em></h2>
+  <div class="cta-band reveal" style="margin-top:8px;">
+    <div>
+      <div class="cta-band-title">32 free exercise PDFs</div>
+      <div class="cta-band-sub">Rock &amp; funk · jazz · Latin · rudiments · reading studies — from 20 years of teaching</div>
+    </div>
+    <a href="drum-exercises.html" class="btn-primary">Open the Exercise Library</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section style="text-align:center;">
+  <h2>Lessons &amp; <em>bookings</em></h2>
+  <p style="margin:0 auto 24px;color:var(--muted2);">Private percussion and music lessons, audio consultations, and session work.</p>
+  <a href="index.html#lessons" class="btn-primary">Book a Session</a>
+</section>
+
+</main>
+<script>
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
+reveals.forEach(el => io.observe(el));
+</script>
+<a href="#" id="backToTop" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑</a>
+<script>
+window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b){b.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);}});
+</script>
+</body>
+</html>

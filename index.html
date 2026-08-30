@@ -1,0 +1,2083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>David Petry — Human-Centered AI</title>
+<meta name="description" content="David Petry — AI implementation consultant bridging cloud infrastructure, security, and generative AI with human-centered design. Music educator, performer, and AI music producer offering lessons, consultations, and a free Suno Prompt Book.">
+<meta property="og:title" content="David Petry — Human-Centered AI">
+<meta property="og:description" content="AI implementation consulting, music education, and generative AI music production — bridging cloud infrastructure and human-centered design.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://david-petry.netlify.app/">
+<meta property="og:image" content="https://david-petry.netlify.app/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23080a0e'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Georgia,serif' font-style='italic' fill='%23e8a030' text-anchor='middle'%3EDP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root {
+  --bg:        #080a0e;
+  --bg2:       #0d1018;
+  --bg3:       #111520;
+  --surface:   #141824;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #d8dce8;
+  --muted:     #6b7591;
+  --muted2:    #7c86a8;
+  --amber:     #e8a030;
+  --amber-dim: rgba(232,160,48,0.12);
+  --amber-glow:rgba(232,160,48,0.04);
+  --teal:      #2dd4bf;
+  --teal-dim:  rgba(45,212,191,0.1);
+  --red:       #e85050;
+  --white:     #f0f2f8;
+  --nav-h:     64px;
+  --radius:    6px;
+  /* Modular type scale (~1.25 ratio) */
+  --fs-xs:   11px;
+  --fs-sm:   13px;
+  --fs-base: 16px;
+  --fs-lg:   18px;
+  --fs-xl:   22px;
+  --fs-2xl:  28px;
+  --fs-3xl:  40px;
+  --fs-4xl:  64px;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Outfit', sans-serif;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --display: 'Bebas Neue', sans-serif;
+}
+
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: var(--fs-base);
+  line-height: 1.75;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* Scan-line overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.12) 2px,
+    rgba(0,0,0,0.12) 4px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.4;
+}
+
+/* Grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,160,48,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,160,48,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+a { color: inherit; text-decoration: none; cursor: pointer; }
+
+/* Accessibility: visible keyboard focus */
+a:focus-visible,
+button:focus-visible,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Skip link — visible only when focused */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 2000;
+  background: var(--amber);
+  color: var(--bg);
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: top 0.2s;
+}
+
+.skip-link:focus {
+  top: 16px;
+}
+
+/* Back to top */
+.back-to-top {
+  position: fixed;
+  bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  right: calc(28px + env(safe-area-inset-right, 0px));
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 50%;
+  color: var(--amber);
+  font-size: var(--fs-lg);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.25s, transform 0.25s, border-color 0.2s, background 0.2s;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  border-color: var(--amber);
+  background: var(--amber-dim);
+}
+
+@media (max-width: 560px) {
+  .back-to-top { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); right: 16px; width: 44px; height: 44px; }
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+img { max-width: 100%; }
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--amber); border-radius: 2px; }
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+  padding-top: env(safe-area-inset-top, 0px);
+  background: rgba(8,10,14,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.scroll-progress {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--teal), var(--amber));
+  transition: width 0.1s ease-out;
+  z-index: 1001;
+}
+
+.nav-logo {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--amber);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nav-logo span { color: var(--muted2); }
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--text);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 13px 11px;
+  border-radius: var(--radius);
+  transition: color 0.2s, background 0.2s, transform 0.2s;
+  position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--amber);
+  background: var(--amber-dim);
+  transform: translateY(-1px);
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 14px; right: 14px;
+  height: 1px;
+  background: var(--amber);
+}
+
+.nav-cta {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--amber);
+  padding: 10px 20px;
+  border-radius: var(--radius);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 0 1px rgba(232,160,48,0.0), 0 4px 16px rgba(232,160,48,0.25);
+  transition: opacity 0.2s, box-shadow 0.2s, transform 0.2s;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.nav-cta:hover { opacity: 0.92; box-shadow: 0 4px 24px rgba(232,160,48,0.4); transform: translateY(-1px); }
+
+/* Hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-toggle span {
+  width: 22px; height: 2px;
+  background: var(--amber);
+  border-radius: 1px;
+  transition: all 0.3s;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+main { position: relative; z-index: 1; }
+
+section {
+  padding: 72px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Compact sections — thin content, tighter frame *//* First/last impressions keep full breathing room */
+#contact { padding-top: 100px; padding-bottom: 100px; }
+
+.section-label {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-label::before {
+  content: '//';
+  color: var(--muted);
+}
+
+h2 {
+  font-family: var(--serif);
+  font-size: clamp(var(--fs-3xl), 5vw, var(--fs-4xl));
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--white);
+  margin-bottom: 28px;
+}
+
+h2 em {
+  font-style: italic;
+  color: var(--amber);
+}
+
+h3 {
+  font-family: var(--serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+h4 {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 8px;
+}
+
+p { color: var(--text); line-height: 1.8; margin-bottom: 16px; font-size: var(--fs-base); max-width: 72ch; }
+p:last-child { margin-bottom: 0; }
+p strong { color: var(--white); font-weight: 500; }
+
+.divider {
+  width: calc(100% - 80px);
+  height: 1px;
+  background: linear-gradient(90deg, var(--amber), transparent);
+  opacity: 0.3;
+  margin: 0 auto;
+  max-width: 1100px;
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: calc(var(--nav-h) + 88px);
+  padding-bottom: 56px;
+  position: relative;
+  max-width: none;
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 40px;
+}
+
+.hero-tag {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.2s ease forwards;
+}
+
+.hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 48px; height: 2px;
+  background: var(--amber);
+}
+
+.hero-name {
+  font-family: var(--display);
+  font-size: clamp(72px, 12vw, 160px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  color: var(--white);
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.35s ease forwards;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(var(--fs-xl), 3vw, var(--fs-3xl));
+  font-style: italic;
+  color: var(--amber);
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.5s ease forwards;
+}
+
+.hero-desc {
+  max-width: 620px;
+  font-size: var(--fs-lg);
+  color: var(--muted2);
+  line-height: 1.8;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.65s ease forwards;
+}
+
+.hero-proof {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 0;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.72s ease forwards;
+}
+
+.hero-proof span {
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  padding: 0 14px;
+  border-right: 1px solid var(--border2);
+  white-space: nowrap;
+}
+.hero-proof span:first-child { padding-left: 0; }
+.hero-proof span:last-child { border-right: none; }
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.8s ease forwards;
+}
+
+.hero-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+  font-size: var(--fs-sm);
+  font-family: var(--mono);
+  color: var(--muted2);
+  letter-spacing: 0.04em;
+  opacity: 0;
+  animation: fadeUp 0.8s 0.9s ease forwards;
+}
+
+.hero-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 0 0 rgba(45,212,191,0.6);
+  animation: statusPulse 2.4s ease-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes statusPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(45,212,191,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(45,212,191,0); }
+  100% { box-shadow: 0 0 0 0 rgba(45,212,191,0); }
+}
+
+/* ============================================================
+   MID-PAGE CTA BAND
+   ============================================================ */
+.cta-band {
+  margin-top: 40px;
+  padding: 28px 32px;
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--amber);
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, rgba(232,160,48,0.06), transparent 60%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.cta-band-title {
+  font-family: var(--serif);
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.cta-band-sub {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.05em;
+  color: var(--muted2);
+}
+
+/* ============================================================
+   PROOF BAR
+   ============================================================ */
+.proof-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.proof-stat {
+  background: var(--bg2);
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.proof-num {
+  font-family: var(--mono);
+  font-size: var(--fs-2xl);
+  font-weight: 500;
+  color: var(--amber);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.proof-lbl {
+  font-size: var(--fs-xs);
+  color: var(--muted2);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 900px) {
+  .proof-grid { grid-template-columns: repeat(3, 1fr); }
+  .proof-stat:nth-child(4), .proof-stat:nth-child(5) { display: none; }
+}
+
+
+
+/* ============================================================
+   PERFORMANCE GALLERY
+   ============================================================ */
+
+
+
+/* ============================================================
+   LESSONS & CONSULTATIONS
+   ============================================================ */
+.lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.lesson-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.lesson-card:hover {
+  border-color: var(--amber);
+  transform: translateY(-2px);
+}
+
+.lesson-card h3 { font-size: var(--fs-lg); margin: 0; }
+.lesson-card p { font-size: var(--fs-sm); color: var(--muted2); margin: 0; flex-grow: 1; }
+
+.lesson-card .lesson-meta {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.lesson-card .btn-book {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-top: 8px;
+  transition: gap 0.2s;
+}
+
+.lesson-card .btn-book:hover { gap: 14px; }
+
+@media (max-width: 900px) {
+  .lessons-grid { grid-template-columns: 1fr; }
+}
+
+.btn-primary {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  background: var(--amber);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  border-radius: var(--radius);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+.btn-ghost {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  padding: 14px 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-ghost:hover { color: var(--white); }
+
+.hero-contact {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s 1s ease forwards;
+}
+
+.hero-contact a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--fs-sm);
+  font-family: var(--mono);
+  letter-spacing: 0.04em;
+  color: var(--text);
+  border: 1px solid var(--border2);
+  background: rgba(13,16,24,0.6);
+  backdrop-filter: blur(8px);
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  transition: color 0.2s, border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.hero-contact a .ico {
+  color: var(--amber);
+  font-size: var(--fs-sm);
+}
+
+.hero-contact a:hover {
+  color: var(--amber);
+  border-color: var(--amber);
+  background: var(--amber-dim);
+  transform: translateY(-2px);
+}
+
+/* Ambient glow */
+.hero-glow {
+  position: absolute;
+  top: 20%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(232,160,48,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+#about .about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: start;
+}
+
+.about-body p { font-size: var(--fs-lg); }
+
+.about-pillars {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.pillar {
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--amber);
+  background: var(--bg2);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.pillar:hover {
+  border-left-color: var(--teal);
+  background: var(--surface);
+}
+
+.pillar h3 { margin-bottom: 6px; font-size: var(--fs-base); }
+.pillar p { font-size: var(--fs-sm); color: var(--muted2); margin: 0; line-height: 1.6; }
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+#services { background: none; }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.service-card {
+  background: var(--bg2);
+  padding: 28px 24px;
+  transition: background 0.2s;
+  position: relative;
+}
+
+.service-card:hover { background: var(--surface); }
+
+.service-num {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  margin-bottom: 14px;
+  font-family: var(--mono);
+}
+
+.service-card h3 {
+  font-size: var(--fs-base);
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  font-size: var(--fs-xs);
+  color: var(--muted2);
+  line-height: 1.7;
+  margin: 0;
+}
+
+.service-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--amber);
+  transform: scaleX(0);
+  transition: transform 0.3s;
+  transform-origin: left;
+}
+
+.service-card:hover::after { transform: scaleX(1); }
+
+/* ============================================================
+   CREDENTIALS
+   ============================================================ */
+.cred-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.cred-card {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.cred-card:hover { border-color: var(--amber); transform: translateY(-2px); }
+
+.cred-issuer {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 10px;
+}
+
+.cred-card h3 { font-size: var(--fs-base); margin-bottom: 12px; }
+
+.cred-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--border2);
+  color: var(--muted2);
+  background: var(--bg3);
+}
+
+.edu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.edu-card {
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.edu-card:hover {
+  border-color: var(--amber);
+  transform: translateY(-2px);
+}
+
+.edu-degree {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+}
+
+.edu-card h3 { font-size: var(--fs-base); margin-bottom: 6px; }
+.edu-card p { font-size: var(--fs-sm); color: var(--muted2); margin: 0; }/* ============================================================
+   EXPERIENCE
+   ============================================================ */
+.exp-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.exp-list::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, var(--amber), transparent);
+}
+
+.exp-item {
+  padding: 32px 0 32px 40px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.exp-item::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: 36px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 2px solid var(--bg);
+}
+
+.exp-item:last-child { border-bottom: none; }
+
+.exp-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.exp-date {
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  color: var(--amber);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.exp-org {
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  color: var(--muted2);
+  text-align: right;
+}
+
+.exp-item h3 { font-size: var(--fs-lg); margin-bottom: 12px; }
+
+.exp-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exp-bullets li {
+  font-size: var(--fs-sm);
+  color: var(--muted2);
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.7;
+}
+
+.exp-bullets li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--amber);
+}
+
+/* ============================================================
+   SUNO / MUSIC
+   ============================================================ *//* ============================================================
+   PROMPT BOOK
+   ============================================================ */
+#prompt-book { position: relative; }
+
+.book-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin-bottom: 64px;
+  align-items: center;
+}
+
+.book-cover {
+  aspect-ratio: 3/4;
+  background: linear-gradient(135deg, var(--bg3) 0%, var(--surface) 100%);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(232,160,48,0.03) 20px,
+      rgba(232,160,48,0.03) 21px
+    );
+}
+
+.book-cover-title {
+  font-family: var(--display);
+  font-size: var(--fs-3xl);
+  letter-spacing: 0.05em;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.1;
+  position: relative;
+  z-index: 1;
+}
+
+.book-cover-sub {
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  color: var(--amber);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+.book-stats {
+  display: flex;
+  gap: 32px;
+  margin: 24px 0;
+}
+
+.book-stat-val {
+  font-family: var(--display);
+  font-size: var(--fs-4xl);
+  color: var(--amber);
+  line-height: 1;
+}
+
+.book-stat-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}/* ============================================================
+   MUSIC EDUCATION
+   ============================================================ *//* glowing vertical rail *//* ============================================================
+   MUSIC ENGINEERING
+   ============================================================ *//* ============================================================
+   HUMAN-CENTERED AI
+   ============================================================ */
+.hcai-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.hcai-card {
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--teal);
+  background: var(--bg3);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.hcai-card:hover {
+  background: var(--surface);
+  transform: translateY(-2px);
+}
+
+.hcai-card.is-negative { border-left-color: var(--amber); }
+
+.hcai-card h3 {
+  color: var(--white);
+  font-size: var(--fs-lg);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hcai-card.is-negative h3 { color: var(--amber); }
+.hcai-card:not(.is-negative) h3 { color: var(--teal); }
+
+.hcai-card ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hcai-card li {
+  font-size: var(--fs-base);
+  color: var(--muted2);
+  line-height: 1.6;
+  padding-left: 16px;
+  position: relative;
+}
+
+.hcai-card li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+}
+
+@media (max-width: 768px) {
+  .hcai-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+#contact {
+  text-align: center;
+  position: relative;
+}
+
+.contact-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(232,160,48,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+#contact h2 { margin-bottom: 16px; }.contact-directive {
+  max-width: 540px;
+  margin: 0 auto 48px;
+  font-size: var(--fs-sm);
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.contact-directive::before,
+.contact-directive::after {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--teal);
+  opacity: 0.4;
+}
+
+.contact-links {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.contact-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 28px 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  min-width: 200px;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+
+.contact-link:hover {
+  border-color: var(--amber);
+  background: var(--amber-dim);
+  transform: translateY(-3px);
+}
+
+.contact-link-icon {
+  font-size: var(--fs-xl);
+  color: var(--amber);
+  margin-bottom: 2px;
+}
+
+.contact-link-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.contact-link-val {
+  font-size: var(--fs-base);
+  font-family: var(--mono);
+  color: var(--white);
+}
+
+.contact-trust {
+  margin-top: 32px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.05em;
+  color: var(--muted2);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  color: var(--muted);
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+
+  section { padding: 56px 20px; }#contact { padding-top: 80px; padding-bottom: 80px; }.hero-inner { padding: 0 20px; }
+  .hero-contact { gap: 12px; }.services-grid { grid-template-columns: repeat(2, 1fr); }
+  .cred-grid { grid-template-columns: 1fr; }
+  .edu-grid { grid-template-columns: 1fr; }.contact-links { flex-direction: column; align-items: center; }
+
+  footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+@media (max-width: 560px) {
+  .services-grid { grid-template-columns: 1fr; }.hero-name { font-size: var(--fs-4xl); }
+  .hero-tag { font-size: var(--fs-xs); letter-spacing: 0.22em; gap: 10px; }
+  .hero-tag::before { width: 28px; }}
+
+/* Mobile nav open */
+nav.open .nav-links {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
+  left: 0; right: 0;
+  max-height: calc(100vh - var(--nav-h) - env(safe-area-inset-top, 0px));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px calc(20px + env(safe-area-inset-bottom, 0px));
+  gap: 2px;
+}
+
+nav.open .nav-links a {
+  display: block;
+  padding: 13px 12px;
+  font-size: var(--fs-sm);
+}
+
+nav.open .nav-cta {
+  display: block;
+  margin: 12px 20px 0;
+  text-align: center;
+}
+
+/* Prompt Book email capture */
+.pb-form { margin-top: 24px; max-width: 460px; }
+.pb-form-label { display:block; font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); margin-bottom: 10px; }
+.pb-form-row { display: flex; gap: 8px; }
+.pb-form input[type="email"] { flex: 1; min-height: 44px; padding: 0 14px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--white); font-family: var(--sans); font-size: var(--fs-base); }
+.pb-form input[type="email"]:focus { outline: 2px solid var(--amber); outline-offset: 2px; border-color: var(--amber); }
+.pb-form button { min-height: 44px; padding: 0 20px; background: var(--amber); color: var(--bg); border: none; border-radius: var(--radius); font-family: var(--mono); font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
+.pb-form button:hover { opacity: 0.88; }
+@media (max-width: 480px) { .pb-form-row { flex-direction: column; } }
+
+/* ============================================================
+   PROJECTS — shipped software
+   ============================================================ */
+#projects { }
+.projects-intro {
+  max-width: 62ch; color: var(--muted2); font-size: var(--fs-base);
+  line-height: 1.7; margin-bottom: 40px;
+}
+.projects-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.project-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 26px 24px;
+  display: flex; flex-direction: column;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.project-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.project-kind {
+  font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .14em;
+  text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+}
+.project-card h3 {
+  font-size: var(--fs-xl); color: var(--white); margin-bottom: 10px; line-height: 1.25;
+}
+.project-card p {
+  color: var(--muted2); font-size: var(--fs-sm); line-height: 1.65;
+  margin-bottom: 18px; flex: 1;
+}
+.project-meta {
+  font-family: var(--mono); font-size: var(--fs-xs); color: var(--muted);
+  margin-bottom: 16px; letter-spacing: .04em;
+}
+.project-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.project-links a {
+  font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: .06em;
+  text-transform: uppercase; padding: 7px 13px; border-radius: 3px;
+  border: 1px solid var(--border2); color: var(--muted2); text-decoration: none;
+  transition: color .18s ease, border-color .18s ease;
+}
+.project-links a:hover { color: var(--amber); border-color: var(--amber); }
+.project-links a.primary { color: var(--amber); border-color: var(--amber-dim); background: var(--amber-glow); }
+.projects-note {
+  margin-top: 34px; padding: 20px 24px; border-left: 2px solid var(--teal);
+  background: var(--bg3); border-radius: 0 var(--radius) var(--radius) 0;
+  color: var(--muted2); font-size: var(--fs-sm); line-height: 1.7; max-width: 72ch;
+}
+.projects-note strong { color: var(--white); font-weight: 500; }
+@media (max-width: 640px) {
+  .projects-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "name": "David Petry",
+      "alternateName": "Dave Petry",
+      "jobTitle": "Drummer, Music Educator & AI Implementation Consultant",
+      "address": { "@type": "PostalAddress", "addressLocality": "Denver", "addressRegion": "CO", "addressCountry": "US" },
+      "email": "mailto:davidpetry@gmail.com",
+      "telephone": "+1-303-815-8838",
+      "url": "https://david-petry.netlify.app/",
+      "sameAs": [
+        "https://linkedin.com/in/david-petry",
+        "https://open.spotify.com/artist/6vH4LIQKIsUnqdETGEliLf",
+        "https://soundcloud.com/david-petry",
+        "https://www.reverbnation.com/davidpetrymusic",
+        "https://suno.com/@davepetry"
+      ],
+      "knowsAbout": ["Drum set performance", "Percussion education", "Jazz", "AI implementation", "Prompt engineering", "Cloud infrastructure"]
+    },
+    {
+      "@type": "Service",
+      "serviceType": "Private percussion and music lessons; audio and AI consultations",
+      "provider": { "@type": "Person", "name": "David Petry" },
+      "areaServed": { "@type": "City", "name": "Denver" },
+      "url": "https://david-petry.netlify.app/#lessons"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav id="nav">
+  <div class="scroll-progress" id="scrollProgress"></div>
+  <a href="#hero" class="nav-logo">DP<span> / Human-Centered AI</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Work</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="music.html">Music</a></li>
+    <li><a href="#lessons">Lessons</a></li>
+    <li><a href="#prompt-book">Resources</a></li>
+    <li><a href="#human-centered-ai">AI Philosophy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Get in Touch</a>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main id="main-content">
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Music · Education · Technology · Innovation</div>
+    <h1 class="hero-name">David<br>Petry</h1>
+    <div class="hero-title">Built in the classroom.<br>Deployed in the cloud.</div>
+    <p class="hero-desc">
+      Professional drummer turned AI implementation consultant. I help organizations
+      deploy AI that people actually trust and use.
+    </p>
+    <div class="hero-proof">
+      <span>Montreux &amp; North Sea Jazz</span>
+      <span>Netflix &amp; PBS sync credits</span>
+      <span>1.5M+ YouTube views</span>
+      <span>AWS &amp; Cisco certified</span>
+    </div>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Free Consultation</a>
+      <a href="#about" class="btn-ghost">Learn More →</a>
+    </div>
+    <div class="hero-status">
+      <span class="hero-status-dot"></span>
+      Currently accepting new projects · Typically replies within 24 hours
+    </div>
+    <div class="hero-contact">
+      <a href="mailto:davidpetry@gmail.com"><span class="ico" aria-hidden="true">✉</span>davidpetry@gmail.com</a>
+      <a href="tel:3038158838"><span class="ico" aria-hidden="true">☎</span>303-815-8838</a>
+      <a href="https://linkedin.com/in/david-petry" target="_blank" rel="noopener noreferrer"><span class="ico" aria-hidden="true">in</span>linkedin.com/in/david-petry</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     QUICK NAVIGATION — help visitors self-orient
+     ============================================================ -->
+<section id="proof-bar" style="padding-top:56px; padding-bottom:0;">
+  <div class="proof-grid reveal">
+    <div class="proof-stat">
+      <div class="proof-num">20+</div>
+      <div class="proof-lbl">Years performing<br>&amp; teaching</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">2</div>
+      <div class="proof-lbl">Degrees — music ed<br>&amp; info sciences</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">3</div>
+      <div class="proof-lbl">Cloud &amp; security<br>certifications</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">1.5M+</div>
+      <div class="proof-lbl">Views — San Miguel<br>TV commercial</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">68</div>
+      <div class="proof-lbl">Pages — free Suno<br>Prompt Book</div>
+    </div>
+  </div>
+</section>
+
+
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section id="about">
+  <div class="section-label">About</div>
+  <h2>The machine and<br><em>the human using it</em></h2>
+  <div class="about-grid">
+    <div class="about-body reveal">
+      <p><strong>Twenty years running a music school</strong> taught me what no certification can: technology only works when people understand it, trust it, and own it.</p>
+      <p>Now I bring cloud, security, and <strong>human-centered AI governance</strong> to organizations that need technology people actually adopt.</p>
+    </div>
+    <div class="about-pillars reveal">
+      <div class="pillar">
+        <h3>Cloud & Security Foundation</h3>
+        <p>AWS Academy Cloud Foundations · Cisco CyberOps Associate · CCNA · SOC operations · network security</p>
+      </div>
+      <div class="pillar">
+        <h3>Applied Generative AI</h3>
+        <p>Prompt engineering · LLM behavior · AI workflow management · end-to-end AI production on Suno since Feb. 2026</p>
+      </div>
+      <div class="pillar">
+        <h3>Educator & Communicator</h3>
+        <p>20 years building a client-driven business · graduate-level research · translating complex systems for any audience</p>
+      </div>
+      <div class="pillar">
+        <h3>Creative Thinker</h3>
+        <p>Jazz performer at Montreux & North Sea Jazz Festivals · Outstanding Graduate Student in Jazz Studies, 1999</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     SERVICES
+     ============================================================ -->
+<section id="services">
+  <div class="section-label">What I Do</div>
+  <h2>Where I can <em>help</em></h2>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <h3>AI Strategy & Implementation</h3>
+      <p>Translating organizational goals into concrete AI workflows — selecting tools, designing prompts, structuring pipelines, and governing deployments responsibly.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <h3>AI Governance & Ethics</h3>
+      <p>Graduate research in AI governance frameworks and human-centered design — helping organizations deploy AI responsibly with policy, oversight, and accountability.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <h3>Cloud & Security</h3>
+      <p>AWS architecture, VPC design, cloud security compliance, and SOC-adjacent operations — the technical foundation that makes AI deployments safe and scalable.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <h3>Prompt Engineering</h3>
+      <p>Designing, testing, and iterating prompt strategies for LLMs — turning vague outputs into precise, reliable, production-grade results.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <h3>Training & Change Management</h3>
+      <p>Two decades teaching complex skills to non-experts. I get teams from "AI is scary" to "AI is ours" — practical, human-paced onboarding.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <h3>Technical Communication</h3>
+      <p>Bridging engineering teams and leadership — documentation, reporting, and storytelling that makes technical systems legible to every stakeholder.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">07</div>
+      <h3>Private Music Instruction</h3>
+      <p>One-on-one lessons in Drum Set & Percussion, Music Theory, and Jazz Studies — tailored from beginner through advanced levels.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">08</div>
+      <h3>Music & AI Consultations</h3>
+      <p>Focused sessions for musicians and creators navigating the AI music landscape — Suno prompt strategy, workflow design, and creative AI integration.</p>
+    </div>
+  </div>
+
+  <div class="cta-band reveal">
+    <div>
+      <div class="cta-band-title">See something that fits your project?</div>
+      <div class="cta-band-sub">Free 30-minute consultation · No obligation · Replies within 24 hours</div>
+    </div>
+    <a href="#contact" class="btn-primary">Book a Free Consultation</a>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+
+<!-- ============================================================
+     PROJECTS
+     ============================================================ -->
+<section id="projects">
+  <div class="section-label">Projects</div>
+  <h2>Software I've <em>shipped</em></h2>
+  <p class="projects-intro">
+    Human-in-the-loop AI governance is easy to write into a policy document and
+    hard to enforce once a system is running. These three projects are that
+    enforcement, built and published as working software: a rule that a model
+    may propose a value but only a named human can attest it, applied to real
+    operational references where wrong guidance has consequences.
+  </p>
+
+  <div class="projects-grid reveal">
+
+    <div class="project-card">
+      <div class="project-kind">npm package · MIT</div>
+      <h3>attestation-ledger</h3>
+      <p>
+        A provenance engine for expert assertions. Every value carries who
+        asserted it, what grounds it, and when — and status is derived from that
+        verification date, so an attestation decays on its own unless somebody
+        re-checks it. No combination of fields can promote a model-generated
+        value to attested; there is no code path from machine output to human
+        sign-off.
+      </p>
+      <div class="project-meta">JavaScript · zero dependencies · 21 tests · CI</div>
+      <div class="project-links">
+        <a class="primary" href="https://www.npmjs.com/package/attestation-ledger" target="_blank" rel="noopener">npm</a>
+        <a href="https://github.com/davidpetry-cloud/attestation-ledger" target="_blank" rel="noopener">Source</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-kind">Web app · Live</div>
+      <h3>Live Sound EQ SOP</h3>
+      <p>
+        A field reference for front-of-house audio engineers — channel EQ
+        starting points and aux routing for an Allen &amp; Heath MixWizard WZ3.
+        Every value is either attested by a named practitioner or clearly
+        flagged as an unverified AI proposal, never blended together as fact.
+        Console specifications validated against the manufacturer's manual.
+      </p>
+      <div class="project-meta">JavaScript · 68 tests · GitHub Actions · Netlify</div>
+      <div class="project-links">
+        <a class="primary" href="https://live-sound-eq-sop.netlify.app" target="_blank" rel="noopener">Live site</a>
+        <a href="https://github.com/davidpetry-cloud/live-sound-eq-sop" target="_blank" rel="noopener">Source</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-kind">Web app · Live</div>
+      <h3>DJ Mixing SOP</h3>
+      <p>
+        Procedures for running a DJ source through a two-sub, two-main FOH rig —
+        patching, gain staging, matching mismatched subwoofers by ear, and
+        troubleshooting. Fifty-four attested records across two operating modes,
+        with a genre overlay that layers onto the core procedure rather than
+        duplicating it.
+      </p>
+      <div class="project-meta">JavaScript · 18 tests · GitHub Actions · Netlify</div>
+      <div class="project-links">
+        <a class="primary" href="https://dj-mixing-sop.netlify.app" target="_blank" rel="noopener">Live site</a>
+        <a href="https://github.com/davidpetry-cloud/dj-mixing-sop" target="_blank" rel="noopener">Source</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="projects-note">
+    <strong>Why this matters beyond audio.</strong> The engine knows nothing
+    about sound — it was extracted from the first project, published to npm, and
+    is now consumed as a real dependency by both applications. The same rule
+    that governs a kick drum EQ value governs a monitor routing policy, and
+    would govern a clinical protocol, a safety limit, or an editorial standard.
+    As models generate more operational content, the difference between
+    <em>a practitioner verified this</em> and <em>a model produced something
+    plausible</em> becomes load-bearing. This makes that difference a data
+    structure rather than a hope.
+  </div>
+</section>
+
+<!-- ============================================================
+     CREDENTIALS
+     ============================================================ -->
+<section id="credentials">
+  <div class="section-label">Credentials</div>
+  <h2>Certifications &<br><em>Education</em></h2>
+
+  <div class="cred-grid reveal">
+    <div class="cred-card">
+      <div class="cred-issuer">Amazon Web Services</div>
+      <h3>AWS Academy Cloud Foundations</h3>
+      <div class="cred-tags">
+        <span class="tag">EC2</span><span class="tag">S3</span><span class="tag">RDS</span>
+        <span class="tag">VPC</span><span class="tag">Security</span><span class="tag">Cost Management</span>
+      </div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-issuer">Cisco</div>
+      <h3>CyberOps Associate</h3>
+      <div class="cred-tags">
+        <span class="tag">Incident Response</span><span class="tag">Malware Analysis</span>
+        <span class="tag">Cryptography</span><span class="tag">SOC Operations</span><span class="tag">Network Intrusion</span>
+      </div>
+    </div>
+    <div class="cred-card">
+      <div class="cred-issuer">Cisco</div>
+      <h3>CCNA: Intro to Networks</h3>
+      <div class="cred-tags">
+        <span class="tag">TCP/IP</span><span class="tag">IPv4/IPv6</span>
+        <span class="tag">Subnetting</span><span class="tag">Switching & Routing</span><span class="tag">Ethernet</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="edu-grid reveal">
+    <div class="edu-card">
+      <div class="edu-degree">Master of Science</div>
+      <h3>Information and Communication Sciences</h3>
+      <p>Ball State University · Muncie, IN · 2024–2025 · GPA 3.833<br>Cloud technologies, cybersecurity, AI systems, information governance · Graduate research: AI governance frameworks and human-centered design</p>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">Bachelor of Science</div>
+      <h3>Music Education K–12 (Instrumental)</h3>
+      <p>Ball State University · Muncie, IN · 1993–1999<br>Performed internationally at the Montreux Jazz Festival (Switzerland) and North Sea Jazz Festival (Netherlands)</p>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">Graduate Studies</div>
+      <h3>Jazz Studies & Audio Production</h3>
+      <p>Lamont School of Music, University of Denver · 1999–2001<br>Recipient: 1999 Outstanding Graduate Student in Jazz Studies Award</p>
+    </div>
+    <div class="edu-card" style="border-color: var(--border2);">
+      <div class="edu-degree" style="color: var(--amber);">Core Competencies</div>
+      <h3>Technical & Professional Skills</h3>
+      <p>AWS · Network Security · SOC/SecOps · AI Prompt Engineering · LLM Workflows · Microsoft 365 · Salesforce CRM · Technical Documentation · Logic Pro / DAW</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     EXPERIENCE
+     ============================================================ -->
+<section id="experience">
+  <div class="section-label">Experience</div>
+  <h2>Career <em>highlights</em></h2>
+  <div class="exp-list reveal">
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">Jan 1999 – Dec 2016</div>
+        <div class="exp-org">David Petry Music · Denver, CO</div>
+      </div>
+      <h3>Owner & Principal Instructor</h3>
+      <ul class="exp-bullets">
+        <li>Founded and operated an independent instructional business for nearly 20 years — managing scheduling, client acquisition, financial oversight, and curriculum design.</li>
+        
+      </ul>
+    </div>
+  </div>
+<div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">1999 – 2016</div>
+        <div class="exp-org">Denver, CO</div>
+      </div>
+      <h3>Freelance Performer &amp; Session Musician</h3>
+      <ul class="exp-bullets">
+        <li>Performed live and in the studio across multiple projects throughout Denver's jazz and club scene — from El Chapultepec to Red Rocks.</li>
+      </ul>
+    </div>
+<div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-date">2012</div>
+        <div class="exp-org">CueBro Producers · Barcelona, Spain</div>
+      </div>
+      <h3>Session Drummer — San Miguel Beverage Company</h3>
+      <ul class="exp-bullets">
+        <li>Featured in a television commercial for San Miguel 0.0% promoting the Spanish Copa del Rey basketball playoffs, starring NBA brothers Pau and Marc Gasol.</li>
+        
+      </ul>
+    </div>
+    </section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     MUSIC EDUCATION
+     ============================================================ -->
+
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     PERFORMANCE GALLERY
+     ============================================================ -->
+
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     SHARED THE STAGE
+     ============================================================ -->
+
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     DRUM EXERCISES
+     ============================================================ -->
+
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     MUSIC ENGINEERING
+     ============================================================ -->
+
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     SUNO
+     ============================================================ -->
+
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     PROMPT BOOK
+     ============================================================ -->
+<section id="prompt-book">
+  <div class="section-label">Suno Prompt Engineering</div>
+  <h2>The Suno <em>Prompt Book</em></h2>
+  <div class="book-hero reveal">
+    <div class="book-cover">
+      <div class="book-cover-title">SUNO<br>PROMPT<br>BOOK</div>
+      <div class="book-cover-sub">David Petry · V5.5</div>
+    </div>
+    <div>
+      <p style="font-size:var(--fs-base)">A <strong>68-page professional guide</strong> to Suno prompt engineering — style, lyrics, sliders, artifact reduction, and v5.5 platform updates. Free download.</p>
+      <div class="book-stats">
+        <div>
+          <div class="book-stat-val">68</div>
+          <div class="book-stat-label">Pages</div>
+        </div>
+        <div>
+          <div class="book-stat-val">18</div>
+          <div class="book-stat-label">Chapters</div>
+        </div>
+        <div>
+          <div class="book-stat-val">20+</div>
+          <div class="book-stat-label">Synth Profiles</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px;">
+
+        <!-- Primary CTA: Interactive Toolkit -->
+        <a href="suno-toolkit.html" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:var(--amber);border-radius:var(--radius);text-decoration:none;transition:opacity 0.2s,transform 0.2s;cursor:pointer;" onmouseover="this.style.opacity='.88';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--bg);">Open Interactive Toolkit</span>
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);color:rgba(8,10,14,0.6);letter-spacing:0.05em;">20+ sections · clickable chips · style composer</span>
+          </div>
+          <span style="font-size:var(--fs-xl);color:var(--bg);opacity:0.7;">→</span>
+        </a>
+
+        <!-- Secondary: Download PDF (free) -->
+        <a href="SUNO_prompt_book_David_Petry.pdf" download style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);text-decoration:none;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='var(--amber)';this.style.background='var(--amber-dim)'" onmouseout="this.style.borderColor='';this.style.background='var(--bg3)'">
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);">⬇ Prompt Book PDF</span>
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted2);letter-spacing:0.05em;">68 pages · 18 chapters · free download</span>
+          </div>
+          <span style="font-size:var(--fs-sm);color:var(--amber);font-family:var(--mono);">↓</span>
+        </a>
+  <form name="prompt-book-updates" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" class="pb-form reveal">
+    <input type="hidden" name="form-name" value="prompt-book-updates">
+    <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
+    <label for="pb-email" class="pb-form-label">Get notified when new editions drop <span style="color:var(--muted2)">(optional)</span></label>
+    <div class="pb-form-row">
+      <input id="pb-email" type="email" name="email" required placeholder="you@email.com" autocomplete="email">
+      <button type="submit">Notify Me</button>
+    </div>
+  </form>
+
+
+
+      </div>
+    </div>
+  </div>
+
+  
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     HUMAN-CENTERED AI
+     ============================================================ -->
+<section id="human-centered-ai">
+  <div class="section-label">Philosophy &amp; Practice</div>
+  <h2>Human-Centered <em>AI</em></h2>
+  <p style="font-size:var(--fs-lg);max-width:60ch;">AI extends human capability — it doesn't replace judgment, accountability, or relationships. Skepticism about AI is often well-founded, and part of my work is knowing when <em>not</em> to use it.</p>
+
+  <div class="hcai-grid reveal" style="margin-top:32px;">
+    <div class="hcai-card">
+      <h3>What AI Is</h3>
+      <ul><li>A pattern-prediction tool — a force multiplier whose output quality depends on the person directing it.</li></ul>
+    </div>
+    <div class="hcai-card is-negative">
+      <h3>What AI Is Not</h3>
+      <ul><li>Not sentient, not accountable, not neutral — and not a substitute for expertise or trust.</li></ul>
+    </div>
+    <div class="hcai-card">
+      <h3>Ethics</h3>
+      <ul><li>Disclose AI use, respect attribution and consent, check for bias — the human owns the result.</li></ul>
+    </div>
+    <div class="hcai-card">
+      <h3>Governance</h3>
+      <ul><li>Human-in-the-loop for consequential decisions, documented workflows, written policy before rollout.</li></ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     LESSONS & CONSULTATIONS
+     ============================================================ -->
+<section id="lessons">
+  <div class="section-label">Work With Me</div>
+  <h2>Lessons &amp;<br><em>Consultations</em></h2>
+  <p style="font-size:var(--fs-base);max-width:620px;">One-on-one sessions drawing on nearly two decades of teaching, professional performance, and studio production experience — in person or remote.</p>
+
+  <div class="lessons-grid reveal" style="margin-top:32px;">
+    <div class="lesson-card">
+      <div class="lesson-meta">Percussion</div>
+      <h3>Private Percussion Lessons</h3>
+      <p>One-on-one drum set instruction for any skill level — technique, groove, reading, improvisation, and performance preparation, built around an individualized curriculum.</p>
+      <a href="mailto:davidpetry@gmail.com?subject=Private%20Percussion%20Lessons" class="btn-book">Book a session →</a>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-meta">Instruction</div>
+      <h3>Music Lessons</h3>
+      <p>General music instruction including theory, jazz harmony, ear training, and instrument fundamentals — for students, hobbyists, and working musicians alike.</p>
+      <a href="mailto:davidpetry@gmail.com?subject=Music%20Lessons" class="btn-book">Book a session →</a>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-meta">Production</div>
+      <h3>Audio Consultations</h3>
+      <p>Studio workflow, mixing and mastering review, Logic Pro setup, and AI-assisted production guidance — for musicians and producers refining their sound.</p>
+      <a href="mailto:davidpetry@gmail.com?subject=Audio%20Consultation" class="btn-book">Book a session →</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="section-label" style="justify-content:center">Contact</div>
+  <h2>Let's <em>talk</em></h2>
+  <p class="contact-directive">Pick what works for you</p>
+  <div class="contact-links reveal">>
+    <a href="mailto:davidpetry@gmail.com" class="contact-link">
+      <span class="contact-link-icon" aria-hidden="true">✉</span>
+      <span class="contact-link-label">Email</span>
+      <span class="contact-link-val">davidpetry@gmail.com</span>
+    </a>
+    <a href="tel:3038158838" class="contact-link">
+      <span class="contact-link-icon" aria-hidden="true">☎</span>
+      <span class="contact-link-label">Phone</span>
+      <span class="contact-link-val">303-815-8838</span>
+    </a>
+    <a href="https://linkedin.com/in/david-petry" target="_blank" rel="noopener noreferrer" class="contact-link">
+      <span class="contact-link-icon" aria-hidden="true">in</span>
+      <span class="contact-link-label">LinkedIn</span>
+      <span class="contact-link-val">linkedin.com/in/david-petry</span>
+    </a>
+  </div>
+  <p class="contact-trust">Typically responds within 24 hours · Free 30-minute initial consultation · No obligation</p>
+</section>
+
+</main>
+
+<footer>
+  <span>© 2026 David Petry</span>
+  <span style="color:var(--amber)">Human-Centered AI Implementation</span>
+  <span>Built with Claude Code</span>
+</footer>
+
+<script>
+// ============================================================
+// SCROLL SPY — active nav
+// ============================================================
+const sections = document.querySelectorAll('section[id], div[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + entry.target.id) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+const revealEls = document.querySelectorAll('.reveal');
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+revealEls.forEach(el => revealObserver.observe(el));
+
+// Fallback: if observer doesn't fire (local file / mobile), reveal everything
+setTimeout(() => {
+  revealEls.forEach(el => el.classList.add('visible'));
+}, 800);
+
+// ============================================================
+// MOBILE NAV TOGGLE
+// ============================================================
+const navToggle = document.getElementById('navToggle');
+const nav = document.getElementById('nav');
+
+navToggle.addEventListener('click', () => {
+  nav.classList.toggle('open');
+});
+
+// Close nav on link click
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => nav.classList.remove('open'));
+});
+
+// ============================================================
+// EXERCISE TABS
+// ============================================================
+
+// ============================================================
+const scrollProgress = document.getElementById('scrollProgress');
+const backToTop = document.getElementById('backToTop');
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  if (scrollProgress) scrollProgress.style.width = pct + '%';
+
+  if (backToTop) {
+    if (scrollTop > window.innerHeight * 0.6) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  }
+});
+</script>
+
+<a href="#hero" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
+
+</body>
+</html>

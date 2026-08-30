@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Drum Set &amp; Snare Exercises — David Petry</title>
+<meta name="description" content="Free drum set and snare drum exercise PDFs by David Petry — 32 downloads across rock, funk, jazz, Latin, and rudimental studies.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23080a0e'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Georgia,serif' font-style='italic' fill='%23e8a030' text-anchor='middle'%3EDP%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Cormorant+Garamond:wght@600;700&family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #080a0e;
+  --bg2:       #0d1018;
+  --bg3:       #111520;
+  --surface:   #141824;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #d8dce8;
+  --muted:     #6b7591;
+  --muted2:    #7c86a8;
+  --amber:     #e8a030;
+  --amber-dim: rgba(232,160,48,0.12);
+  --amber-glow:rgba(232,160,48,0.04);
+  --teal:      #2dd4bf;
+  --teal-dim:  rgba(45,212,191,0.1);
+  --red:       #e85050;
+  --white:     #f0f2f8;
+  --nav-h:     64px;
+  --radius:    6px;
+  /* Modular type scale (~1.25 ratio) */
+  --fs-xs:   11px;
+  --fs-sm:   13px;
+  --fs-base: 16px;
+  --fs-lg:   18px;
+  --fs-xl:   22px;
+  --fs-2xl:  28px;
+  --fs-3xl:  40px;
+  --fs-4xl:  64px;
+  --mono: 'DM Mono', monospace;
+  --sans: 'Outfit', sans-serif;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --display: 'Bebas Neue', sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: var(--fs-base); line-height: 1.7; }
+a { color: inherit; text-decoration: none; cursor: pointer; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+.skip-link{position:absolute;top:-100px;left:16px;z-index:2000;background:var(--amber);color:var(--bg);padding:10px 18px;border-radius:var(--radius);font-family:var(--mono);font-size:var(--fs-sm);font-weight:600;text-transform:uppercase;transition:top 0.2s;}
+.skip-link:focus{top:16px;}
+
+main { max-width: 1100px; margin: 0 auto; padding: calc(var(--nav-h) + 48px) 24px 96px; }
+.back { display:inline-flex; align-items:center; gap:8px; font-family: var(--mono); font-size: var(--fs-sm); color: var(--muted2); margin-bottom: 40px; min-height: 44px; }
+.back:hover { color: var(--amber); }
+h1 { font-family: var(--serif); font-size: clamp(var(--fs-3xl), 5vw, var(--fs-4xl)); font-weight: 600; color: var(--white); line-height: 1.1; margin-bottom: 12px; }
+h1 em { color: var(--amber); font-style: italic; }
+.lede { color: var(--muted2); max-width: 60ch; margin-bottom: 40px; }
+.exercises-tabs {
+  display: flex;
+  gap: 1px;
+  background: var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 32px;
+  width: fit-content;
+}
+.tab-btn {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  background: var(--bg2);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.tab-btn.active, .tab-btn:hover {
+  background: var(--amber-dim);
+  color: var(--amber);
+}
+.ex-panel { display: none; }
+.ex-panel.active { display: block; }
+.ex-panel { counter-reset: excat; }
+.ex-category {
+  margin-bottom: 20px;
+}
+.ex-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.ex-category-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.ex-category-header::before {
+  counter-increment: excat;
+  content: counter(excat, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--amber);
+  opacity: 0.7;
+}
+.ex-category-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(var(--fs-xl), 2.4vw, var(--fs-2xl));
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--white) 0%, var(--teal) 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ex-category-header .ex-count {
+  margin-left: auto;
+}
+.ex-category-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.ex-category-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.ex-category-header::before {
+  counter-increment: excat;
+  content: counter(excat, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--amber);
+  opacity: 0.7;
+}
+.ex-category-header .ex-count {
+  margin-left: auto;
+}
+.ex-category-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(var(--fs-xl), 2.4vw, var(--fs-2xl));
+  font-weight: 800;
+  color: var(--white);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--white) 0%, var(--teal) 120%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ex-count {
+  margin-left: auto;
+}
+.ex-count {
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  color: var(--muted);
+  background: var(--bg3);
+  padding: 3px 8px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+}
+.ex-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.ex-grid { grid-template-columns: repeat(3, 1fr); }
+.ex-grid { grid-template-columns: repeat(2, 1fr); }
+.ex-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  transition: border-color 0.2s, background 0.2s;
+  gap: 12px;
+}
+.ex-item:hover {
+  border-color: var(--amber);
+  background: var(--amber-glow);
+}
+.ex-item-name { color: var(--text); flex: 1; line-height: 1.4; }
+.ex-item:hover .ex-dl { background: var(--amber-dim); }
+.ex-dl {
+  font-size: var(--fs-xs);
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border: 1px solid rgba(232,160,48,0.3);
+  padding: 3px 8px;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.ex-dl { background: var(--amber-dim); }
+.section-label {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::before {
+  content: '//';
+  color: var(--muted);
+}
+@media (max-width: 900px) { .ex-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .ex-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition-duration:0.01ms !important; } }
+
+/* Sticky mini-nav (subpages) */
+.mini-nav{position:fixed;top:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:rgba(8,10,14,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding-left:40px;padding-right:40px;}
+.mini-logo{font-family:var(--serif);font-style:italic;font-weight:700;font-size:var(--fs-xl);color:var(--amber);min-height:44px;display:inline-flex;align-items:center;}
+.mini-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.mini-links a{font-family:var(--mono);font-size:var(--fs-xs);font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--text);padding:13px 11px;border-radius:var(--radius);transition:color 0.2s,background 0.2s;}
+.mini-links a:hover{color:var(--amber);background:rgba(232,160,48,0.1);}
+.mini-links a.current{color:var(--amber);}
+.mini-cta{font-family:var(--mono);font-size:var(--fs-xs);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--amber);padding:10px 18px;border-radius:var(--radius);margin-left:8px;min-height:40px;display:inline-flex;align-items:center;box-shadow:0 4px 16px rgba(232,160,48,0.25);transition:box-shadow 0.2s,transform 0.2s;}
+.mini-cta:hover{box-shadow:0 4px 24px rgba(232,160,48,0.4);transform:translateY(-1px);}
+@media (max-width:560px){.mini-nav{padding-left:16px;padding-right:16px;}.mini-links a{padding:13px 8px;font-size:10.5px;}.mini-cta{padding:9px 12px;font-size:10.5px;}}
+/* Back to top */
+.back-to-top{position:fixed;bottom:calc(28px + env(safe-area-inset-bottom,0px));right:calc(28px + env(safe-area-inset-right,0px));width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1px solid var(--border2);border-radius:50%;color:var(--amber);font-size:var(--fs-lg);z-index:999;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity 0.25s,transform 0.25s,border-color 0.2s;}
+.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0);}
+.back-to-top:hover{border-color:var(--amber);background:rgba(232,160,48,0.1);}
+</style>
+<meta property="og:image" content="https://david-petry.netlify.app/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<nav class="mini-nav" aria-label="Site">
+  <a href="index.html" class="mini-logo" aria-label="David Petry home">DP</a>
+  <ul class="mini-links">
+    <li><a href="music.html">Music</a></li>
+    <li><a href="drum-exercises.html" class="current">Exercises</a></li>
+    <li><a href="index.html#lessons" class="mini-cta">Book a Session</a></li>
+  </ul>
+</nav>
+<main id="main-content">
+<section id="drum-exercises" style="padding:0;max-width:none;">
+  <div class="section-label">Free Downloads</div>
+  <h1>Drum Set &amp; Snare <em>Exercises</em></h1>\n  <p class="lede">32 free PDF downloads — technique, groove, and reading studies from 20 years of teaching.</p>
+
+  <div class="exercises-tabs">
+    <button class="tab-btn active" onclick="switchTab('drumset', this)">Drum Set</button>
+    <button class="tab-btn" onclick="switchTab('snare', this)">Snare Drum</button>
+  </div>
+
+  <div id="drumset" class="ex-panel active reveal">
+    <div class="ex-category">
+      <div class="ex-category-header">
+        <span class="ex-category-title">Rock & Funk</span>
+        <span class="ex-count">7 exercises</span>
+      </div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/drum-exercises/Rock Beats Eighth Notes.pdf" class="ex-item"><span class="ex-item-name">Rock Beats: Eighth Notes</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/Rock Beats Eighth Notes with OPENs on HI HAT.pdf" class="ex-item"><span class="ex-item-name">Rock Beats: Eighth Notes with Open Hi-Hat</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/SIXTEENTH NOTES WITH BASS DRUM.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Notes with Bass Drum</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/sixteenth note bass drum exercise with RH vari.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Note Bass Drum: RH Variations</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/Ghost Notes Rock and Funk Beats.pdf" class="ex-item"><span class="ex-item-name">Ghost Notes: Rock & Funk Beats</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/FILLS.pdf" class="ex-item"><span class="ex-item-name">Fills</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/DRUM CLUB.pdf" class="ex-item"><span class="ex-item-name">Drum Club</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+    <div class="ex-category">
+      <div class="ex-category-header">
+        <span class="ex-category-title">Jazz</span>
+        <span class="ex-count">3 exercises</span>
+      </div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/drum-exercises/Swing Jazz.pdf" class="ex-item"><span class="ex-item-name">Swing Jazz</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/Swing Jazz Bass Drum.pdf" class="ex-item"><span class="ex-item-name">Swing Jazz: Bass Drum</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/JAZZ WALTZ COMPING 2.pdf" class="ex-item"><span class="ex-item-name">Jazz Waltz Comping</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+    <div class="ex-category">
+      <div class="ex-category-header">
+        <span class="ex-category-title">Blues</span>
+        <span class="ex-count">1 exercise</span>
+      </div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/drum-exercises/Blues and Shuffles.pdf" class="ex-item"><span class="ex-item-name">Blues & Shuffles</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+    <div class="ex-category">
+      <div class="ex-category-header">
+        <span class="ex-category-title">Latin</span>
+        <span class="ex-count">5 exercises</span>
+      </div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/drum-exercises/AFRO CUBAN.pdf" class="ex-item"><span class="ex-item-name">Afro-Cuban</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/BOSSA NOVA AND SAMBA.pdf" class="ex-item"><span class="ex-item-name">Bossa Nova & Samba</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/CALYPSO AND SOCA.pdf" class="ex-item"><span class="ex-item-name">Calypso & Soca</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/CLAVE 3-2 2-3 CASCARA.pdf" class="ex-item"><span class="ex-item-name">Clave 3-2 / 2-3 & Cascara</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/drum-exercises/SONGO.pdf" class="ex-item"><span class="ex-item-name">Songo</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div id="snare" class="ex-panel reveal">
+    <div class="ex-category">
+      <div class="ex-category-header"><span class="ex-category-title">Roll Rudiments</span><span class="ex-count">2 exercises</span></div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/snare-exercises/ROLL RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Roll Rudiments</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/16th Notes with Accents with Roll.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Notes with Accents & Roll</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+    <div class="ex-category">
+      <div class="ex-category-header"><span class="ex-category-title">Diddle Rudiments</span><span class="ex-count">4 exercises</span></div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/snare-exercises/DIDDLE RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Diddle Rudiments</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/16 th Notes Accents and Diddlles.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Notes: Accents & Diddles</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/Paradiddle- diddle Double Paradiddle.pdf" class="ex-item"><span class="ex-item-name">Paradiddle-Diddle & Double Paradiddle</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/PARADIDDLE TRIPLETS ACCENTS.pdf" class="ex-item"><span class="ex-item-name">Paradiddle Triplets with Accents</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+    <div class="ex-category">
+      <div class="ex-category-header"><span class="ex-category-title">Drag & Flam Rudiments</span><span class="ex-count">2 exercises</span></div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/snare-exercises/DRAG RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Drag Rudiments</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/FLAM RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Flam Rudiments</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+    <div class="ex-category">
+      <div class="ex-category-header"><span class="ex-category-title">Note Duration</span><span class="ex-count">6 exercises</span></div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/snare-exercises/SNARE Quarter Notes.pdf" class="ex-item"><span class="ex-item-name">Quarter Notes</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/SNARE Eighth Notes and Quarter Notes.pdf" class="ex-item"><span class="ex-item-name">Eighth Notes & Quarter Notes</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/SNARE Sixteenth Notes.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Notes</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/16th Notes with Accents.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Notes with Accents</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/SNARE Dotted Eighth and Sixteenth Notes.pdf" class="ex-item"><span class="ex-item-name">Dotted Eighth & Sixteenth Notes</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/SNARE Triplets.pdf" class="ex-item"><span class="ex-item-name">Triplets</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+    <div class="ex-category">
+      <div class="ex-category-header"><span class="ex-category-title">Solos</span><span class="ex-count">2 exercises</span></div>
+      <div class="ex-grid">
+        <a href="https://david-petry.netlify.app/snare-exercises/SNARE SOLO1.pdf" class="ex-item"><span class="ex-item-name">Snare Solo No. 1</span><span class="ex-dl">PDF ↓</span></a>
+        <a href="https://david-petry.netlify.app/snare-exercises/SNARE SOLO 2.pdf" class="ex-item"><span class="ex-item-name">Snare Solo No. 2</span><span class="ex-dl">PDF ↓</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<script>
+function switchTab(panelId, btn) {
+  document.querySelectorAll('.ex-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(panelId).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+<a href="#" id="backToTop" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑</a>
+<script>
+window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b){b.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);}});
+</script>
+</body>
+</html>
