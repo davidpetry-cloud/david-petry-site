@@ -1613,7 +1613,7 @@ nav.open .nav-cta {
   <h2>Projects</h2>
   <p class="projects-intro">
     Human-in-the-loop AI governance is easy to write into a policy document and
-    hard to enforce once a system is running. These three projects are that
+    hard to enforce once a system is running. These four projects are that
     enforcement, built and published as working software: a rule that a model
     may propose a value but only a named human can attest it, applied to real
     operational references where wrong guidance has consequences.
@@ -1653,6 +1653,23 @@ nav.open .nav-cta {
       <div class="project-links">
         <a class="primary" href="https://www.npmjs.com/package/attestation-ledger" target="_blank" rel="noopener">npm</a>
         <a href="https://github.com/davidpetry-cloud/attestation-ledger" target="_blank" rel="noopener">Source</a>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-kind">REST API · Live</div>
+      <h3>attestation-api</h3>
+      <p>
+        A hosted REST API over attestation-ledger — the same propose/attest/
+        reject/reverify enforcement, reachable over HTTP by any client, not
+        just JavaScript projects that can install the library directly.
+        Write routes require a bearer token and reads stay public; records
+        persist in Postgres and survive restarts and redeploys.
+      </p>
+      <div class="project-meta">Node/Express · Postgres · 12 tests · GitHub Actions · Railway</div>
+      <div class="project-links">
+        <a class="primary" href="https://attestation-api-production-c3d9.up.railway.app/health" target="_blank" rel="noopener">Live API</a>
+        <a href="https://github.com/davidpetry-cloud/attestation-api" target="_blank" rel="noopener">Source</a>
       </div>
     </div>
 
