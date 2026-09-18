@@ -1314,16 +1314,6 @@ nav.open .nav-cta {
   text-align: center;
 }
 
-/* Prompt Book email capture */
-.pb-form { margin-top: 24px; max-width: 460px; }
-.pb-form-label { display:block; font-family: var(--mono); font-size: var(--fs-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); margin-bottom: 10px; }
-.pb-form-row { display: flex; gap: 8px; }
-.pb-form input[type="email"] { flex: 1; min-height: 44px; padding: 0 14px; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius); color: var(--white); font-family: var(--sans); font-size: var(--fs-base); }
-.pb-form input[type="email"]:focus { outline: 2px solid var(--amber); outline-offset: 2px; border-color: var(--amber); }
-.pb-form button { min-height: 44px; padding: 0 20px; background: var(--amber); color: var(--bg); border: none; border-radius: var(--radius); font-family: var(--mono); font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
-.pb-form button:hover { opacity: 0.88; }
-@media (max-width: 480px) { .pb-form-row { flex-direction: column; } }
-
 /* ============================================================
    PROJECTS — shipped software
    ============================================================ */
@@ -1916,18 +1906,6 @@ nav.open .nav-cta {
         </a>
 
         <p style="font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted2);letter-spacing:0.02em;margin:2px 4px 0;">© 2026 David Petry. Licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">CC BY-NC-ND 4.0</a> — share freely with attribution, no commercial use, no derivatives.</p>
-
-  <form name="prompt-book-updates" method="POST" action="/thanks.html" data-netlify="true" netlify-honeypot="bot-field" class="pb-form reveal">
-    <input type="hidden" name="form-name" value="prompt-book-updates">
-    <p style="display:none"><label>Don't fill this out: <input name="bot-field"></label></p>
-    <label for="pb-email" class="pb-form-label">Get notified when new editions drop <span style="color:var(--muted2)">(optional)</span></label>
-    <div class="pb-form-row">
-      <input id="pb-email" type="email" name="email" required placeholder="you@email.com" autocomplete="email">
-      <button type="submit">Notify Me</button>
-    </div>
-  </form>
-
-
 
       </div>
     </div>
