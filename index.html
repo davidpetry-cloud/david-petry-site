@@ -29,8 +29,8 @@
   --border:    rgba(255,255,255,0.07);
   --border2:   rgba(255,255,255,0.12);
   --text:      #d8dce8;
-  --muted:     #717b96;
-  --muted2:    #7c86a8;
+  --muted:     #7c86a8;
+  --muted2:    #8a94b0;
   --amber:     #e8a030;
   --amber-dim: rgba(232,160,48,0.12);
   --amber-glow:rgba(232,160,48,0.04);
@@ -54,6 +54,35 @@
   --serif: 'Cormorant Garamond', Georgia, serif;
   --display: 'Bebas Neue', sans-serif;
 }
+/* Theme: dark is the default; light is applied via [data-theme="light"] (set from storage or system preference) */
+:root { color-scheme: dark; --nav-bg: rgba(8,10,14,0.92); --glass: rgba(13,16,24,0.6); --scan: rgba(0,0,0,0.12); --on-amber-soft: rgba(8,10,14,0.75); }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg:        #faf8f4;
+  --bg2:       #f2eee6;
+  --bg3:       #ebe6db;
+  --surface:   #ffffff;
+  --border:    rgba(0,0,0,0.10);
+  --border2:   rgba(0,0,0,0.18);
+  --text:      #2b2824;
+  --muted:     #665f54;
+  --muted2:    #554f46;
+  --amber:     #77510a;
+  --amber-dim: rgba(119,81,10,0.08);
+  --amber-glow:rgba(119,81,10,0.05);
+  --teal:      #0d7159;
+  --teal-dim:  rgba(13,113,89,0.10);
+  --red:       #a53c22;
+  --white:     #14110e;
+  --nav-bg: rgba(250,248,244,0.92);
+  --glass: rgba(255,255,255,0.7);
+  --scan: rgba(0,0,0,0);
+  --on-amber-soft: rgba(250,248,244,0.9);
+}
+.theme-toggle { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; flex-shrink:0; border:1px solid var(--border2); border-radius:var(--radius); background:transparent; color:var(--text); font-size:18px; line-height:1; cursor:pointer; transition:color 0.2s, border-color 0.2s, background 0.2s; }
+.theme-toggle:hover { color:var(--amber); border-color:var(--amber); background:var(--amber-dim); }
+.theme-toggle:focus-visible { outline:2px solid var(--amber); outline-offset:3px; }
+
 
 /* ============================================================
    RESET & BASE
@@ -81,8 +110,8 @@ body::after {
     0deg,
     transparent,
     transparent 2px,
-    rgba(0,0,0,0.12) 2px,
-    rgba(0,0,0,0.12) 4px
+    var(--scan) 2px,
+    var(--scan) 4px
   );
   pointer-events: none;
   z-index: 9999;
@@ -199,7 +228,7 @@ nav {
   top: 0; left: 0; right: 0;
   height: calc(var(--nav-h) + env(safe-area-inset-top, 0px));
   padding-top: env(safe-area-inset-top, 0px);
-  background: rgba(8,10,14,0.92);
+  background: var(--nav-bg);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   z-index: 1000;
@@ -221,6 +250,9 @@ nav {
 }
 
 .nav-logo {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-family: var(--mono);
   font-size: var(--fs-xs);
   font-weight: 500;
@@ -280,6 +312,8 @@ nav {
   cursor: pointer;
 }
 
+.theme-toggle { margin-left: 12px; }
+@media (max-width: 900px) { .theme-toggle { margin-left: auto; margin-right: 8px; } }
 .nav-cta:hover { opacity: 0.92; box-shadow: 0 4px 24px rgba(232,160,48,0.4); transform: translateY(-1px); }
 
 /* Hamburger */
@@ -630,6 +664,7 @@ p strong { color: var(--white); font-weight: 500; }
   text-transform: uppercase;
   color: var(--amber);
   margin-top: 8px;
+  min-height: 44px;
   transition: gap 0.2s;
 }
 
@@ -700,7 +735,7 @@ p strong { color: var(--white); font-weight: 500; }
   letter-spacing: 0.04em;
   color: var(--text);
   border: 1px solid var(--border2);
-  background: rgba(13,16,24,0.6);
+  background: var(--glass);
   backdrop-filter: blur(8px);
   padding: 10px 16px;
   border-radius: var(--radius);
@@ -739,6 +774,7 @@ p strong { color: var(--white); font-weight: 500; }
   gap: 64px;
   align-items: start;
 }
+@media (max-width: 900px) { #about .about-grid { grid-template-columns: 1fr; gap: 40px; } }
 
 .about-body p { font-size: var(--fs-lg); }
 
@@ -1318,6 +1354,8 @@ nav.open .nav-cta {
   ]
 }
 </script>
+<meta name="color-scheme" content="dark light">
+<script>(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
 </head>
 <body>
 
@@ -1340,7 +1378,8 @@ nav.open .nav-cta {
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Get in Touch</a>
-  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+  <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light theme"><span aria-hidden="true">&#9728;</span></button>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="navLinks">
     <span></span><span></span><span></span>
   </button>
 </nav>
@@ -1884,13 +1923,16 @@ setTimeout(() => {
 const navToggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
 
-navToggle.addEventListener('click', () => {
-  nav.classList.toggle('open');
-});
+const setNavOpen = open => {
+  nav.classList.toggle('open', open);
+  navToggle.setAttribute('aria-expanded', String(open));
+};
+
+navToggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('open')));
 
 // Close nav on link click
 document.querySelectorAll('.nav-links a').forEach(link => {
-  link.addEventListener('click', () => nav.classList.remove('open'));
+  link.addEventListener('click', () => setNavOpen(false));
 });
 
 // ============================================================
@@ -1919,5 +1961,21 @@ window.addEventListener('scroll', () => {
 
 <a href="#hero" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
 
+<script>
+(function(){
+  var b=document.getElementById('themeToggle'); if(!b) return;
+  var root=document.documentElement;
+  function paint(){var light=root.getAttribute('data-theme')==='light';
+    b.setAttribute('aria-label',light?'Switch to dark theme':'Switch to light theme');
+    b.setAttribute('title',light?'Switch to dark theme':'Switch to light theme');
+    b.firstElementChild.textContent=light?'\u263E':'\u2600';}
+  b.addEventListener('click',function(){
+    var next=root.getAttribute('data-theme')==='light'?'dark':'light';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('dp-theme',next);}catch(e){}
+    paint();});
+  paint();
+})();
+</script>
 </body>
 </html>

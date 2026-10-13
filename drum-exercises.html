@@ -18,8 +18,8 @@
   --border:    rgba(255,255,255,0.07);
   --border2:   rgba(255,255,255,0.12);
   --text:      #d8dce8;
-  --muted:     #6b7591;
-  --muted2:    #7c86a8;
+  --muted:     #7c86a8;
+  --muted2:    #8a94b0;
   --amber:     #e8a030;
   --amber-dim: rgba(232,160,48,0.12);
   --amber-glow:rgba(232,160,48,0.04);
@@ -43,6 +43,35 @@
   --serif: 'Cormorant Garamond', Georgia, serif;
   --display: 'Bebas Neue', sans-serif;
 }
+/* Theme: dark is the default; light is applied via [data-theme="light"] (set from storage or system preference) */
+:root { color-scheme: dark; --nav-bg: rgba(8,10,14,0.92); --glass: rgba(13,16,24,0.6); --scan: rgba(0,0,0,0.12); --on-amber-soft: rgba(8,10,14,0.75); }
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg:        #faf8f4;
+  --bg2:       #f2eee6;
+  --bg3:       #ebe6db;
+  --surface:   #ffffff;
+  --border:    rgba(0,0,0,0.10);
+  --border2:   rgba(0,0,0,0.18);
+  --text:      #2b2824;
+  --muted:     #665f54;
+  --muted2:    #554f46;
+  --amber:     #77510a;
+  --amber-dim: rgba(119,81,10,0.08);
+  --amber-glow:rgba(119,81,10,0.05);
+  --teal:      #0d7159;
+  --teal-dim:  rgba(13,113,89,0.10);
+  --red:       #a53c22;
+  --white:     #14110e;
+  --nav-bg: rgba(250,248,244,0.92);
+  --glass: rgba(255,255,255,0.7);
+  --scan: rgba(0,0,0,0);
+  --on-amber-soft: rgba(250,248,244,0.9);
+}
+.theme-toggle { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; flex-shrink:0; border:1px solid var(--border2); border-radius:var(--radius); background:transparent; color:var(--text); font-size:18px; line-height:1; cursor:pointer; transition:color 0.2s, border-color 0.2s, background 0.2s; }
+.theme-toggle:hover { color:var(--amber); border-color:var(--amber); background:var(--amber-dim); }
+.theme-toggle:focus-visible { outline:2px solid var(--amber); outline-offset:3px; }
+
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: var(--fs-base); line-height: 1.7; }
 a { color: inherit; text-decoration: none; cursor: pointer; }
@@ -240,18 +269,20 @@ h1 em { color: var(--amber); font-style: italic; }
 }
 @media (max-width: 900px) { .ex-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 560px) { .ex-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 420px) { .ex-grid { grid-template-columns: 1fr; } .mini-links a.current { display: none; } }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition-duration:0.01ms !important; } }
 
 /* Sticky mini-nav (subpages) */
-.mini-nav{position:fixed;top:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:rgba(8,10,14,0.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding-left:40px;padding-right:40px;}
+.mini-nav{position:fixed;top:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:1000;display:flex;align-items:center;justify-content:space-between;padding-left:40px;padding-right:40px;}
 .mini-logo{font-family:var(--serif);font-style:italic;font-weight:700;font-size:var(--fs-xl);color:var(--amber);min-height:44px;display:inline-flex;align-items:center;}
 .mini-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.mini-links .theme-toggle{margin-left:4px;}
 .mini-links a{font-family:var(--mono);font-size:var(--fs-xs);font-weight:500;letter-spacing:0.07em;text-transform:uppercase;color:var(--text);padding:13px 11px;border-radius:var(--radius);transition:color 0.2s,background 0.2s;}
 .mini-links a:hover{color:var(--amber);background:rgba(232,160,48,0.1);}
 .mini-links a.current{color:var(--amber);}
-.mini-cta{font-family:var(--mono);font-size:var(--fs-xs);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--amber);padding:10px 18px;border-radius:var(--radius);margin-left:8px;min-height:40px;display:inline-flex;align-items:center;box-shadow:0 4px 16px rgba(232,160,48,0.25);transition:box-shadow 0.2s,transform 0.2s;}
-.mini-cta:hover{box-shadow:0 4px 24px rgba(232,160,48,0.4);transform:translateY(-1px);}
-@media (max-width:560px){.mini-nav{padding-left:16px;padding-right:16px;}.mini-links a{padding:13px 8px;font-size:10.5px;}.mini-cta{padding:9px 12px;font-size:10.5px;}}
+.mini-links a.mini-cta{font-family:var(--mono);font-size:var(--fs-xs);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--bg);background:var(--amber);padding:10px 18px;border-radius:var(--radius);margin-left:8px;min-height:40px;display:inline-flex;align-items:center;box-shadow:0 4px 16px rgba(232,160,48,0.25);transition:box-shadow 0.2s,transform 0.2s;}
+.mini-links a.mini-cta:hover{box-shadow:0 4px 24px rgba(232,160,48,0.4);transform:translateY(-1px);}
+@media (max-width:560px){.mini-nav{padding-left:16px;padding-right:16px;}.mini-links a{padding:13px 8px;font-size:10.5px;}.mini-links a.mini-cta{padding:9px 12px;font-size:10.5px;}}
 /* Back to top */
 .back-to-top{position:fixed;bottom:calc(28px + env(safe-area-inset-bottom,0px));right:calc(28px + env(safe-area-inset-right,0px));width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1px solid var(--border2);border-radius:50%;color:var(--amber);font-size:var(--fs-lg);z-index:999;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity 0.25s,transform 0.25s,border-color 0.2s;}
 .back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0);}
@@ -261,6 +292,8 @@ h1 em { color: var(--amber); font-style: italic; }
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="dark light">
+<script>(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -270,12 +303,14 @@ h1 em { color: var(--amber); font-style: italic; }
     <li><a href="music.html">Music</a></li>
     <li><a href="drum-exercises.html" class="current">Exercises</a></li>
     <li><a href="index.html#lessons" class="mini-cta">Book a Session</a></li>
+    <li><button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light theme"><span aria-hidden="true">&#9728;</span></button></li>
   </ul>
 </nav>
 <main id="main-content">
 <section id="drum-exercises" style="padding:0;max-width:none;">
   <div class="section-label">Free Downloads</div>
-  <h1>Drum Set &amp; Snare <em>Exercises</em></h1>\n  <p class="lede">32 free PDF downloads — technique, groove, and reading studies from 20 years of teaching.</p>
+  <h1>Drum Set &amp; Snare <em>Exercises</em></h1>
+  <p class="lede">32 free PDF downloads — technique, groove, and reading studies from 20 years of teaching.</p>
 
   <div class="exercises-tabs">
     <button class="tab-btn active" onclick="switchTab('drumset', this)">Drum Set</button>
@@ -389,6 +424,22 @@ function switchTab(panelId, btn) {
 <a href="#" id="backToTop" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑</a>
 <script>
 window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b){b.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);}});
+</script>
+<script>
+(function(){
+  var b=document.getElementById('themeToggle'); if(!b) return;
+  var root=document.documentElement;
+  function paint(){var light=root.getAttribute('data-theme')==='light';
+    b.setAttribute('aria-label',light?'Switch to dark theme':'Switch to light theme');
+    b.setAttribute('title',light?'Switch to dark theme':'Switch to light theme');
+    b.firstElementChild.textContent=light?'\u263E':'\u2600';}
+  b.addEventListener('click',function(){
+    var next=root.getAttribute('data-theme')==='light'?'dark':'light';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem('dp-theme',next);}catch(e){}
+    paint();});
+  paint();
+})();
 </script>
 </body>
 </html>
