@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23080a0e'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Georgia,serif' font-style='italic' fill='%23e8a030' text-anchor='middle'%3EDP%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Bebas+Neue&family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg:        #080a0e;
@@ -88,7 +88,6 @@ h1 { font-family:var(--serif); font-size:clamp(var(--fs-3xl),6vw,var(--fs-4xl));
 }
 #about .about-grid,
   .suno-grid,
-  .book-hero,
   .ed-grid,
   .eng-grid { grid-template-columns: 1fr; gap: 40px; }
 .ed-cards {
@@ -323,6 +322,86 @@ h1 { font-family:var(--serif); font-size:clamp(var(--fs-3xl),6vw,var(--fs-4xl));
 .platform-name { color: var(--white); font-weight: 500; }
 .platform-handle { color: var(--muted2); font-size: var(--fs-xs); }
 .platform-arrow { color: var(--muted); font-size: var(--fs-sm); }
+/* Suno Prompt Book */
+#prompt-book { position: relative; }
+
+.book-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin-bottom: 64px;
+  align-items: center;
+}
+
+.book-cover {
+  aspect-ratio: 3/4;
+  background: linear-gradient(135deg, var(--bg3) 0%, var(--surface) 100%);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 20px,
+      rgba(232,160,48,0.03) 20px,
+      rgba(232,160,48,0.03) 21px
+    );
+}
+
+.book-cover-title {
+  font-family: var(--display);
+  font-size: var(--fs-3xl);
+  letter-spacing: 0.05em;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.1;
+  position: relative;
+  z-index: 1;
+}
+
+.book-cover-sub {
+  font-size: var(--fs-xs);
+  font-family: var(--mono);
+  color: var(--amber);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+.book-stats {
+  display: flex;
+  gap: 32px;
+  margin: 24px 0;
+}
+
+.book-stat-val {
+  font-family: var(--display);
+  font-size: var(--fs-4xl);
+  color: var(--amber);
+  line-height: 1;
+}
+
+.book-stat-label {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
 .cta-band {
   margin-top: 40px;
   padding: 28px 32px;
@@ -392,7 +471,7 @@ button:focus-visible,
   margin: 0 auto;
   max-width: 1100px;
 }
-@media (max-width:900px) { section { padding:48px 20px; } .pagehead { padding:32px 20px 0; } .ed-grid, .suno-grid, .eng-grid { grid-template-columns:1fr; } .gallery-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:900px) { section { padding:48px 20px; } .pagehead { padding:32px 20px 0; } .ed-grid, .suno-grid, .eng-grid, .book-hero { grid-template-columns:1fr; } .book-hero { gap:32px; } .book-cover { max-width:280px; } .gallery-grid { grid-template-columns:repeat(2,1fr); } }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { transition-duration:0.01ms !important; animation-duration:0.01ms !important; } }
 
 /* Sticky mini-nav (subpages) */
@@ -620,6 +699,60 @@ button:focus-visible,
   </div>
 </section>
 </div>
+
+<div class="divider"></div>
+
+<section id="prompt-book">
+  <div class="section-label">Suno Prompt Engineering</div>
+  <h2>The Suno <em>Prompt Book</em></h2>
+  <div class="book-hero reveal">
+    <div class="book-cover">
+      <div class="book-cover-title">SUNO<br>PROMPT<br>BOOK</div>
+      <div class="book-cover-sub">David Petry · V5.5</div>
+    </div>
+    <div>
+      <p style="font-size:var(--fs-base)">A <strong>68-page professional guide</strong> to Suno prompt engineering — style, lyrics, sliders, artifact reduction, and v5.5 platform updates. Free download.</p>
+      <div class="book-stats">
+        <div>
+          <div class="book-stat-val">68</div>
+          <div class="book-stat-label">Pages</div>
+        </div>
+        <div>
+          <div class="book-stat-val">18</div>
+          <div class="book-stat-label">Chapters</div>
+        </div>
+        <div>
+          <div class="book-stat-val">20+</div>
+          <div class="book-stat-label">Synth Profiles</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px;">
+
+        <!-- Primary CTA: Interactive Toolkit -->
+        <a href="suno-toolkit.html" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:var(--amber);border-radius:var(--radius);text-decoration:none;transition:opacity 0.2s,transform 0.2s;cursor:pointer;" onmouseover="this.style.opacity='.88';this.style.transform='translateY(-1px)'" onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--bg);">Open Interactive Toolkit</span>
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);color:rgba(8,10,14,0.6);letter-spacing:0.05em;">20+ sections · clickable chips · style composer</span>
+          </div>
+          <span style="font-size:var(--fs-xl);color:var(--bg);opacity:0.7;">→</span>
+        </a>
+
+        <!-- Secondary: Download PDF (free) -->
+        <a href="SUNO_prompt_book_David_Petry.pdf" download style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);text-decoration:none;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='var(--amber)';this.style.background='var(--amber-dim)'" onmouseout="this.style.borderColor='';this.style.background='var(--bg3)'">
+          <div style="display:flex;flex-direction:column;gap:2px;">
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--white);">⬇ Prompt Book PDF</span>
+            <span style="font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted2);letter-spacing:0.05em;">68 pages · 18 chapters · free download</span>
+          </div>
+          <span style="font-size:var(--fs-sm);color:var(--amber);font-family:var(--mono);">↓</span>
+        </a>
+
+        <p style="font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted2);letter-spacing:0.02em;margin:2px 4px 0;">© 2026 David Petry. Licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;">CC BY-NC-ND 4.0</a> — share freely with attribution, no commercial use, no derivatives.</p>
+
+      </div>
+    </div>
+  </div>
+
+</section>
 
 <div class="divider"></div>
 
