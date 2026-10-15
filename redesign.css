@@ -73,7 +73,15 @@ body { line-height: 1.7; -webkit-font-smoothing: antialiased; }
 .dp-theme-switching *::after { transition: none !important; }
 
 /* Retire the scan-lines; replace the grid with a calm, static aurora */
-body::after { display: none; }
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+main, footer { position: relative; z-index: 1; }
 body::before {
   background:
     radial-gradient(60vw 50vh at 85% -5%, var(--glow-a), transparent 70%),
@@ -82,7 +90,6 @@ body::before {
   background-size: auto;
 }
 .hero-glow, .contact-glow { display: none; }
-.divider { display: none; }
 
 h1, h2, h3 { text-wrap: balance; }
 p, li { text-wrap: pretty; }
@@ -105,7 +112,7 @@ h2 em {
   color: transparent;
   padding-right: 0.06em; /* keeps italic overhang from clipping */
 }
-:root[data-theme="light"] h2 em { background: none; color: var(--amber); }
+:root[data-theme="light"] :is(h1, h2) em { background: none; color: var(--amber); }
 h3 { font-family: var(--sans); font-weight: 600; letter-spacing: -0.015em; }
 
 /* Section label becomes a chip with a status dot instead of "//" */
@@ -253,9 +260,13 @@ html:has(nav.open) { overflow: hidden; }
   transition: transform .2s var(--ease), box-shadow .2s var(--ease);
 }
 .btn-primary,
-.nav-cta { position: relative; overflow: hidden; isolation: isolate; }
+.nav-cta,
+.mini-links a.mini-cta,
+.book-cta { position: relative; overflow: hidden; isolation: isolate; }
 .btn-primary::after,
-.nav-cta::after {
+.nav-cta::after,
+.mini-links a.mini-cta::after,
+.book-cta::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -266,7 +277,9 @@ html:has(nav.open) { overflow: hidden; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .btn-primary:hover::after,
-  .nav-cta:hover::after { transform: translateX(110%); transition: transform .7s var(--ease); }
+  .nav-cta:hover::after,
+  .mini-links a.mini-cta:hover::after,
+  .book-cta:hover::after { transform: translateX(110%); transition: transform .7s var(--ease); }
 }
 .nav-cta:hover { opacity: 1; transform: translateY(-1px); }
 .btn-primary:hover { opacity: 1; transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -10px var(--amber); }
@@ -692,6 +705,400 @@ footer::before {
   color: transparent;
   user-select: none;
   pointer-events: none;
+}
+
+/* ============================================================
+   RHYTHM & DETAIL
+   ============================================================ */
+/* Section breaks: a soft amber-to-teal hairline instead of a hard rule */
+.divider {
+  width: min(1100px, calc(100% - 80px));
+  opacity: 1;
+  background: linear-gradient(90deg, transparent,
+              color-mix(in oklab, var(--amber) 40%, transparent) 30%,
+              color-mix(in oklab, var(--teal) 35%, transparent) 70%, transparent);
+}
+
+.proof-num, .exp-date { font-variant-numeric: tabular-nums; }
+
+/* Editorial split header: heading left, intro right, content full width */
+@media (min-width: 1024px) {
+  :is(#projects, #human-centered-ai, #lessons) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    column-gap: 64px;
+  }
+  :is(#projects, #human-centered-ai, #lessons) > * { grid-column: 1 / -1; }
+  :is(#projects, #human-centered-ai, #lessons) > h2 { grid-column: 1; }
+  :is(#projects, #human-centered-ai, #lessons) > h2 + p {
+    grid-column: 2;
+    align-self: end;
+    margin-bottom: 30px;
+    color: var(--muted2);
+  }
+}
+/* The "Projects" chip only repeated the heading under it */
+#projects > .section-label { display: none; }
+
+/* Services: big faded numbers fill the wide bento cards (decorative) */
+.services-grid { counter-reset: svc; }
+.service-card { counter-increment: svc; }
+.service-card:nth-child(1)::before,
+.service-card:nth-child(5)::before,
+.service-card:nth-child(7)::before,
+.service-card:nth-child(8)::before {
+  content: counter(svc, decimal-leading-zero);
+  content: counter(svc, decimal-leading-zero) / "";
+  position: absolute;
+  right: 22px;
+  bottom: 14px;
+  z-index: -1;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 112px;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--white) 10%, transparent), transparent 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .service-card::before { display: none; }
+}
+
+/* Experience: date column on the left, role and detail on the right */
+.exp-date {
+  padding: 4px 10px;
+  border: 1px solid color-mix(in oklab, var(--amber) 35%, transparent);
+  border-radius: var(--pill);
+  background: var(--amber-dim);
+}
+@media (min-width: 900px) {
+  .exp-item {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    column-gap: 40px;
+  }
+  .exp-meta {
+    grid-row: 1 / span 2;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 0;
+  }
+  .exp-org { text-align: left; }
+  .exp-item h3, .exp-bullets { grid-column: 2; }
+  .exp-item::before { top: 38px; }
+}
+
+/* AI principles: a symbol as well as a colour marks "is" against "is not" */
+.hcai-card h3::before {
+  content: "✓";
+  content: "✓" / "";
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--teal-dim);
+  border: 1px solid color-mix(in oklab, var(--teal) 40%, transparent);
+}
+.hcai-card.is-negative h3::before {
+  content: "✕";
+  content: "✕" / "";
+  color: var(--amber);
+  background: var(--amber-dim);
+  border-color: color-mix(in oklab, var(--amber) 40%, transparent);
+}
+
+/* Contact: email is the main way in, so it leads */
+.contact-link:first-child {
+  border-color: color-mix(in oklab, var(--amber) 50%, var(--line-2));
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    linear-gradient(180deg, var(--amber-dim), transparent 80%),
+    var(--card);
+}
+.contact-link:first-child .contact-link-icon { background: var(--amber); color: var(--on-accent); }
+
+/* Hero card status reads as a quiet caption */
+@media (min-width: 1024px) { .hero-status { font-size: 12.5px; } }
+
+/* Nav starts almost clear over the hero and firms up as you scroll */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    nav {
+      animation: dp-nav-firm linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 240px;
+    }
+    @keyframes dp-nav-firm {
+      from {
+        background: color-mix(in oklab, var(--nav-bg) 25%, transparent);
+        border-color: color-mix(in oklab, var(--line-2) 40%, transparent);
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+/* ============================================================
+   SUBPAGES — Music and Drum exercises share everything above;
+   these are their own components in the same language
+   ============================================================ */
+
+/* Mini nav: same pill as the home nav */
+.mini-logo {
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+}
+.mini-links a {
+  padding: 8px 12px;
+  border-radius: var(--pill);
+  letter-spacing: 0.06em;
+  color: var(--muted2);
+}
+.mini-links a:hover,
+.mini-links a.current {
+  color: var(--white);
+  background: var(--hi);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.mini-links a.mini-cta {
+  padding: 11px 18px;
+  border-radius: var(--pill);
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px -8px var(--amber);
+}
+.mini-links a.mini-cta:hover { color: var(--on-accent); background: linear-gradient(180deg, var(--accent-top), var(--amber)); }
+@media (max-width: 560px) {
+  .mini-links a { padding: 8px 9px; font-size: 11px; }
+  .mini-links a.mini-cta { padding: 10px 12px; font-size: 11px; }
+}
+
+/* Page titles: the hero treatment, one size down */
+.pagehead { padding-top: calc(var(--nav-h) + 104px); }
+h1:not(.hero-name) {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(48px, 8vw, 104px);
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+  margin: 12px 0 20px;
+}
+h1:not(.hero-name) em {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.06em;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, var(--amber), color-mix(in oklab, var(--amber) 55%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.06em;
+}
+.lede { font-size: clamp(17px, 1.6vw, 20px); color: var(--text); }
+.subhead { font-family: var(--sans); font-weight: 600; letter-spacing: -0.025em; font-size: clamp(24px, 2.6vw, 32px); }
+
+/* Cards on these pages use the shared surface */
+.ed-card,
+.eng-card,
+.suno-stat,
+.platform-link,
+.book-dl,
+.ex-item {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+.ed-card:hover,
+.eng-card:hover,
+.platform-link:hover,
+.book-dl:hover,
+.ex-item:hover {
+  border-color: color-mix(in oklab, var(--amber) 45%, var(--line-2));
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card-hover);
+  transform: translateY(-2px);
+}
+.ed-card { padding: 26px; }
+.ed-card p, .eng-card p { font-size: 15px; }
+.eng-card {
+  padding: 26px;
+  border-left: 1px solid var(--line);
+  box-shadow: inset 3px 0 0 var(--teal), var(--shadow);
+}
+.eng-card h3 { font-size: 18px; }
+
+/* Music timeline: years become pills; milestones in amber */
+.timeline-year {
+  display: inline-flex;
+  width: fit-content;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  border: 1px solid color-mix(in oklab, var(--teal) 35%, transparent);
+  border-radius: var(--pill);
+  background: var(--teal-dim);
+  font-variant-numeric: tabular-nums;
+}
+.timeline-item.milestone .timeline-year {
+  color: var(--amber);
+  background: var(--amber-dim);
+  border-color: color-mix(in oklab, var(--amber) 35%, transparent);
+}
+
+/* Gallery: rounded tiles, a slow zoom on hover, caption on glass */
+.gallery-tile {
+  border-radius: var(--r-lg);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+.gallery-tile img { transition: transform .8s var(--ease); }
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-tile:hover img { transform: scale(1.04); }
+}
+.gallery-caption {
+  width: auto;
+  margin: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--pill);
+  background: rgba(8, 10, 14, 0.72);
+  backdrop-filter: blur(10px);
+  color: #f0f2f8;
+}
+
+/* Suno: a glass panel instead of a flat full-width band */
+#suno { background: none; padding: 48px 20px; }
+.suno-inner {
+  padding: clamp(28px, 5vw, 56px);
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background:
+    radial-gradient(700px circle at 0% 0%, var(--glow-a), transparent 60%),
+    radial-gradient(600px circle at 100% 100%, var(--glow-t), transparent 60%),
+    var(--card-2);
+  box-shadow: var(--shadow);
+}
+.suno-tag {
+  border-radius: var(--pill);
+  border-color: color-mix(in oklab, var(--amber) 35%, transparent);
+  background: var(--amber-dim);
+}
+.suno-stats { gap: 10px; background: none; border: 0; overflow: visible; margin-bottom: 16px; }
+.suno-stat { padding: 20px; }
+.suno-stat-val,
+.book-stat-val {
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--amber), color-mix(in oklab, var(--amber) 60%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.suno-stat-label, .book-stat-label { color: var(--muted2); }
+.platform-link { padding: 14px 18px; color: var(--text); }
+.platform-link:hover { color: var(--text); }
+.platform-arrow { transition: transform .25s var(--ease); }
+.platform-link:hover .platform-arrow { transform: translate(2px, -2px); color: var(--amber); }
+
+/* Prompt book: a cover with depth that straightens on hover */
+.book-cover {
+  border-radius: 20px;
+  border-color: var(--line-2);
+  background:
+    radial-gradient(120% 80% at 20% 0%, color-mix(in oklab, var(--amber) 35%, transparent), transparent 60%),
+    radial-gradient(100% 70% at 100% 100%, color-mix(in oklab, var(--teal) 30%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--surface), var(--bg2));
+  box-shadow: inset 0 1px 0 var(--hi), 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+}
+.book-cover::before { opacity: 0.35; }
+.book-cover-title { font-family: var(--sans); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
+@media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
+  .book-cover { transform: perspective(1200px) rotateY(-10deg) rotateX(3deg); transition: transform .6s var(--ease); }
+  .book-cover:hover { transform: perspective(1200px) rotateY(0) rotateX(0); }
+}
+.book-cta {
+  border-radius: var(--r);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -14px var(--amber);
+}
+.book-cta:hover, .book-cta:focus-visible { opacity: 1; }
+.book-cta-label, .book-cta-arrow { color: var(--on-accent); }
+.book-dl { padding: 14px 20px; }
+
+/* Narrow phones: let the Suno panel and book stats fit at 320px */
+.suno-grid > *, .book-hero > * { min-width: 0; }
+@media (max-width: 560px) {
+  #suno { padding-inline: 12px; }
+  .suno-inner { padding: 22px; border-radius: var(--r-lg); }
+  .platform-link { flex-wrap: wrap; gap: 4px 12px; }
+  .platform-handle { overflow-wrap: anywhere; }
+  .book-stats { gap: 20px; flex-wrap: wrap; }
+  .book-stat-val { font-size: 48px; }
+  .suno-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .suno-stat { padding: 16px 14px; }
+  .suno-stat-label { letter-spacing: 0.08em; overflow-wrap: anywhere; }
+}
+
+/* Drum exercises: a segmented control and rounded download rows */
+.exercises-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  overflow: visible;
+}
+.tab-btn {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--pill);
+  background: transparent;
+}
+.tab-btn:hover { background: var(--hi); color: var(--white); }
+.tab-btn.active,
+.tab-btn.active:hover {
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+}
+.ex-category { margin-bottom: 36px; }
+.ex-category-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+.ex-count { border-radius: var(--pill); padding: 4px 10px; color: var(--muted2); background: var(--hi); }
+.ex-grid { gap: 10px; }
+.ex-item { padding: 12px 14px 12px 18px; border-radius: 14px; }
+.ex-dl {
+  padding: 4px 10px;
+  border-radius: var(--pill);
+  border: 1px solid color-mix(in oklab, var(--amber) 35%, transparent);
 }
 
 /* ============================================================

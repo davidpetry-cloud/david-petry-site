@@ -7,7 +7,8 @@
   // Card spotlight: feeds the pointer position to the CSS radial gradient
   var cards = document.querySelectorAll(
     '.proof-stat, .service-card, .project-card, .cred-card, .edu-card, ' +
-    '.lesson-card, .pillar, .hcai-card, .contact-link, .cta-band'
+    '.lesson-card, .pillar, .hcai-card, .contact-link, .cta-band, ' +
+    '.ed-card, .eng-card, .suno-stat, .platform-link, .book-dl, .ex-item'
   );
   cards.forEach(function (card) {
     card.addEventListener('pointermove', function (e) {
