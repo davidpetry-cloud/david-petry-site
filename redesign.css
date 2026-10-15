@@ -1,0 +1,562 @@
+/* ============================================================
+   REDESIGN LAYER — modern CSS over the existing index.html styles
+   Loaded after the inline <style>, so equal-specificity rules here win.
+   Keeps the brand (amber + teal, dark default, light toggle) and
+   drops the retro scan-lines and grid.
+   ============================================================ */
+
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --display: 'Outfit', system-ui, sans-serif;
+
+  --r-sm: 10px;
+  --r: 16px;
+  --r-lg: 24px;
+  --pill: 999px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+
+  --card:      rgba(20, 24, 36, 0.55);
+  --card-2:    rgba(14, 17, 26, 0.75);
+  --line:      rgba(255, 255, 255, 0.08);
+  --line-2:    rgba(255, 255, 255, 0.16);
+  --hi:        rgba(255, 255, 255, 0.05);
+  --glow-a:    rgba(232, 160, 48, 0.14);
+  --glow-t:    rgba(45, 212, 191, 0.10);
+  --spot:      rgba(232, 160, 48, 0.10);
+  --shadow:    inset 0 1px 0 var(--hi), 0 24px 48px -32px rgba(0, 0, 0, 0.8);
+  --nav-bg:    rgba(12, 15, 22, 0.66);
+  --on-accent: #0b0d12;
+  --accent-top: color-mix(in oklab, var(--amber) 88%, white);
+}
+:root[data-theme="light"] {
+  --card:      rgba(255, 255, 255, 0.78);
+  --card-2:    rgba(255, 255, 255, 0.92);
+  --line:      rgba(20, 17, 14, 0.09);
+  --line-2:    rgba(20, 17, 14, 0.18);
+  --hi:        rgba(255, 255, 255, 0.9);
+  --glow-a:    rgba(232, 160, 48, 0.20);
+  --glow-t:    rgba(45, 212, 191, 0.14);
+  --spot:      rgba(119, 81, 10, 0.07);
+  --shadow:    0 1px 2px rgba(20, 17, 14, 0.04), 0 24px 48px -32px rgba(20, 17, 14, 0.28);
+  --nav-bg:    rgba(250, 248, 244, 0.72);
+  --on-accent: #faf8f4;
+  --accent-top: color-mix(in oklab, var(--amber) 95%, white);
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html {
+  scroll-padding-top: calc(var(--nav-h) + 32px);
+  accent-color: var(--amber);
+}
+body { line-height: 1.7; -webkit-font-smoothing: antialiased; }
+::selection { background: var(--amber); color: var(--on-accent); }
+
+/* Retire the scan-lines; replace the grid with a calm, static aurora */
+body::after { display: none; }
+body::before {
+  background:
+    radial-gradient(60vw 50vh at 85% -5%, var(--glow-a), transparent 70%),
+    radial-gradient(50vw 45vh at -5% 35%, var(--glow-t), transparent 70%),
+    radial-gradient(40vw 40vh at 100% 100%, var(--glow-t), transparent 70%);
+  background-size: auto;
+}
+.hero-glow, .contact-glow { display: none; }
+.divider { display: none; }
+
+h1, h2, h3 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
+
+h2 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: clamp(36px, 5.2vw, 60px);
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+h2 em {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.12em;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, var(--amber), color-mix(in oklab, var(--amber) 55%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.06em; /* keeps italic overhang from clipping */
+}
+:root[data-theme="light"] h2 em { background: none; color: var(--amber); }
+h3 { font-family: var(--sans); font-weight: 600; letter-spacing: -0.015em; }
+
+/* Section label becomes a chip with a status dot instead of "//" */
+.section-label {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 14px 6px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  font-family: var(--mono);
+  letter-spacing: 0.16em;
+  margin-bottom: 20px;
+}
+.section-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 10px var(--amber);
+}
+
+section { padding-block: 96px; }
+
+/* ============================================================
+   FOCUS — one ring everywhere, offset from the pill shapes
+   ============================================================ */
+a:focus-visible,
+button:focus-visible,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: var(--pill);
+}
+.service-card:focus-within,
+.project-card:focus-within { outline: none; }
+
+/* ============================================================
+   NAVIGATION — floating glass pill
+   ============================================================ */
+nav {
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  left: 12px; right: 12px;
+  max-width: 1140px;
+  margin-inline: auto;
+  height: 60px;
+  padding: 0 8px 0 20px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  background: var(--nav-bg);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: var(--shadow);
+}
+.nav-logo { white-space: nowrap; letter-spacing: 0.1em; }
+.nav-links { gap: 2px; }
+.nav-links a {
+  padding: 8px 12px;
+  border-radius: var(--pill);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--muted2);
+}
+.nav-links a:hover,
+.nav-links a.active {
+  transform: none;
+  color: var(--white);
+  background: var(--hi);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.nav-links a.active::after { display: none; }
+.nav-cta {
+  white-space: nowrap;
+  padding: 11px 18px;
+  border-radius: var(--pill);
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px -8px var(--amber);
+}
+.theme-toggle { border-radius: var(--pill); border-color: var(--line-2); width: 44px; height: 44px; }
+.nav-toggle { width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border: 1px solid var(--line-2); border-radius: var(--pill); background: transparent; }
+
+/* Progress line sits inside the pill; drawn by the scroll timeline where supported */
+.scroll-progress {
+  left: 28px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  opacity: .8;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    width: auto !important;
+    right: 28px;
+    transform-origin: left;
+    animation: dp-progress linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes dp-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+/* Collapse earlier than before: eight links + CTA need ~1100px without wrapping */
+@media (max-width: 1100px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+  .theme-toggle { margin-left: auto; margin-right: 4px; }
+}
+nav.open .nav-links {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  max-height: calc(100dvh - var(--nav-h) - 48px);
+  padding: 10px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  background: var(--bg2);
+  box-shadow: var(--shadow);
+}
+nav.open .nav-links a { border-radius: var(--r-sm); }
+nav.open .nav-cta {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 10px;
+  display: none; /* the Contact link in the list covers it */
+}
+html:has(nav.open) { overflow: hidden; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  border-radius: var(--pill);
+  padding: 14px 26px;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 15px;
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 30px -12px var(--amber);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.btn-primary:hover { opacity: 1; transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -10px var(--amber); }
+.btn-ghost {
+  padding: 13px 22px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  font-family: var(--sans);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover { border-color: var(--amber); background: var(--amber-dim); color: var(--white); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero { padding-top: calc(var(--nav-h) + 120px); padding-bottom: 72px; }
+.hero-tag { font-family: var(--mono); font-weight: 500; letter-spacing: 0.22em; font-size: var(--fs-xs); color: var(--muted2); }
+.hero-tag::before { width: 32px; height: 1px; }
+.hero-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(64px, 11vw, 148px);
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+  margin-bottom: 20px;
+  background: linear-gradient(180deg, var(--white) 30%, color-mix(in oklab, var(--white) 55%, var(--bg)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.06em;
+}
+.hero-title { font-size: clamp(24px, 3vw, 36px); line-height: 1.2; }
+.hero-desc { color: var(--text); font-size: clamp(17px, 1.6vw, 19px); }
+
+.hero-proof { gap: 8px; }
+.hero-proof span {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--pill);
+  background: var(--card);
+  font-size: 12.5px;
+}
+.hero-proof span:first-child { padding-left: 12px; }
+.hero-proof span:last-child { border-right: 1px solid var(--line); }
+.hero-proof span { border-right: 1px solid var(--line); }
+
+.hero-contact a { border-radius: var(--pill); border-color: var(--line); background: var(--card); }
+.hero-contact a:hover { transform: translateY(-1px); }
+
+/* ============================================================
+   CARDS — one surface for every card type
+   ============================================================ */
+.proof-stat,
+.service-card,
+.project-card,
+.cred-card,
+.edu-card,
+.lesson-card,
+.pillar,
+.hcai-card,
+.contact-link,
+.cta-band,
+.projects-note {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  transition: border-color .25s var(--ease), transform .25s var(--ease), background-color .25s;
+}
+.service-card:hover,
+.project-card:hover,
+.cred-card:hover,
+.edu-card:hover,
+.lesson-card:hover,
+.contact-link:hover {
+  border-color: color-mix(in oklab, var(--amber) 45%, var(--line-2));
+  transform: translateY(-2px);
+}
+
+/* Accent cards: left rule becomes an inset line that follows the radius */
+.pillar,
+.hcai-card,
+.projects-note {
+  border-left: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: inset 3px 0 0 var(--amber), var(--shadow);
+}
+.hcai-card:not(.is-negative),
+.projects-note { box-shadow: inset 3px 0 0 var(--teal), var(--shadow); }
+.pillar:hover { box-shadow: inset 3px 0 0 var(--teal), var(--shadow); }
+
+/* ============================================================
+   PROOF BAR
+   ============================================================ */
+.proof-grid { gap: 12px; background: none; border: 0; overflow: visible; }
+.proof-stat { padding: 26px 18px; }
+.proof-num {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: clamp(30px, 3.4vw, 40px);
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--amber), color-mix(in oklab, var(--amber) 60%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.proof-lbl { font-size: 13px; }
+
+/* ============================================================
+   SERVICES — bento grid
+   ============================================================ */
+.services-grid { gap: 16px; background: none; border: 0; overflow: visible; }
+.service-card { padding: 28px; container-type: inline-size; }
+.service-card::after { display: none; }
+.service-card:nth-child(1),
+.service-card:nth-child(5),
+.service-card:nth-child(7),
+.service-card:nth-child(8) { grid-column: span 2; }
+/* The two music services read as their own row */
+.service-card:nth-child(n+7) { box-shadow: inset 0 2px 0 var(--teal), var(--shadow); }
+.service-num {
+  display: inline-grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--line-2);
+  background: var(--amber-dim);
+  color: var(--amber);
+  letter-spacing: 0;
+  margin-bottom: 18px;
+}
+.service-card:nth-child(n+7) .service-num { background: var(--teal-dim); color: var(--teal); }
+.service-card h3 { font-size: 17px; }
+.service-card p { font-size: 15px; line-height: 1.65; }
+@container (min-width: 420px) {
+  .service-card h3 { font-size: 22px; }
+  .service-card p { font-size: 16px; max-width: 46ch; }
+}
+@media (max-width: 900px) {
+  .service-card:nth-child(n) { grid-column: auto; }
+}
+
+/* ============================================================
+   CTA BAND
+   ============================================================ */
+.cta-band {
+  border-radius: var(--r-lg);
+  padding: 32px 36px;
+  border-left: 1px solid var(--line);
+  background:
+    radial-gradient(600px circle at 0% 0%, var(--glow-a), transparent 60%),
+    radial-gradient(500px circle at 100% 100%, var(--glow-t), transparent 60%),
+    var(--card);
+}
+.cta-band-title { font-family: var(--sans); font-weight: 600; letter-spacing: -0.02em; font-size: 24px; }
+.cta-band-sub { font-size: 13px; }
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+.project-card { padding: 28px; }
+.project-card h3 { font-size: 22px; }
+.project-card p { font-size: 15px; }
+.project-links a {
+  border-radius: var(--pill);
+  padding: 9px 15px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  border-color: var(--line-2);
+}
+.project-links a.primary {
+  color: var(--on-accent);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.project-links a.primary:hover { color: var(--on-accent); filter: brightness(1.08); }
+.project-kind,
+.cred-issuer,
+.edu-degree,
+.lesson-meta,
+.exp-date {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+}
+.project-kind::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+}
+
+/* ============================================================
+   CREDENTIALS, LESSONS, TAGS
+   ============================================================ */
+.cred-card, .edu-card, .lesson-card { padding: 28px; }
+.cred-card h3, .edu-card h3 { font-size: 18px; }
+.tag { border-radius: var(--pill); padding: 4px 10px; background: var(--hi); border-color: var(--line); }
+.lesson-card p { font-size: 15px; }
+.lesson-card .btn-book { font-family: var(--mono); }
+
+/* ============================================================
+   EXPERIENCE — timeline
+   ============================================================ */
+.exp-list::before { width: 2px; border-radius: 2px; background: linear-gradient(180deg, var(--amber), var(--teal) 70%, transparent); }
+.exp-item { border-bottom-color: var(--line); }
+.exp-item::before {
+  left: -5px;
+  width: 12px; height: 12px;
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--amber), 0 0 16px var(--amber);
+}
+.exp-item h3 { font-size: 20px; }
+.exp-bullets li { font-size: 15px; }
+
+/* ============================================================
+   CONTACT & FOOTER
+   ============================================================ */
+#contact {
+  margin-bottom: 48px;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background:
+    radial-gradient(700px circle at 50% 0%, var(--glow-a), transparent 65%),
+    var(--card-2);
+  box-shadow: var(--shadow);
+  max-width: min(1100px, calc(100% - 32px));
+}
+.contact-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.contact-link { min-width: 0; padding: 26px 20px; }
+.contact-link-icon {
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--amber-dim);
+  font-size: 18px;
+}
+.contact-link-val { font-size: 14px; overflow-wrap: anywhere; }
+
+#contact { padding-block: 72px; }
+.contact-trust { margin-inline: auto; }
+
+footer { border-top-color: var(--line); color: var(--muted2); }
+.back-to-top { background: var(--nav-bg); backdrop-filter: blur(12px); border-color: var(--line-2); }
+
+/* ============================================================
+   MOTION — scroll-driven reveal where supported; JS fallback stays
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+.reveal { transition: opacity .8s var(--ease), transform .8s var(--ease); }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal,
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      animation: dp-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+    @keyframes dp-reveal {
+      from { opacity: 0; transform: translateY(28px) scale(.985); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+}
+
+/* Theme switch: a circle grows from the toggle (see redesign.js) */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: dp-theme-in .5s var(--ease); }
+@keyframes dp-theme-in {
+  from { clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0)); }
+  to   { clip-path: circle(150vmax at var(--vt-x, 100%) var(--vt-y, 0)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+  .hero-tag, .hero-name, .hero-title, .hero-desc, .hero-proof,
+  .hero-actions, .hero-status, .hero-contact { opacity: 1; animation: none; }
+}
+
+/* ============================================================
+   SMALL SCREENS
+   ============================================================ */
+@media (max-width: 900px) {
+  nav { padding: 0 6px 0 18px; }
+  section { padding-block: 72px; }
+  #hero { padding-top: calc(var(--nav-h) + 80px); }
+}
+@media (max-width: 560px) {
+  .hero-tag { letter-spacing: 0.14em; }
+  .hero-name { font-size: clamp(56px, 18vw, 88px); }
+  .hero-proof span { white-space: normal; }
+  .nav-logo span { display: none; }
+  .cta-band { padding: 24px; }
+  #contact { padding-inline: 20px; border-radius: var(--r-lg); }
+  .proof-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .proof-stat { padding: 18px 6px; }
+  .proof-lbl { font-size: 12px; }
+  .hero-contact a { max-width: 100%; min-width: 0; overflow-wrap: anywhere; }
+}
