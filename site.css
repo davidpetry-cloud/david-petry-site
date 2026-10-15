@@ -1,0 +1,1165 @@
+/* ============================================================
+   SITE LAYER — the shared modern design for index.html, music.html
+   and drum-exercises.html. Each page links it after its own inline
+   <style>, so equal-specificity rules here win. Keeps the brand
+   (amber + teal, dark default, light toggle).
+   ============================================================ */
+
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --display: 'Outfit', system-ui, sans-serif;
+
+  --r-sm: 10px;
+  --r: 16px;
+  --r-lg: 24px;
+  --pill: 999px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+
+  --card:      rgba(20, 24, 36, 0.55);
+  --card-2:    rgba(14, 17, 26, 0.75);
+  --line:      rgba(255, 255, 255, 0.08);
+  --line-2:    rgba(255, 255, 255, 0.16);
+  --hi:        rgba(255, 255, 255, 0.05);
+  --glow-a:    rgba(232, 160, 48, 0.14);
+  --glow-t:    rgba(45, 212, 191, 0.10);
+  --spot:      rgba(232, 160, 48, 0.06);
+  --shadow:    inset 0 1px 0 var(--hi), 0 24px 48px -32px rgba(0, 0, 0, 0.8);
+  --nav-bg:    rgba(12, 15, 22, 0.66);
+  --on-accent: #0b0d12;
+  --accent-top: color-mix(in oklab, var(--amber) 88%, white);
+  --card-hover: rgba(26, 31, 46, 0.72);
+  --sheen:      rgba(255, 255, 255, 0.38);
+  --grain-op:   0.06;
+}
+:root[data-theme="light"] {
+  --card:      rgba(255, 255, 255, 0.78);
+  --card-2:    rgba(255, 255, 255, 0.92);
+  --line:      rgba(20, 17, 14, 0.09);
+  --line-2:    rgba(20, 17, 14, 0.18);
+  --hi:        rgba(255, 255, 255, 0.9);
+  --glow-a:    rgba(232, 160, 48, 0.20);
+  --glow-t:    rgba(45, 212, 191, 0.14);
+  --spot:      rgba(119, 81, 10, 0.05);
+  --shadow:    0 1px 2px rgba(20, 17, 14, 0.04), 0 24px 48px -32px rgba(20, 17, 14, 0.28);
+  --nav-bg:    rgba(250, 248, 244, 0.72);
+  --on-accent: #faf8f4;
+  --accent-top: color-mix(in oklab, var(--amber) 95%, white);
+  --card-hover: rgba(255, 255, 255, 0.96);
+  /* Light text sits on the dark amber here, so the sheen darkens rather than lightens */
+  --sheen:      rgba(0, 0, 0, 0.22);
+  --grain-op:   0.035;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html {
+  scroll-padding-top: calc(var(--nav-h) + 32px);
+  accent-color: var(--amber);
+}
+body { line-height: 1.7; -webkit-font-smoothing: antialiased; }
+::selection { background: var(--amber); color: var(--on-accent); }
+.btn-primary::selection, .btn-primary *::selection,
+.nav-cta::selection,
+.project-links a.primary::selection { background: var(--on-accent); color: var(--amber); }
+
+/* No colour tweening while the theme flips (avoids a low-contrast flash); see site.js */
+.dp-theme-switching *,
+.dp-theme-switching *::before,
+.dp-theme-switching *::after { transition: none !important; }
+
+/* Retire the scan-lines; replace the grid with a calm, static aurora */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+main, footer { position: relative; z-index: 1; }
+body::before {
+  background:
+    radial-gradient(60vw 50vh at 85% -5%, var(--glow-a), transparent 70%),
+    radial-gradient(50vw 45vh at -5% 35%, var(--glow-t), transparent 70%),
+    radial-gradient(40vw 40vh at 100% 100%, var(--glow-t), transparent 70%);
+  background-size: auto;
+}
+.hero-glow, .contact-glow { display: none; }
+
+h1, h2, h3 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
+
+h2 {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: clamp(36px, 5.2vw, 60px);
+  letter-spacing: -0.035em;
+  line-height: 1.04;
+}
+h2 em {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.12em;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, var(--amber), color-mix(in oklab, var(--amber) 55%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.06em; /* keeps italic overhang from clipping */
+}
+:root[data-theme="light"] :is(h1, h2) em { background: none; color: var(--amber); }
+h3 { font-family: var(--sans); font-weight: 600; letter-spacing: -0.015em; }
+
+/* Section label becomes a chip with a status dot instead of "//" */
+.section-label {
+  display: inline-flex;
+  width: fit-content;
+  padding: 6px 14px 6px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  font-family: var(--mono);
+  letter-spacing: 0.16em;
+  margin-bottom: 20px;
+}
+.section-label::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 10px var(--amber);
+}
+
+section { padding-block: 96px; }
+
+/* ============================================================
+   FOCUS — one ring everywhere, offset from the pill shapes
+   ============================================================ */
+a:focus-visible,
+button:focus-visible,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+  border-radius: var(--pill);
+}
+.service-card:focus-within,
+.project-card:focus-within { outline: none; }
+
+/* ============================================================
+   NAVIGATION — floating glass pill
+   ============================================================ */
+nav {
+  top: calc(12px + env(safe-area-inset-top, 0px));
+  left: 12px; right: 12px;
+  max-width: 1140px;
+  margin-inline: auto;
+  height: 60px;
+  padding: 0 8px 0 20px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  background: var(--nav-bg);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: var(--shadow);
+}
+.nav-logo { white-space: nowrap; letter-spacing: 0.1em; }
+.nav-links { gap: 2px; }
+.nav-links a {
+  padding: 8px 12px;
+  border-radius: var(--pill);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  color: var(--muted2);
+}
+.nav-links a:hover,
+.nav-links a.active {
+  transform: none;
+  color: var(--white);
+  background: var(--hi);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.nav-links a.active::after { display: none; }
+.nav-cta {
+  white-space: nowrap;
+  padding: 11px 18px;
+  border-radius: var(--pill);
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px -8px var(--amber);
+}
+.theme-toggle { border-radius: var(--pill); border-color: var(--line-2); width: 44px; height: 44px; }
+.nav-toggle { width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border: 1px solid var(--line-2); border-radius: var(--pill); background: transparent; }
+
+/* Progress line sits inside the pill; drawn by the scroll timeline where supported */
+.scroll-progress {
+  left: 28px;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  opacity: .8;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    width: auto !important;
+    right: 28px;
+    transform-origin: left;
+    animation: dp-progress linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes dp-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+}
+
+/* Collapse earlier than before: eight links + CTA need ~1100px without wrapping */
+@media (max-width: 1100px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-toggle { display: flex; }
+  .theme-toggle { margin-left: auto; margin-right: 4px; }
+}
+nav.open .nav-links {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  max-height: calc(100dvh - var(--nav-h) - 48px);
+  padding: 10px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  background: var(--bg2);
+  box-shadow: var(--shadow);
+}
+nav.open .nav-links a { border-radius: var(--r-sm); }
+nav.open .nav-cta {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 10px;
+  display: none; /* the Contact link in the list covers it */
+}
+html:has(nav.open) { overflow: hidden; }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  border-radius: var(--pill);
+  padding: 14px 26px;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  font-size: 15px;
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 30px -12px var(--amber);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.btn-primary,
+.nav-cta,
+.mini-links a.mini-cta,
+.book-cta { position: relative; overflow: hidden; isolation: isolate; }
+.btn-primary::after,
+.nav-cta::after,
+.mini-links a.mini-cta::after,
+.book-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, var(--sheen) 50%, transparent 70%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn-primary:hover::after,
+  .nav-cta:hover::after,
+  .mini-links a.mini-cta:hover::after,
+  .book-cta:hover::after { transform: translateX(110%); transition: transform .7s var(--ease); }
+}
+.nav-cta:hover { opacity: 1; transform: translateY(-1px); }
+.btn-primary:hover { opacity: 1; transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -10px var(--amber); }
+.btn-ghost {
+  padding: 13px 22px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  font-family: var(--sans);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--card);
+  backdrop-filter: blur(8px);
+  transition: border-color .2s, background .2s;
+}
+.btn-ghost:hover { border-color: var(--amber); background: var(--amber-dim); color: var(--white); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero { padding-top: calc(var(--nav-h) + 120px); padding-bottom: 72px; }
+.hero-tag { font-family: var(--mono); font-weight: 500; letter-spacing: 0.22em; font-size: var(--fs-xs); color: var(--muted2); }
+.hero-tag::before { width: 32px; height: 1px; }
+.hero-name {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(64px, 11vw, 148px);
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+  margin-bottom: 20px;
+  background: linear-gradient(180deg, var(--white) 30%, color-mix(in oklab, var(--white) 55%, var(--bg)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-bottom: 0.06em;
+}
+.hero-title { font-size: clamp(24px, 3vw, 36px); line-height: 1.2; }
+.hero-desc { color: var(--text); font-size: clamp(17px, 1.6vw, 19px); }
+
+.hero-proof { gap: 8px; }
+.hero-proof span {
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--pill);
+  background: var(--card);
+  font-size: 12.5px;
+}
+.hero-proof span:first-child { padding-left: 12px; }
+.hero-proof span:last-child { border-right: 1px solid var(--line); }
+.hero-proof span { border-right: 1px solid var(--line); }
+
+.hero-contact a { border-radius: var(--pill); border-color: var(--line); background: var(--card); }
+.hero-contact a:hover { transform: translateY(-1px); }
+
+/* ============================================================
+   CARDS — one surface for every card type
+   ============================================================ */
+.proof-stat,
+.service-card,
+.project-card,
+.cred-card,
+.edu-card,
+.lesson-card,
+.pillar,
+.hcai-card,
+.contact-link,
+.cta-band,
+.projects-note {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  transition: border-color .25s var(--ease), transform .25s var(--ease), background-color .25s;
+}
+.service-card:hover,
+.project-card:hover,
+.cred-card:hover,
+.edu-card:hover,
+.lesson-card:hover,
+.contact-link:hover {
+  border-color: color-mix(in oklab, var(--amber) 45%, var(--line-2));
+  transform: translateY(-2px);
+}
+.proof-stat:hover,
+.service-card:hover,
+.project-card:hover,
+.cred-card:hover,
+.edu-card:hover,
+.lesson-card:hover,
+.pillar:hover,
+.hcai-card:hover,
+.contact-link:hover {
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card-hover);
+}
+
+/* Border glow that follows the cursor: a 1px ring masked out of a radial gradient */
+.proof-stat::after,
+.service-card::after,
+.project-card::after,
+.cred-card::after,
+.edu-card::after,
+.lesson-card::after,
+.pillar::after,
+.hcai-card::after,
+.contact-link::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, -400px),
+              color-mix(in oklab, var(--amber) 85%, transparent), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity .3s var(--ease);
+  pointer-events: none;
+  transform: none;
+  height: auto;
+}
+.proof-stat:hover::after,
+.service-card:hover::after,
+.project-card:hover::after,
+.cred-card:hover::after,
+.edu-card:hover::after,
+.lesson-card:hover::after,
+.pillar:hover::after,
+.hcai-card:hover::after,
+.contact-link:hover::after { opacity: 1; }
+
+/* Accent cards: left rule becomes an inset line that follows the radius */
+.pillar,
+.hcai-card,
+.projects-note {
+  border-left: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: inset 3px 0 0 var(--amber), var(--shadow);
+}
+.hcai-card:not(.is-negative),
+.projects-note { box-shadow: inset 3px 0 0 var(--teal), var(--shadow); }
+.pillar:hover { box-shadow: inset 3px 0 0 var(--teal), var(--shadow); }
+
+/* ============================================================
+   PROOF BAR
+   ============================================================ */
+.proof-grid { gap: 12px; background: none; border: 0; overflow: visible; }
+.proof-stat { padding: 26px 18px; }
+.proof-num {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: clamp(30px, 3.4vw, 40px);
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--amber), color-mix(in oklab, var(--amber) 60%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.proof-lbl { font-size: 13px; }
+
+/* ============================================================
+   SERVICES — bento grid
+   ============================================================ */
+.services-grid { gap: 16px; background: none; border: 0; overflow: visible; }
+.service-card { padding: 28px; container-type: inline-size; }
+.service-card:nth-child(1),
+.service-card:nth-child(5),
+.service-card:nth-child(7),
+.service-card:nth-child(8) { grid-column: span 2; }
+/* The two music services read as their own row */
+.service-card:nth-child(n+7) { box-shadow: inset 0 2px 0 var(--teal), var(--shadow); }
+.service-num {
+  display: inline-grid;
+  place-items: center;
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  border: 1px solid var(--line-2);
+  background: var(--amber-dim);
+  color: var(--amber);
+  letter-spacing: 0;
+  margin-bottom: 18px;
+}
+.service-card:nth-child(n+7) .service-num { background: var(--teal-dim); color: var(--teal); }
+.service-card h3 { font-size: 17px; }
+.service-card p { font-size: 15px; line-height: 1.65; }
+@container (min-width: 420px) {
+  .service-card h3 { font-size: 22px; }
+  .service-card p { font-size: 16px; max-width: 46ch; }
+}
+@media (max-width: 900px) {
+  .service-card:nth-child(n) { grid-column: auto; }
+}
+
+/* ============================================================
+   CTA BAND
+   ============================================================ */
+.cta-band {
+  border-radius: var(--r-lg);
+  padding: 32px 36px;
+  border-left: 1px solid var(--line);
+  background:
+    radial-gradient(600px circle at 0% 0%, var(--glow-a), transparent 60%),
+    radial-gradient(500px circle at 100% 100%, var(--glow-t), transparent 60%),
+    var(--card);
+}
+.cta-band-title { font-family: var(--sans); font-weight: 600; letter-spacing: -0.02em; font-size: 24px; }
+.cta-band-sub { font-size: 13px; }
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+.project-card { padding: 28px; }
+.project-card h3 { font-size: 22px; }
+.project-card p { font-size: 15px; }
+.project-links a {
+  border-radius: var(--pill);
+  padding: 9px 15px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  border-color: var(--line-2);
+}
+.project-links a.primary {
+  color: var(--on-accent);
+  background: var(--amber);
+  border-color: var(--amber);
+}
+.project-links a.primary:hover { color: var(--on-accent); filter: brightness(1.08); }
+.project-kind,
+.cred-issuer,
+.edu-degree,
+.lesson-meta,
+.exp-date {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+}
+.project-kind::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+}
+
+/* ============================================================
+   CREDENTIALS, LESSONS, TAGS
+   ============================================================ */
+.cred-card, .edu-card, .lesson-card { padding: 28px; }
+.cred-card h3, .edu-card h3 { font-size: 18px; }
+.project-meta { color: var(--muted2); }
+.tag { color: var(--text); border-radius: var(--pill); padding: 4px 10px; background: var(--hi); border-color: var(--line); }
+.lesson-card p { font-size: 15px; }
+.lesson-card .btn-book { font-family: var(--mono); }
+
+/* ============================================================
+   EXPERIENCE — timeline
+   ============================================================ */
+.exp-list::before { width: 2px; border-radius: 2px; background: linear-gradient(180deg, var(--amber), var(--teal) 70%, transparent); }
+.exp-item { border-bottom-color: var(--line); }
+.exp-item::before {
+  left: -5px;
+  width: 12px; height: 12px;
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--amber), 0 0 16px var(--amber);
+}
+.exp-item h3 { font-size: 20px; }
+.exp-bullets li { font-size: 15px; }
+
+/* ============================================================
+   CONTACT & FOOTER
+   ============================================================ */
+#contact {
+  margin-bottom: 48px;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background:
+    radial-gradient(700px circle at 50% 0%, var(--glow-a), transparent 65%),
+    var(--card-2);
+  box-shadow: var(--shadow);
+  max-width: min(1100px, calc(100% - 32px));
+}
+.contact-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+.contact-link { min-width: 0; padding: 26px 20px; }
+.contact-link-icon {
+  display: grid;
+  place-items: center;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--amber-dim);
+  font-size: 18px;
+}
+.contact-link-val { font-size: 14px; overflow-wrap: anywhere; }
+
+#contact { padding-block: 72px; }
+.contact-trust { margin-inline: auto; }
+
+footer { border-top-color: var(--line); color: var(--muted2); }
+.back-to-top { background: var(--nav-bg); backdrop-filter: blur(12px); border-color: var(--line-2); }
+
+/* ============================================================
+   HERO BENTO — status and contacts move into a glass card on the
+   right. Pure CSS: the card and its ring art are the grid's own
+   ::before and ::after, so the markup is unchanged.
+   ============================================================ */
+@media (min-width: 1024px) {
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    column-gap: clamp(40px, 5vw, 72px);
+    align-items: start;
+  }
+  .hero-inner > * { grid-column: 1; }
+  .hero-tag     { grid-row: 1; }
+  .hero-name    { grid-row: 2; }
+  .hero-title   { grid-row: 3; }
+  .hero-desc    { grid-row: 4; }
+  .hero-proof   { grid-row: 5; }
+  .hero-actions { grid-row: 6; }
+
+  .hero-inner::before {
+    content: '';
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: stretch;
+    border: 1px solid var(--line-2);
+    border-radius: 28px;
+    background:
+      radial-gradient(120% 80% at 100% 0%, var(--glow-a), transparent 60%),
+      radial-gradient(100% 70% at 0% 100%, var(--glow-t), transparent 60%),
+      var(--card);
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow);
+    animation: fadeUp .8s .3s ease both;
+  }
+  /* Concentric rings: a drum head, or a sound wave leaving it */
+  .hero-inner::after {
+    content: '';
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: center;
+    justify-self: center;
+    width: 200px;
+    aspect-ratio: 1;
+    margin-top: -48px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 38% 34%, color-mix(in oklab, var(--amber) 70%, transparent), transparent 46%),
+      radial-gradient(circle at 66% 72%, color-mix(in oklab, var(--teal) 55%, transparent), transparent 50%),
+      repeating-radial-gradient(circle, transparent 0 15px, var(--line-2) 15px 16px);
+    -webkit-mask: radial-gradient(circle, #000 52%, transparent 71%);
+    mask: radial-gradient(circle, #000 52%, transparent 71%);
+    pointer-events: none;
+    animation: fadeUp .8s .5s ease both;
+  }
+
+  .hero-status {
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: start;
+    margin: 24px 24px 0;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--hi);
+    line-height: 1.5;
+  }
+  .hero-contact {
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: end;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 24px 24px;
+  }
+  .hero-contact a { justify-content: flex-start; padding: 11px 16px; }
+}
+
+/* ============================================================
+   TEXTURE & SIGN-OFF
+   ============================================================ */
+/* Film grain under the content (z-index 0; main sits at 1), so it never covers text */
+body::after {
+  display: block;
+  z-index: 0;
+  opacity: var(--grain-op);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* Oversized wordmark above the footer line; decorative, hidden from screen readers */
+footer { flex-wrap: wrap; row-gap: 8px; overflow: hidden; }
+footer::before {
+  content: "David Petry";
+  content: "David Petry" / "";
+  width: 100%;
+  flex: none;
+  order: -1;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(56px, 15vw, 210px);
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  white-space: nowrap;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--white) 16%, transparent), transparent 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ============================================================
+   RHYTHM & DETAIL
+   ============================================================ */
+/* Section breaks: a soft amber-to-teal hairline instead of a hard rule */
+.divider {
+  width: min(1100px, calc(100% - 80px));
+  opacity: 1;
+  background: linear-gradient(90deg, transparent,
+              color-mix(in oklab, var(--amber) 40%, transparent) 30%,
+              color-mix(in oklab, var(--teal) 35%, transparent) 70%, transparent);
+}
+
+.proof-num, .exp-date { font-variant-numeric: tabular-nums; }
+
+/* Editorial split header: heading left, intro right, content full width */
+@media (min-width: 1024px) {
+  :is(#projects, #human-centered-ai, #lessons) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    column-gap: 64px;
+  }
+  :is(#projects, #human-centered-ai, #lessons) > * { grid-column: 1 / -1; }
+  :is(#projects, #human-centered-ai, #lessons) > h2 { grid-column: 1; }
+  :is(#projects, #human-centered-ai, #lessons) > h2 + p {
+    grid-column: 2;
+    align-self: end;
+    margin-bottom: 30px;
+    color: var(--muted2);
+  }
+}
+/* The "Projects" chip only repeated the heading under it */
+#projects > .section-label { display: none; }
+
+/* Services: big faded numbers fill the wide bento cards (decorative) */
+.services-grid { counter-reset: svc; }
+.service-card { counter-increment: svc; }
+.service-card:nth-child(1)::before,
+.service-card:nth-child(5)::before,
+.service-card:nth-child(7)::before,
+.service-card:nth-child(8)::before {
+  content: counter(svc, decimal-leading-zero);
+  content: counter(svc, decimal-leading-zero) / "";
+  position: absolute;
+  right: 22px;
+  bottom: 14px;
+  z-index: -1;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 112px;
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--white) 10%, transparent), transparent 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .service-card::before { display: none; }
+}
+
+/* Experience: date column on the left, role and detail on the right */
+.exp-date {
+  padding: 4px 10px;
+  border: 1px solid color-mix(in oklab, var(--amber) 35%, transparent);
+  border-radius: var(--pill);
+  background: var(--amber-dim);
+}
+@media (min-width: 900px) {
+  .exp-item {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    column-gap: 40px;
+  }
+  .exp-meta {
+    grid-row: 1 / span 2;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    margin: 0;
+  }
+  .exp-org { text-align: left; }
+  .exp-item h3, .exp-bullets { grid-column: 2; }
+  .exp-item::before { top: 38px; }
+}
+
+/* AI principles: a symbol as well as a colour marks "is" against "is not" */
+.hcai-card h3::before {
+  content: "✓";
+  content: "✓" / "";
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--teal);
+  background: var(--teal-dim);
+  border: 1px solid color-mix(in oklab, var(--teal) 40%, transparent);
+}
+.hcai-card.is-negative h3::before {
+  content: "✕";
+  content: "✕" / "";
+  color: var(--amber);
+  background: var(--amber-dim);
+  border-color: color-mix(in oklab, var(--amber) 40%, transparent);
+}
+
+/* Contact: email is the main way in, so it leads */
+.contact-link:first-child {
+  border-color: color-mix(in oklab, var(--amber) 50%, var(--line-2));
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    linear-gradient(180deg, var(--amber-dim), transparent 80%),
+    var(--card);
+}
+.contact-link:first-child .contact-link-icon { background: var(--amber); color: var(--on-accent); }
+
+/* Hero card status reads as a quiet caption */
+@media (min-width: 1024px) { .hero-status { font-size: 12.5px; } }
+
+/* Nav starts almost clear over the hero and firms up as you scroll */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    nav {
+      animation: dp-nav-firm linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 240px;
+    }
+    @keyframes dp-nav-firm {
+      from {
+        background: color-mix(in oklab, var(--nav-bg) 25%, transparent);
+        border-color: color-mix(in oklab, var(--line-2) 40%, transparent);
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+/* ============================================================
+   SUBPAGES — Music and Drum exercises share everything above;
+   these are their own components in the same language
+   ============================================================ */
+
+/* Mini nav: same pill as the home nav */
+.mini-logo {
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+}
+.mini-links a {
+  padding: 8px 12px;
+  border-radius: var(--pill);
+  letter-spacing: 0.06em;
+  color: var(--muted2);
+}
+.mini-links a:hover,
+.mini-links a.current {
+  color: var(--white);
+  background: var(--hi);
+  box-shadow: inset 0 0 0 1px var(--line-2);
+}
+.mini-links a.mini-cta {
+  padding: 11px 18px;
+  border-radius: var(--pill);
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px -8px var(--amber);
+}
+.mini-links a.mini-cta:hover { color: var(--on-accent); background: linear-gradient(180deg, var(--accent-top), var(--amber)); }
+@media (max-width: 560px) {
+  .mini-links a { padding: 8px 9px; font-size: 11px; }
+  .mini-links a.mini-cta { padding: 10px 12px; font-size: 11px; }
+}
+
+/* Page titles: the hero treatment, one size down */
+.pagehead { padding-top: calc(var(--nav-h) + 104px); }
+h1:not(.hero-name) {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(48px, 8vw, 104px);
+  letter-spacing: -0.05em;
+  line-height: 0.95;
+  margin: 12px 0 20px;
+}
+h1:not(.hero-name) em {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.06em;
+  letter-spacing: -0.01em;
+  background: linear-gradient(100deg, var(--amber), color-mix(in oklab, var(--amber) 55%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-right: 0.06em;
+}
+.lede { font-size: clamp(17px, 1.6vw, 20px); color: var(--text); }
+.subhead { font-family: var(--sans); font-weight: 600; letter-spacing: -0.025em; font-size: clamp(24px, 2.6vw, 32px); }
+
+/* Cards on these pages use the shared surface */
+.ed-card,
+.eng-card,
+.suno-stat,
+.platform-link,
+.book-dl,
+.ex-item {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  transition: border-color .25s var(--ease), transform .25s var(--ease);
+}
+.ed-card:hover,
+.eng-card:hover,
+.platform-link:hover,
+.book-dl:hover,
+.ex-item:hover {
+  border-color: color-mix(in oklab, var(--amber) 45%, var(--line-2));
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card-hover);
+  transform: translateY(-2px);
+}
+.ed-card { padding: 26px; }
+.ed-card p, .eng-card p { font-size: 15px; }
+.eng-card {
+  padding: 26px;
+  border-left: 1px solid var(--line);
+  box-shadow: inset 3px 0 0 var(--teal), var(--shadow);
+}
+.eng-card h3 { font-size: 18px; }
+
+/* Music timeline: years become pills; milestones in amber */
+.timeline-year {
+  display: inline-flex;
+  width: fit-content;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  border: 1px solid color-mix(in oklab, var(--teal) 35%, transparent);
+  border-radius: var(--pill);
+  background: var(--teal-dim);
+  font-variant-numeric: tabular-nums;
+}
+.timeline-item.milestone .timeline-year {
+  color: var(--amber);
+  background: var(--amber-dim);
+  border-color: color-mix(in oklab, var(--amber) 35%, transparent);
+}
+
+/* Gallery: rounded tiles, a slow zoom on hover, caption on glass */
+.gallery-tile {
+  border-radius: var(--r-lg);
+  border-color: var(--line);
+  box-shadow: var(--shadow);
+}
+.gallery-tile img { transition: transform .8s var(--ease); }
+@media (prefers-reduced-motion: no-preference) {
+  .gallery-tile:hover img { transform: scale(1.04); }
+}
+.gallery-caption {
+  width: auto;
+  margin: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--pill);
+  background: rgba(8, 10, 14, 0.72);
+  backdrop-filter: blur(10px);
+  color: #f0f2f8;
+}
+
+/* Suno: a glass panel instead of a flat full-width band */
+#suno { background: none; padding: 48px 20px; }
+.suno-inner {
+  padding: clamp(28px, 5vw, 56px);
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background:
+    radial-gradient(700px circle at 0% 0%, var(--glow-a), transparent 60%),
+    radial-gradient(600px circle at 100% 100%, var(--glow-t), transparent 60%),
+    var(--card-2);
+  box-shadow: var(--shadow);
+}
+.suno-tag {
+  border-radius: var(--pill);
+  border-color: color-mix(in oklab, var(--amber) 35%, transparent);
+  background: var(--amber-dim);
+}
+.suno-stats { gap: 10px; background: none; border: 0; overflow: visible; margin-bottom: 16px; }
+.suno-stat { padding: 20px; }
+.suno-stat-val,
+.book-stat-val {
+  font-family: var(--sans);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  background: linear-gradient(180deg, var(--amber), color-mix(in oklab, var(--amber) 60%, var(--teal)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.suno-stat-label, .book-stat-label { color: var(--muted2); }
+.platform-link { padding: 14px 18px; color: var(--text); }
+.platform-link:hover { color: var(--text); }
+.platform-arrow { transition: transform .25s var(--ease); }
+.platform-link:hover .platform-arrow { transform: translate(2px, -2px); color: var(--amber); }
+
+/* Prompt book: a cover with depth that straightens on hover */
+.book-cover {
+  border-radius: 20px;
+  border-color: var(--line-2);
+  background:
+    radial-gradient(120% 80% at 20% 0%, color-mix(in oklab, var(--amber) 35%, transparent), transparent 60%),
+    radial-gradient(100% 70% at 100% 100%, color-mix(in oklab, var(--teal) 30%, transparent), transparent 60%),
+    linear-gradient(160deg, var(--surface), var(--bg2));
+  box-shadow: inset 0 1px 0 var(--hi), 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+}
+.book-cover::before { opacity: 0.35; }
+.book-cover-title { font-family: var(--sans); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
+@media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
+  .book-cover { transform: perspective(1200px) rotateY(-10deg) rotateX(3deg); transition: transform .6s var(--ease); }
+  .book-cover:hover { transform: perspective(1200px) rotateY(0) rotateX(0); }
+}
+.book-cta {
+  border-radius: var(--r);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -14px var(--amber);
+}
+.book-cta:hover, .book-cta:focus-visible { opacity: 1; }
+.book-cta-label, .book-cta-arrow { color: var(--on-accent); }
+.book-dl { padding: 14px 20px; }
+
+/* Narrow phones: let the Suno panel and book stats fit at 320px */
+.suno-grid > *, .book-hero > * { min-width: 0; }
+@media (max-width: 560px) {
+  #suno { padding-inline: 12px; }
+  .suno-inner { padding: 22px; border-radius: var(--r-lg); }
+  .platform-link { flex-wrap: wrap; gap: 4px 12px; }
+  .platform-handle { overflow-wrap: anywhere; }
+  .book-stats { gap: 20px; flex-wrap: wrap; }
+  .book-stat-val { font-size: 48px; }
+  .suno-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .suno-stat { padding: 16px 14px; }
+  .suno-stat-label { letter-spacing: 0.08em; overflow-wrap: anywhere; }
+}
+
+/* Drum exercises: a segmented control and rounded download rows */
+.exercises-tabs {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--pill);
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  overflow: visible;
+}
+.tab-btn {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: var(--pill);
+  background: transparent;
+}
+.tab-btn:hover { background: var(--hi); color: var(--white); }
+.tab-btn.active,
+.tab-btn.active:hover {
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+}
+.ex-category { margin-bottom: 36px; }
+.ex-category-title {
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+.ex-count { border-radius: var(--pill); padding: 4px 10px; color: var(--muted2); background: var(--hi); }
+.ex-grid { gap: 10px; }
+.ex-item { padding: 12px 14px 12px 18px; border-radius: 14px; }
+.ex-dl {
+  padding: 4px 10px;
+  border-radius: var(--pill);
+  border: 1px solid color-mix(in oklab, var(--amber) 35%, transparent);
+}
+
+/* ============================================================
+   MOTION — scroll-driven reveal where supported; JS fallback stays
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+.reveal { transition: opacity .8s var(--ease), transform .8s var(--ease); }
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal,
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+      transition: none;
+      animation: dp-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 22%;
+    }
+    @keyframes dp-reveal {
+      from { opacity: 0; transform: translateY(28px) scale(.985); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+}
+
+/* Theme switch: a circle grows from the toggle (see site.js) */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: dp-theme-in .5s var(--ease); }
+@keyframes dp-theme-in {
+  from { clip-path: circle(0 at var(--vt-x, 100%) var(--vt-y, 0)); }
+  to   { clip-path: circle(150vmax at var(--vt-x, 100%) var(--vt-y, 0)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; }
+  .hero-tag, .hero-name, .hero-title, .hero-desc, .hero-proof,
+  .hero-actions, .hero-status, .hero-contact { opacity: 1; animation: none; }
+}
+
+/* ============================================================
+   SMALL SCREENS
+   ============================================================ */
+@media (max-width: 900px) {
+  nav { padding: 0 6px 0 18px; }
+  section { padding-block: 72px; }
+  #hero { padding-top: calc(var(--nav-h) + 80px); }
+}
+@media (max-width: 560px) {
+  .hero-tag { letter-spacing: 0.14em; }
+  .hero-name { font-size: clamp(56px, 18vw, 88px); }
+  .hero-proof span { white-space: normal; }
+  .nav-logo span { display: none; }
+  .cta-band { padding: 24px; }
+  #contact { padding-inline: 20px; border-radius: var(--r-lg); }
+  .proof-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .proof-stat { padding: 18px 6px; }
+  .proof-lbl { font-size: 12px; }
+  .hero-contact a { max-width: 100%; min-width: 0; overflow-wrap: anywhere; }
+}

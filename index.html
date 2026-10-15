@@ -16,7 +16,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23080a0e'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Georgia,serif' font-style='italic' fill='%23e8a030' text-anchor='middle'%3EDP%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    DESIGN TOKENS
@@ -1356,6 +1356,7 @@ nav.open .nav-cta {
 </script>
 <meta name="color-scheme" content="dark light">
 <script>(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
 
@@ -1750,7 +1751,6 @@ nav.open .nav-cta {
         
       </ul>
     </div>
-  </div>
 <div class="exp-item">
       <div class="exp-meta">
         <div class="exp-date">1999 – 2016</div>
@@ -1772,7 +1772,8 @@ nav.open .nav-cta {
         
       </ul>
     </div>
-    </section>
+  </div>
+</section>
 
 <div class="divider"></div>
 
@@ -1846,7 +1847,7 @@ nav.open .nav-cta {
   <div class="section-label" style="justify-content:center">Contact</div>
   <h2>Let's <em>talk</em></h2>
   <p class="contact-directive">Pick what works for you</p>
-  <div class="contact-links reveal">>
+  <div class="contact-links reveal">
     <a href="mailto:davidpetry@gmail.com" class="contact-link">
       <span class="contact-link-icon" aria-hidden="true">✉</span>
       <span class="contact-link-label">Email</span>
@@ -1981,5 +1982,6 @@ window.addEventListener('scroll', () => {
   paint();
 })();
 </script>
+<script src="site.js" defer></script>
 </body>
 </html>

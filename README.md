@@ -10,12 +10,16 @@ projects section covering shipped software.
 | `index.html` | Main page — hero, about, services, **projects**, credentials, experience, prompt book, AI philosophy, lessons, contact |
 | `music.html` | Music page |
 | `drum-exercises.html` | Drum exercises |
-| `suno-toolkit.html` | Interactive Suno prompt toolkit |
-| `thanks.html` | Form confirmation |
+| `suno-toolkit.html` | Interactive Suno prompt toolkit (a compiled bundle with its own styling) |
+| `site.css` | Shared modern design layer for the three pages above the toolkit |
+| `site.js` | Small enhancements: card spotlight, smooth theme switch |
 | `og-card.jpg` | Open Graph preview image |
 | `SUNO_prompt_book_David_Petry.pdf` | Free 68-page download |
 
-Static HTML with no build step — CSS and JS are inline in each page.
+Static HTML with no build step. Each page keeps its original CSS and JS
+inline, then links `site.css` and `site.js` after them; the shared layer
+wins where they overlap. Change the look in `site.css`, not in the inline
+styles.
 
 ## Deploying
 
