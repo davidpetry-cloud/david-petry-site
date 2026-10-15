@@ -1,5 +1,5 @@
 // ============================================================
-// REDESIGN LAYER — small enhancements; the page works without them
+// SITE LAYER — small enhancements; the pages work without them
 // ============================================================
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');

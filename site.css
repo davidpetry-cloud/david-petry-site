@@ -1,8 +1,8 @@
 /* ============================================================
-   REDESIGN LAYER — modern CSS over the existing index.html styles
-   Loaded after the inline <style>, so equal-specificity rules here win.
-   Keeps the brand (amber + teal, dark default, light toggle) and
-   drops the retro scan-lines and grid.
+   SITE LAYER — the shared modern design for index.html, music.html
+   and drum-exercises.html. Each page links it after its own inline
+   <style>, so equal-specificity rules here win. Keeps the brand
+   (amber + teal, dark default, light toggle).
    ============================================================ */
 
 /* ============================================================
@@ -67,7 +67,7 @@ body { line-height: 1.7; -webkit-font-smoothing: antialiased; }
 .nav-cta::selection,
 .project-links a.primary::selection { background: var(--on-accent); color: var(--amber); }
 
-/* No colour tweening while the theme flips (avoids a low-contrast flash); see redesign.js */
+/* No colour tweening while the theme flips (avoids a low-contrast flash); see site.js */
 .dp-theme-switching *,
 .dp-theme-switching *::before,
 .dp-theme-switching *::after { transition: none !important; }
@@ -1128,7 +1128,7 @@ h1:not(.hero-name) em {
   }
 }
 
-/* Theme switch: a circle grows from the toggle (see redesign.js) */
+/* Theme switch: a circle grows from the toggle (see site.js) */
 ::view-transition-old(root),
 ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
 ::view-transition-new(root) { animation: dp-theme-in .5s var(--ease); }
