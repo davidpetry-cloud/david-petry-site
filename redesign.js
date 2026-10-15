@@ -21,21 +21,42 @@
     });
   });
 
-  // Theme switch: run the page's own toggle inside a view transition
+  // Theme switch: run the page's own toggle with colour transitions paused,
+  // inside a view transition where supported. Without the pause, every colour
+  // tweens from the old theme for 0.2s and text briefly loses contrast.
   var toggle = document.getElementById('themeToggle');
-  if (!toggle || !document.startViewTransition) return;
-  var inTransition = false;
+  if (!toggle) return;
+  var root = document.documentElement;
+  var inner = false;
+  function flip() {
+    inner = true;
+    toggle.click();
+    inner = false;
+  }
+  function settle() {
+    var done = function () { root.classList.remove('dp-theme-switching'); };
+    requestAnimationFrame(function () { requestAnimationFrame(done); });
+    setTimeout(done, 600); // frames don't run in background tabs
+  }
   toggle.addEventListener('click', function (e) {
-    if (inTransition || reduce.matches) return;
+    if (inner) return;
     e.stopImmediatePropagation();
+    root.classList.add('dp-theme-switching');
+    if (!document.startViewTransition || reduce.matches) {
+      flip();
+      settle();
+      return;
+    }
     var r = toggle.getBoundingClientRect();
-    var root = document.documentElement;
     root.style.setProperty('--vt-x', (r.left + r.width / 2) + 'px');
     root.style.setProperty('--vt-y', (r.top + r.height / 2) + 'px');
-    document.startViewTransition(function () {
-      inTransition = true;
-      toggle.click();
-      inTransition = false;
-    });
+    var flipped = false;
+    var flipOnce = function () { if (!flipped) { flipped = true; flip(); } };
+    var vt = document.startViewTransition(flipOnce);
+    vt.finished.then(settle, settle);
+    // If the page isn't painting (e.g. a background tab), switch anyway
+    setTimeout(function () {
+      if (!flipped) { vt.skipTransition(); flipOnce(); settle(); }
+    }, 300);
   }, true);
 })();

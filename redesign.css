@@ -26,11 +26,14 @@
   --hi:        rgba(255, 255, 255, 0.05);
   --glow-a:    rgba(232, 160, 48, 0.14);
   --glow-t:    rgba(45, 212, 191, 0.10);
-  --spot:      rgba(232, 160, 48, 0.10);
+  --spot:      rgba(232, 160, 48, 0.06);
   --shadow:    inset 0 1px 0 var(--hi), 0 24px 48px -32px rgba(0, 0, 0, 0.8);
   --nav-bg:    rgba(12, 15, 22, 0.66);
   --on-accent: #0b0d12;
   --accent-top: color-mix(in oklab, var(--amber) 88%, white);
+  --card-hover: rgba(26, 31, 46, 0.72);
+  --sheen:      rgba(255, 255, 255, 0.38);
+  --grain-op:   0.06;
 }
 :root[data-theme="light"] {
   --card:      rgba(255, 255, 255, 0.78);
@@ -40,11 +43,15 @@
   --hi:        rgba(255, 255, 255, 0.9);
   --glow-a:    rgba(232, 160, 48, 0.20);
   --glow-t:    rgba(45, 212, 191, 0.14);
-  --spot:      rgba(119, 81, 10, 0.07);
+  --spot:      rgba(119, 81, 10, 0.05);
   --shadow:    0 1px 2px rgba(20, 17, 14, 0.04), 0 24px 48px -32px rgba(20, 17, 14, 0.28);
   --nav-bg:    rgba(250, 248, 244, 0.72);
   --on-accent: #faf8f4;
   --accent-top: color-mix(in oklab, var(--amber) 95%, white);
+  --card-hover: rgba(255, 255, 255, 0.96);
+  /* Light text sits on the dark amber here, so the sheen darkens rather than lightens */
+  --sheen:      rgba(0, 0, 0, 0.22);
+  --grain-op:   0.035;
 }
 
 /* ============================================================
@@ -56,6 +63,14 @@ html {
 }
 body { line-height: 1.7; -webkit-font-smoothing: antialiased; }
 ::selection { background: var(--amber); color: var(--on-accent); }
+.btn-primary::selection, .btn-primary *::selection,
+.nav-cta::selection,
+.project-links a.primary::selection { background: var(--on-accent); color: var(--amber); }
+
+/* No colour tweening while the theme flips (avoids a low-contrast flash); see redesign.js */
+.dp-theme-switching *,
+.dp-theme-switching *::before,
+.dp-theme-switching *::after { transition: none !important; }
 
 /* Retire the scan-lines; replace the grid with a calm, static aurora */
 body::after { display: none; }
@@ -237,6 +252,23 @@ html:has(nav.open) { overflow: hidden; }
   box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 30px -12px var(--amber);
   transition: transform .2s var(--ease), box-shadow .2s var(--ease);
 }
+.btn-primary,
+.nav-cta { position: relative; overflow: hidden; isolation: isolate; }
+.btn-primary::after,
+.nav-cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, var(--sheen) 50%, transparent 70%);
+  transform: translateX(-110%);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn-primary:hover::after,
+  .nav-cta:hover::after { transform: translateX(110%); transition: transform .7s var(--ease); }
+}
+.nav-cta:hover { opacity: 1; transform: translateY(-1px); }
 .btn-primary:hover { opacity: 1; transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -10px var(--amber); }
 .btn-ghost {
   padding: 13px 22px;
@@ -325,6 +357,56 @@ html:has(nav.open) { overflow: hidden; }
   border-color: color-mix(in oklab, var(--amber) 45%, var(--line-2));
   transform: translateY(-2px);
 }
+.proof-stat:hover,
+.service-card:hover,
+.project-card:hover,
+.cred-card:hover,
+.edu-card:hover,
+.lesson-card:hover,
+.pillar:hover,
+.hcai-card:hover,
+.contact-link:hover {
+  background:
+    radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
+    var(--card-hover);
+}
+
+/* Border glow that follows the cursor: a 1px ring masked out of a radial gradient */
+.proof-stat::after,
+.service-card::after,
+.project-card::after,
+.cred-card::after,
+.edu-card::after,
+.lesson-card::after,
+.pillar::after,
+.hcai-card::after,
+.contact-link::after {
+  content: '';
+  display: block;
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, -400px),
+              color-mix(in oklab, var(--amber) 85%, transparent), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity .3s var(--ease);
+  pointer-events: none;
+  transform: none;
+  height: auto;
+}
+.proof-stat:hover::after,
+.service-card:hover::after,
+.project-card:hover::after,
+.cred-card:hover::after,
+.edu-card:hover::after,
+.lesson-card:hover::after,
+.pillar:hover::after,
+.hcai-card:hover::after,
+.contact-link:hover::after { opacity: 1; }
 
 /* Accent cards: left rule becomes an inset line that follows the radius */
 .pillar,
@@ -360,7 +442,6 @@ html:has(nav.open) { overflow: hidden; }
    ============================================================ */
 .services-grid { gap: 16px; background: none; border: 0; overflow: visible; }
 .service-card { padding: 28px; container-type: inline-size; }
-.service-card::after { display: none; }
 .service-card:nth-child(1),
 .service-card:nth-child(5),
 .service-card:nth-child(7),
@@ -445,7 +526,8 @@ html:has(nav.open) { overflow: hidden; }
    ============================================================ */
 .cred-card, .edu-card, .lesson-card { padding: 28px; }
 .cred-card h3, .edu-card h3 { font-size: 18px; }
-.tag { border-radius: var(--pill); padding: 4px 10px; background: var(--hi); border-color: var(--line); }
+.project-meta { color: var(--muted2); }
+.tag { color: var(--text); border-radius: var(--pill); padding: 4px 10px; background: var(--hi); border-color: var(--line); }
 .lesson-card p { font-size: 15px; }
 .lesson-card .btn-book { font-family: var(--mono); }
 
@@ -497,6 +579,120 @@ html:has(nav.open) { overflow: hidden; }
 
 footer { border-top-color: var(--line); color: var(--muted2); }
 .back-to-top { background: var(--nav-bg); backdrop-filter: blur(12px); border-color: var(--line-2); }
+
+/* ============================================================
+   HERO BENTO — status and contacts move into a glass card on the
+   right. Pure CSS: the card and its ring art are the grid's own
+   ::before and ::after, so the markup is unchanged.
+   ============================================================ */
+@media (min-width: 1024px) {
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    column-gap: clamp(40px, 5vw, 72px);
+    align-items: start;
+  }
+  .hero-inner > * { grid-column: 1; }
+  .hero-tag     { grid-row: 1; }
+  .hero-name    { grid-row: 2; }
+  .hero-title   { grid-row: 3; }
+  .hero-desc    { grid-row: 4; }
+  .hero-proof   { grid-row: 5; }
+  .hero-actions { grid-row: 6; }
+
+  .hero-inner::before {
+    content: '';
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: stretch;
+    border: 1px solid var(--line-2);
+    border-radius: 28px;
+    background:
+      radial-gradient(120% 80% at 100% 0%, var(--glow-a), transparent 60%),
+      radial-gradient(100% 70% at 0% 100%, var(--glow-t), transparent 60%),
+      var(--card);
+    backdrop-filter: blur(16px);
+    box-shadow: var(--shadow);
+    animation: fadeUp .8s .3s ease both;
+  }
+  /* Concentric rings: a drum head, or a sound wave leaving it */
+  .hero-inner::after {
+    content: '';
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: center;
+    justify-self: center;
+    width: 200px;
+    aspect-ratio: 1;
+    margin-top: -48px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 38% 34%, color-mix(in oklab, var(--amber) 70%, transparent), transparent 46%),
+      radial-gradient(circle at 66% 72%, color-mix(in oklab, var(--teal) 55%, transparent), transparent 50%),
+      repeating-radial-gradient(circle, transparent 0 15px, var(--line-2) 15px 16px);
+    -webkit-mask: radial-gradient(circle, #000 52%, transparent 71%);
+    mask: radial-gradient(circle, #000 52%, transparent 71%);
+    pointer-events: none;
+    animation: fadeUp .8s .5s ease both;
+  }
+
+  .hero-status {
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: start;
+    margin: 24px 24px 0;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--hi);
+    line-height: 1.5;
+  }
+  .hero-contact {
+    grid-column: 2;
+    grid-row: 1 / 7;
+    align-self: end;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 24px 24px;
+  }
+  .hero-contact a { justify-content: flex-start; padding: 11px 16px; }
+}
+
+/* ============================================================
+   TEXTURE & SIGN-OFF
+   ============================================================ */
+/* Film grain under the content (z-index 0; main sits at 1), so it never covers text */
+body::after {
+  display: block;
+  z-index: 0;
+  opacity: var(--grain-op);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px;
+}
+
+/* Oversized wordmark above the footer line; decorative, hidden from screen readers */
+footer { flex-wrap: wrap; row-gap: 8px; overflow: hidden; }
+footer::before {
+  content: "David Petry";
+  content: "David Petry" / "";
+  width: 100%;
+  flex: none;
+  order: -1;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(56px, 15vw, 210px);
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  white-space: nowrap;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--white) 16%, transparent), transparent 85%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+  pointer-events: none;
+}
 
 /* ============================================================
    MOTION — scroll-driven reveal where supported; JS fallback stays
