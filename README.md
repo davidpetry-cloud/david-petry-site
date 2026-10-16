@@ -31,6 +31,8 @@ copy was live. That is the problem this repo solves.
 
 ## Related projects
 
+- [grade6-singapore-math-cpa](https://github.com/davidpetry-cloud/grade6-singapore-math-cpa) — Grade 6 Singapore Math curriculum, 149 days ([live](https://davidpetry-cloud.github.io/grade6-singapore-math-cpa/singapore-math-6-hub.html))
+- [ai-literacy-module](https://github.com/davidpetry-cloud/ai-literacy-module) — Human-Centered AI Literacy course ([live](https://davidpetry-cloud.github.io/ai-literacy-module/))
 - [attestation-ledger](https://github.com/davidpetry-cloud/attestation-ledger) — provenance engine, published on npm
 - [live-sound-eq-sop](https://github.com/davidpetry-cloud/live-sound-eq-sop) — FOH channel EQ reference
 - [dj-mixing-sop](https://github.com/davidpetry-cloud/dj-mixing-sop) — DJ rig procedures
