@@ -1230,6 +1230,132 @@ h1:not(.hero-name) em {
 .ex-category .ex-item:hover { border-color: color-mix(in oklab, var(--c1) 55%, var(--line-2)); }
 
 /* ============================================================
+   PRACTICE METRONOME — drum-exercises.html; behaviour in metronome.js
+   (compiled from Dart in metronome/). Control outlines use --muted2, so
+   their shape is well past 3:1 in both themes, on the card too.
+   ============================================================ */
+.metro[hidden] { display: none; }
+.metro {
+  position: relative;
+  isolation: isolate;
+  margin: 0 0 48px;
+  padding: 28px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  background: var(--card);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+}
+/* A second, inner frame in faint amber: the double rule of a drumhead */
+.metro::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  z-index: -1;
+  border: 1px solid color-mix(in oklab, var(--amber) 28%, transparent);
+  border-radius: calc(var(--r-lg) - 6px);
+  pointer-events: none;
+}
+.metro-head { margin-bottom: 24px; }
+.metro h2 { font-size: clamp(26px, 3vw, 34px); margin-bottom: 6px; }
+.metro-note { color: var(--muted2); font-size: 15px; max-width: 60ch; }
+.metro-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 28px;
+  align-items: start;
+}
+.metro-label {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+.metro-tempo, .metro-options, .metro-play { display: grid; gap: 10px; }
+.metro-play { justify-items: start; }
+.metro-bpm {
+  width: 4.2ch;
+  min-height: 72px;
+  padding: 0 10px;
+  font-family: var(--display);
+  font-size: 56px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+  background: transparent;
+  border: 1px solid var(--muted2);
+  border-radius: var(--r);
+  box-sizing: content-box;
+}
+.metro-slide {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  gap: 8px;
+  align-items: center;
+}
+.metro-slide input[type="range"] { width: 100%; min-height: 44px; margin: 0; }
+.metro-step,
+.metro-tap {
+  min-height: 44px;
+  border: 1px solid var(--muted2);
+  background: transparent;
+  color: var(--text);
+  font-family: var(--sans);
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
+}
+.metro-step { width: 44px; border-radius: 50%; font-size: 22px; line-height: 1; }
+.metro-step:hover, .metro-tap:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+.metro-hint { font-size: var(--fs-sm); color: var(--muted2); }
+.metro-field { display: grid; gap: 6px; }
+.metro-field select {
+  min-height: 44px;
+  padding: 0 12px;
+  font: 500 16px/1.2 var(--sans);
+  color: var(--text);
+  background: var(--bg2);
+  border: 1px solid var(--muted2);
+  border-radius: var(--r-sm);
+}
+.metro-check { display: flex; align-items: center; gap: 10px; min-height: 44px; cursor: pointer; }
+.metro-check input { width: 20px; height: 20px; margin: 0; }
+.metro :is(input, select):focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; }
+
+/* One outlined ring per beat; beat 1 is larger with a double ring, so the
+   accent shows by shape as well as colour. The lit beat fills in. */
+.metro-dots { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 32px; }
+.metro-dot {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--muted2);
+  border-radius: 50%;
+}
+.metro-dot.is-one { width: 30px; height: 30px; border: 5px double var(--amber); }
+.metro-dot.is-on { background: var(--amber); border-color: var(--amber); box-shadow: 0 0 0 4px var(--amber-dim); }
+.metro-beat { font-family: var(--mono); font-size: var(--fs-sm); color: var(--text); font-variant-numeric: tabular-nums; }
+.metro-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.metro-start {
+  min-width: 7.5em;
+  min-height: 48px;
+  padding: 0 28px;
+  border: 2px solid var(--amber);
+  border-radius: var(--pill);
+  font: 600 16px/1 var(--sans);
+  color: var(--on-accent);
+  background: linear-gradient(180deg, var(--accent-top), var(--amber));
+  cursor: pointer;
+}
+/* While playing it becomes an outline button reading "Stop" */
+.metro-start.is-running { color: var(--amber); background: var(--amber-dim); }
+.metro-tap { min-height: 48px; padding: 0 20px; border-radius: var(--pill); font-size: 16px; }
+.metro-status { min-height: 1.7em; font-size: 15px; color: var(--muted2); }
+@media (max-width: 560px) {
+  .metro { padding: 20px 16px; }
+}
+
+/* ============================================================
    MOTION — scroll-driven reveal where supported; JS fallback stays
    ============================================================ */
 @keyframes fadeUp {

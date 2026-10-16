@@ -1,0 +1,6 @@
+name: metronome
+description: Practice metronome for the drum exercises page, written in Dart and compiled to JavaScript.
+publish_to: none
+
+environment:
+  sdk: ^3.9.0

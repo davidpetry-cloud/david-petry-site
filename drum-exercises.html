@@ -312,6 +312,57 @@ h1 em { color: var(--amber); font-style: italic; }
   <h1>Drum Set &amp; Snare <em>Exercises</em></h1>
   <p class="lede">32 free PDF downloads — technique, groove, and reading studies from 20 years of teaching.</p>
 
+  <!-- Practice metronome: written in Dart (metronome/), compiled to metronome.js.
+       Stays hidden unless the script runs and the browser can play sound. -->
+  <section id="metronome" class="metro" aria-labelledby="metro-title" hidden>
+    <div class="metro-head">
+      <h2 id="metro-title">Practice <em>metronome</em></h2>
+      <p class="metro-note">Keep time while you work through any exercise below. It only makes sound after you press Start.</p>
+    </div>
+    <div class="metro-body">
+      <div class="metro-tempo">
+        <label for="metro-bpm" class="metro-label">Tempo (BPM)</label>
+        <input type="number" id="metro-bpm" class="metro-bpm" min="40" max="240" step="1" value="96" inputmode="numeric" aria-describedby="metro-range-hint">
+        <div class="metro-slide">
+          <button type="button" class="metro-step" id="metro-down" aria-label="Slower by 1 BPM">&minus;</button>
+          <input type="range" id="metro-range" min="40" max="240" step="1" value="96" aria-label="Tempo (BPM) slider">
+          <button type="button" class="metro-step" id="metro-up" aria-label="Faster by 1 BPM">+</button>
+        </div>
+        <p class="metro-hint" id="metro-range-hint">From 40 to 240 BPM</p>
+      </div>
+      <div class="metro-options">
+        <label class="metro-field"><span class="metro-label">Beats per bar</span>
+          <select id="metro-beats">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+        </label>
+        <label class="metro-field"><span class="metro-label">Clicks per beat</span>
+          <select id="metro-sub">
+            <option value="beats" selected>1 (beats only)</option>
+            <option value="eighths">2 (eighth notes)</option>
+            <option value="triplets">3 (triplets)</option>
+            <option value="sixteenths">4 (sixteenth notes)</option>
+          </select>
+        </label>
+        <label class="metro-check"><input type="checkbox" id="metro-accent" checked> Accent beat 1</label>
+      </div>
+      <div class="metro-play">
+        <div class="metro-dots" id="metro-dots" aria-hidden="true"></div>
+        <p class="metro-beat" id="metro-beat">Not playing</p>
+        <div class="metro-actions">
+          <button type="button" class="metro-start" id="metro-start">Start</button>
+          <button type="button" class="metro-tap" id="metro-tap">Tap tempo</button>
+        </div>
+        <p class="metro-status" id="metro-status" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
   <div class="exercises-tabs" role="tablist" aria-label="Exercise sets">
     <button type="button" class="tab-btn active" id="tab-drumset" role="tab" aria-selected="true" aria-controls="drumset" onclick="switchTab('drumset', this)">Drum Set</button>
     <button type="button" class="tab-btn" id="tab-snare" role="tab" aria-selected="false" aria-controls="snare" tabindex="-1" onclick="switchTab('snare', this)">Snare Drum</button>
@@ -459,5 +510,6 @@ window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop
 })();
 </script>
 <script src="site.js" defer></script>
+<script src="metronome.js" defer></script>
 </body>
 </html>
