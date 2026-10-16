@@ -1115,9 +1115,17 @@ h1:not(.hero-name) em {
   letter-spacing: -0.02em;
   text-transform: none;
 }
-.ex-count { border-radius: var(--pill); padding: 4px 10px; color: var(--muted2); background: var(--hi); }
+.ex-count { border-radius: var(--pill); padding: 4px 10px; color: var(--muted2); background: var(--hi); white-space: nowrap; }
 .ex-grid { gap: 10px; }
 .ex-item { padding: 12px 14px 12px 18px; border-radius: 14px; }
+/* The exercise name is what people scan for, so it reads at body-ish size
+   in the sans face; the badge and count stay small mono labels. */
+.ex-item-name {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+}
 .ex-dl {
   padding: 4px 10px;
   border-radius: var(--pill);
