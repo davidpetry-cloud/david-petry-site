@@ -13,6 +13,8 @@ projects section covering shipped software.
 | `suno-toolkit.html` | Interactive Suno prompt toolkit (a compiled bundle with its own styling) |
 | `site.css` | Shared modern design layer for the three pages above the toolkit |
 | `site.js` | Small enhancements: card spotlight, smooth theme switch |
+| `metronome.js` | Practice metronome on the exercises page, **compiled from Dart**; don't edit by hand |
+| `metronome/` | The metronome's Dart source, checks and build script |
 | `og-card.jpg` | Open Graph preview image |
 | `SUNO_prompt_book_David_Petry.pdf` | Free 68-page download |
 
@@ -20,6 +22,21 @@ Static HTML with no build step. Each page keeps its original CSS and JS
 inline, then links `site.css` and `site.js` after them; the shared layer
 wins where they overlap. Change the look in `site.css`, not in the inline
 styles.
+
+## The Dart metronome
+
+The metronome on `drum-exercises.html` is written in Dart (`metronome/web/main.dart`,
+with the tempo arithmetic in `metronome/lib/timing.dart`) and compiled to plain
+JavaScript. The compiled `metronome.js` is committed, so Netlify still deploys with
+no build step and the page's security policy needs no change. After editing the
+Dart, rebuild (needs the Dart SDK: `brew install dart`):
+
+```sh
+sh metronome/build.sh
+```
+
+That analyses the code, runs the checks, and writes `metronome.js`. The panel stays
+hidden if the script doesn't load or the browser can't play sound.
 
 ## Deploying
 
