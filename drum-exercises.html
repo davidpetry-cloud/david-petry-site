@@ -313,12 +313,12 @@ h1 em { color: var(--amber); font-style: italic; }
   <h1>Drum Set &amp; Snare <em>Exercises</em></h1>
   <p class="lede">32 free PDF downloads — technique, groove, and reading studies from 20 years of teaching.</p>
 
-  <div class="exercises-tabs">
-    <button class="tab-btn active" onclick="switchTab('drumset', this)">Drum Set</button>
-    <button class="tab-btn" onclick="switchTab('snare', this)">Snare Drum</button>
+  <div class="exercises-tabs" role="tablist" aria-label="Exercise sets">
+    <button type="button" class="tab-btn active" id="tab-drumset" role="tab" aria-selected="true" aria-controls="drumset" onclick="switchTab('drumset', this)">Drum Set</button>
+    <button type="button" class="tab-btn" id="tab-snare" role="tab" aria-selected="false" aria-controls="snare" tabindex="-1" onclick="switchTab('snare', this)">Snare Drum</button>
   </div>
 
-  <div id="drumset" class="ex-panel active reveal">
+  <div id="drumset" class="ex-panel active reveal" role="tabpanel" aria-labelledby="tab-drumset">
     <div class="ex-category">
       <div class="ex-category-header">
         <span class="ex-category-title">Rock & Funk</span>
@@ -369,7 +369,7 @@ h1 em { color: var(--amber); font-style: italic; }
     </div>
   </div>
 
-  <div id="snare" class="ex-panel reveal">
+  <div id="snare" class="ex-panel reveal" role="tabpanel" aria-labelledby="tab-snare">
     <div class="ex-category">
       <div class="ex-category-header"><span class="ex-category-title">Roll Rudiments</span><span class="ex-count">2 exercises</span></div>
       <div class="ex-grid">
@@ -417,10 +417,27 @@ h1 em { color: var(--amber); font-style: italic; }
 <script>
 function switchTab(panelId, btn) {
   document.querySelectorAll('.ex-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-selected', 'false');
+    b.tabIndex = -1;
+  });
   document.getElementById(panelId).classList.add('active');
   btn.classList.add('active');
+  btn.setAttribute('aria-selected', 'true');
+  btn.tabIndex = 0;
 }
+// Arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern)
+document.querySelector('.exercises-tabs').addEventListener('keydown', e => {
+  const tabs = [...document.querySelectorAll('.tab-btn')];
+  const i = tabs.indexOf(document.activeElement);
+  const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+  if (i < 0 || to === undefined) return;
+  e.preventDefault();
+  const tab = tabs[(to + tabs.length) % tabs.length];
+  tab.focus();
+  tab.click();
+});
 </script>
 <a href="#" id="backToTop" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑</a>
 <script>
