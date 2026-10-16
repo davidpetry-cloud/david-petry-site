@@ -34,6 +34,18 @@
   --card-hover: rgba(26, 31, 46, 0.72);
   --sheen:      rgba(255, 255, 255, 0.38);
   --grain-op:   0.06;
+
+  /* Exercise categories: one gradient per style (see "Drum exercises").
+     Every stop is at least 8:1 on the page background. */
+  --cat-rock-1: #f0a840;  --cat-rock-2: #ff8a65;
+  --cat-jazz-1: #8fb4ff;  --cat-jazz-2: #b49cff;
+  --cat-blues-1: #5ec8ff; --cat-blues-2: #6fe0d0;
+  --cat-latin-1: #ff8f7a; --cat-latin-2: #ffc15e;
+  --cat-roll-1: #2dd4bf;  --cat-roll-2: #7fe3ff;
+  --cat-diddle-1: #9be37a; --cat-diddle-2: #2dd4bf;
+  --cat-flam-1: #c4a1ff;  --cat-flam-2: #ff9ecf;
+  --cat-dur-1: #ffd166;   --cat-dur-2: #f0a840;
+  --cat-solo-1: #ff7f9e;  --cat-solo-2: #ffb36b;
 }
 :root[data-theme="light"] {
   --card:      rgba(255, 255, 255, 0.78);
@@ -52,6 +64,17 @@
   /* Light text sits on the dark amber here, so the sheen darkens rather than lightens */
   --sheen:      rgba(0, 0, 0, 0.22);
   --grain-op:   0.035;
+
+  /* Darker stops for the light page: each at least 5.6:1 */
+  --cat-rock-1: #77510a;  --cat-rock-2: #a53c22;
+  --cat-jazz-1: #2f55b5;  --cat-jazz-2: #5b3fb0;
+  --cat-blues-1: #0b5f8a; --cat-blues-2: #0d7159;
+  --cat-latin-1: #a53c22; --cat-latin-2: #7a5200;
+  --cat-roll-1: #0d7159;  --cat-roll-2: #0b5f8a;
+  --cat-diddle-1: #3d6b12; --cat-diddle-2: #0d7159;
+  --cat-flam-1: #6b3fb0;  --cat-flam-2: #a2306f;
+  --cat-dur-1: #7a5200;   --cat-dur-2: #77510a;
+  --cat-solo-1: #a8304f;  --cat-solo-2: #9a4a10;
 }
 
 /* ============================================================
@@ -1092,14 +1115,52 @@ h1:not(.hero-name) em {
   letter-spacing: -0.02em;
   text-transform: none;
 }
-.ex-count { border-radius: var(--pill); padding: 4px 10px; color: var(--muted2); background: var(--hi); }
+.ex-count { border-radius: var(--pill); padding: 4px 10px; color: var(--muted2); background: var(--hi); white-space: nowrap; }
 .ex-grid { gap: 10px; }
 .ex-item { padding: 12px 14px 12px 18px; border-radius: 14px; }
+/* The exercise name is what people scan for, so it reads at body-ish size
+   in the sans face; the badge and count stay small mono labels. */
+.ex-item-name {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+}
 .ex-dl {
   padding: 4px 10px;
   border-radius: var(--pill);
   border: 1px solid color-mix(in oklab, var(--amber) 35%, transparent);
 }
+
+/* Each category gets its own colour pair, chosen by its position in the
+   tab panel (CSS only, no markup). Reordering categories in the HTML
+   means reordering these lines too. Download badges stay amber, so the
+   action keeps one colour everywhere. */
+.ex-category { --c1: var(--teal); --c2: var(--teal); }
+#drumset .ex-category:nth-child(1 of .ex-category) { --c1: var(--cat-rock-1);   --c2: var(--cat-rock-2); }
+#drumset .ex-category:nth-child(2 of .ex-category) { --c1: var(--cat-jazz-1);   --c2: var(--cat-jazz-2); }
+#drumset .ex-category:nth-child(3 of .ex-category) { --c1: var(--cat-blues-1);  --c2: var(--cat-blues-2); }
+#drumset .ex-category:nth-child(4 of .ex-category) { --c1: var(--cat-latin-1);  --c2: var(--cat-latin-2); }
+#snare .ex-category:nth-child(1 of .ex-category)   { --c1: var(--cat-roll-1);   --c2: var(--cat-roll-2); }
+#snare .ex-category:nth-child(2 of .ex-category)   { --c1: var(--cat-diddle-1); --c2: var(--cat-diddle-2); }
+#snare .ex-category:nth-child(3 of .ex-category)   { --c1: var(--cat-flam-1);   --c2: var(--cat-flam-2); }
+#snare .ex-category:nth-child(4 of .ex-category)   { --c1: var(--cat-dur-1);    --c2: var(--cat-dur-2); }
+#snare .ex-category:nth-child(5 of .ex-category)   { --c1: var(--cat-solo-1);   --c2: var(--cat-solo-2); }
+
+.ex-category-title {
+  background: linear-gradient(90deg, var(--c1), var(--c2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ex-category-header {
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--c1), var(--c2) 35%, var(--line) 70%) 1;
+}
+/* The 01, 02… number: full strength so the small text keeps its contrast */
+.ex-category-header::before { color: var(--c1); opacity: 1; }
+.ex-category .ex-item { box-shadow: inset 3px 0 0 var(--c1), var(--shadow); }
+.ex-category .ex-item:hover { border-color: color-mix(in oklab, var(--c1) 55%, var(--line-2)); }
 
 /* ============================================================
    MOTION — scroll-driven reveal where supported; JS fallback stays
