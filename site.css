@@ -530,8 +530,75 @@ html:has(nav.open) { overflow: hidden; }
 }
 .project-kind::before {
   content: '';
-  width: 6px; height: 6px; border-radius: 50%;
+  width: 8px; height: 8px; border-radius: 50%;
   background: currentColor;
+}
+
+/* Project bento. The engine (attestation-ledger, card 3) runs full width
+   between the two curricula above and the two apps that use it below.
+   Each outer card has one tight corner pointing at the engine. Cards are
+   picked by position, so reordering the HTML means updating these. */
+.projects-grid {
+  --r-big: 28px;
+  --r-tight: 6px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.project-card:nth-child(1) { border-radius: var(--r-big) var(--r-big) var(--r-tight) var(--r-big); }
+.project-card:nth-child(2) { border-radius: var(--r-big) var(--r-big) var(--r-big) var(--r-tight); }
+.project-card:nth-child(4) { border-radius: var(--r-big) var(--r-tight) var(--r-big) var(--r-big); }
+.project-card:nth-child(5) { border-radius: var(--r-tight) var(--r-big) var(--r-big) var(--r-big); }
+.project-card:nth-child(3) {
+  grid-column: 1 / -1;
+  border-radius: 44px;
+  padding: 36px 40px;
+  box-shadow: inset 0 2px 0 var(--amber), var(--shadow);
+}
+
+/* The kind marker's shape says what it is, not only its colour:
+   circle = curriculum, hexagon = package, square = web app */
+.project-card:nth-child(3) .project-kind { color: var(--amber); }
+.project-card:nth-child(3) .project-kind::before {
+  width: 10px; height: 11px; border-radius: 0;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+.project-card:nth-child(n+4) .project-kind::before { border-radius: 2px; }
+
+/* Engine card: two nested hexagon outlines, decorative. Only on wide
+   screens, where the card keeps a text-free column for them. */
+.project-card:nth-child(3)::before {
+  content: none;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: 28px;
+  width: 260px;
+  aspect-ratio: 1;
+  translate: 0 -50%;
+  background: color-mix(in oklab, var(--amber) 16%, transparent);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23000' stroke-width='1.6'%3E%3Cpolygon points='50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5'/%3E%3Cpolygon points='50,20 76,35 76,65 50,80 24,65 24,35'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23000' stroke-width='1.6'%3E%3Cpolygon points='50,3 91,26.5 91,73.5 50,97 9,73.5 9,26.5'/%3E%3Cpolygon points='50,20 76,35 76,65 50,80 24,65 24,35'/%3E%3C/svg%3E") center / contain no-repeat;
+  pointer-events: none;
+}
+@media (min-width: 900px) {
+  .project-card:nth-child(3) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    column-gap: 48px;
+    align-content: start;
+    padding-right: 316px;
+  }
+  .project-card:nth-child(3)::before { content: ''; }
+  .project-card:nth-child(3) > * { grid-column: 1; }
+  .project-card:nth-child(3) > .project-meta,
+  .project-card:nth-child(3) > .project-links { grid-column: 2; }
+  .project-card:nth-child(3) > .project-meta { grid-row: 2; align-self: end; }
+  .project-card:nth-child(3) > p { grid-row: 3; margin-bottom: 0; }
+  .project-card:nth-child(3) > .project-links { grid-row: 3; align-self: start; }
+}
+@media (max-width: 640px) {
+  .projects-grid { --r-big: 22px; grid-template-columns: minmax(0, 1fr); }
+  .project-card:nth-child(3) { border-radius: 30px; padding: 28px; }
 }
 
 /* ============================================================
