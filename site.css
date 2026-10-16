@@ -1119,10 +1119,17 @@ h1:not(.hero-name) em {
       transition: none;
       animation: dp-reveal linear both;
       animation-timeline: view();
-      animation-range: entry 0% cover 22%;
+      /* End in absolute terms, not as a share of the element's height:
+         a percentage of a tall panel left it part-faded at rest, pushing
+         small text below 4.5:1. Now the fade ends after 160px of it has
+         entered, or once it is fully in view if it is shorter. */
+      animation-range: entry 0% entry 160px;
+      animation-range: entry 0% entry min(100%, 160px);
     }
+    /* Opacity finishes halfway (80px in); the movement settles by 160px */
     @keyframes dp-reveal {
       from { opacity: 0; transform: translateY(28px) scale(.985); }
+      50%  { opacity: 1; }
       to   { opacity: 1; transform: none; }
     }
   }
