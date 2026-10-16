@@ -1927,10 +1927,16 @@ setTimeout(() => {
 // ============================================================
 const navToggle = document.getElementById('navToggle');
 const nav = document.getElementById('nav');
+const navList = document.getElementById('navLinks');
+const navLogo = nav.querySelector('.nav-logo');
 
+// While open, the list sits right after the menu button so Tab goes from
+// the button into the menu. It is positioned, so the move isn't visible.
 const setNavOpen = open => {
   nav.classList.toggle('open', open);
   navToggle.setAttribute('aria-expanded', String(open));
+  if (open) navToggle.after(navList);
+  else navLogo.after(navList);
 };
 
 navToggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('open')));
@@ -1938,6 +1944,13 @@ navToggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('op
 // Close nav on link click
 document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', () => setNavOpen(false));
+});
+
+// Tabbing out of the open menu closes it, so the next focused item isn't hidden behind it
+nav.addEventListener('focusout', e => {
+  if (nav.classList.contains('open') && e.relatedTarget && !nav.contains(e.relatedTarget)) {
+    setNavOpen(false);
+  }
 });
 
 // Escape closes the open menu and returns focus to its button
