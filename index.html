@@ -1571,7 +1571,7 @@ nav.open .nav-cta {
       <div class="project-kind">Curriculum · Live</div>
       <h3>Singapore Math — Grade 6</h3>
       <p>
-        A full-year, 148-day Grade 6 math curriculum built on the Singapore
+        A full-year, 149-day Grade 6 math curriculum built on the Singapore
         Math CPA (Concrete–Pictorial–Abstract) method, across 10 units with
         seven purpose-built interactive manipulatives — bar models, a balance
         scale for algebra, a double number line for ratios, an angle-chase
@@ -1940,15 +1940,24 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   link.addEventListener('click', () => setNavOpen(false));
 });
 
+// Escape closes the open menu and returns focus to its button
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && nav.classList.contains('open')) {
+    setNavOpen(false);
+    navToggle.focus();
+  }
+});
+
 // ============================================================
 // EXERCISE TABS
 // ============================================================
 
 // ============================================================
 const scrollProgress = document.getElementById('scrollProgress');
-const backToTop = document.getElementById('backToTop');
 
 window.addEventListener('scroll', () => {
+  // Looked up here: the button comes after this script in the page
+  const backToTop = document.getElementById('backToTop');
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;

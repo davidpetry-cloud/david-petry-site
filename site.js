@@ -55,6 +55,8 @@
     var flipOnce = function () { if (!flipped) { flipped = true; flip(); } };
     var vt = document.startViewTransition(flipOnce);
     vt.finished.then(settle, settle);
+    // An aborted transition (e.g. a background tab) rejects `ready`; the fallback below handles it
+    vt.ready.catch(function () {});
     // If the page isn't painting (e.g. a background tab), switch anyway
     setTimeout(function () {
       if (!flipped) { vt.skipTransition(); flipOnce(); settle(); }
