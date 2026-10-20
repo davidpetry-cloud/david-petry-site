@@ -33,6 +33,7 @@
   --accent-top: color-mix(in oklab, var(--amber) 88%, white);
   --card-hover: rgba(26, 31, 46, 0.72);
   --sheen:      rgba(255, 255, 255, 0.38);
+  --btn-inset:  rgba(255, 255, 255, 0.25);
   --grain-op:   0.06;
 
   /* Exercise categories: one gradient per style (see "Drum exercises").
@@ -48,33 +49,54 @@
   --cat-solo-1: #ff7f9e;  --cat-solo-2: #ffb36b;
 }
 :root[data-theme="light"] {
-  --card:      rgba(255, 255, 255, 0.78);
-  --card-2:    rgba(255, 255, 255, 0.92);
-  --line:      rgba(20, 17, 14, 0.09);
-  --line-2:    rgba(20, 17, 14, 0.18);
-  --hi:        rgba(255, 255, 255, 0.9);
+  /* Warm sandstone, never bright white (David's design direction, 2026-10-16).
+     These override the page-level --bg/--bg2/--bg3/--surface set in each
+     page's inline <style>, which loads before this file. White is for print. */
+  --bg:        oklch(0.91 0.025 80);            /* #eae0cf page */
+  --bg2:       oklch(0.89 0.027 79);            /* #e5d9c7 alternate band */
+  --bg3:       oklch(0.865 0.03 78);            /* #ded1bd wells, timeline rail */
+  --surface:   oklch(0.937 0.022 81);           /* #f2e9da one step lighter */
+  --glass:     oklch(0.937 0.022 81 / 0.72);
+  --on-amber-soft: oklch(0.95 0.022 84 / 0.95);
+
+  /* Text tokens darkened so every pairing keeps 5:1 on the darkest band (--bg3) */
+  --muted:     oklch(0.445 0.019 79);           /* #5a5348, was #665f54 */
+  --muted2:    oklch(0.41 0.017 78);            /* #504940, was #554f46 */
+  --amber:     oklch(0.453 0.094 76);           /* #744e03, was #77510a */
+  --amber-dim: oklch(0.453 0.094 76 / 0.08);
+  --amber-glow: oklch(0.453 0.094 76 / 0.05);
+  --teal:      oklch(0.432 0.093 171);          /* #006049, was #0d7159 */
+  --teal-dim:  oklch(0.432 0.093 171 / 0.10);
+  --red:       oklch(0.463 0.144 35);           /* #983016, was #a53c22 */
+
+  --card:      oklch(0.94 0.021 81 / 0.92);     /* renders about #f2e9da */
+  --card-2:    oklch(0.945 0.02 82 / 0.95);     /* #f4ecde */
+  --line:      rgba(20, 17, 14, 0.10);
+  --line-2:    rgba(20, 17, 14, 0.20);
+  --hi:        oklch(0.955 0.018 84 / 0.7);     /* warm cream tint, not white */
   --glow-a:    rgba(232, 160, 48, 0.20);
   --glow-t:    rgba(45, 212, 191, 0.14);
   --spot:      rgba(119, 81, 10, 0.05);
-  --shadow:    0 1px 2px rgba(20, 17, 14, 0.04), 0 24px 48px -32px rgba(20, 17, 14, 0.28);
-  --nav-bg:    rgba(250, 248, 244, 0.72);
-  --on-accent: #faf8f4;
-  --accent-top: color-mix(in oklab, var(--amber) 95%, white);
-  --card-hover: rgba(255, 255, 255, 0.96);
+  --shadow:    0 1px 2px rgba(20, 17, 14, 0.05), 0 24px 48px -32px rgba(20, 17, 14, 0.30);
+  --nav-bg:    oklch(0.91 0.025 80 / 0.8);
+  --on-accent: oklch(0.955 0.02 85);            /* #f6efe1 cream on the amber */
+  --accent-top: color-mix(in oklab, var(--amber) 92%, var(--on-accent));
+  --card-hover: oklch(0.952 0.019 82 / 0.96);   /* #f6eee1 */
+  --btn-inset: oklch(0.96 0.03 85 / 0.3);
   /* Light text sits on the dark amber here, so the sheen darkens rather than lightens */
   --sheen:      rgba(0, 0, 0, 0.22);
   --grain-op:   0.035;
 
-  /* Darker stops for the light page: each at least 5.6:1 */
-  --cat-rock-1: #77510a;  --cat-rock-2: #a53c22;
-  --cat-jazz-1: #2f55b5;  --cat-jazz-2: #5b3fb0;
-  --cat-blues-1: #0b5f8a; --cat-blues-2: #0d7159;
-  --cat-latin-1: #a53c22; --cat-latin-2: #7a5200;
-  --cat-roll-1: #0d7159;  --cat-roll-2: #0b5f8a;
-  --cat-diddle-1: #3d6b12; --cat-diddle-2: #0d7159;
-  --cat-flam-1: #6b3fb0;  --cat-flam-2: #a2306f;
-  --cat-dur-1: #7a5200;   --cat-dur-2: #77510a;
-  --cat-solo-1: #a8304f;  --cat-solo-2: #9a4a10;
+  /* Darker stops for the warm page: each at least 5.5:1 where it sits */
+  --cat-rock-1: oklch(0.455 0.094 76);  --cat-rock-2: oklch(0.468 0.144 35);
+  --cat-jazz-1: oklch(0.461 0.159 265); --cat-jazz-2: oklch(0.464 0.171 289);
+  --cat-blues-1: oklch(0.45 0.1 239);   --cat-blues-2: oklch(0.44 0.093 171);
+  --cat-latin-1: oklch(0.468 0.144 35); --cat-latin-2: oklch(0.458 0.099 76);
+  --cat-roll-1: oklch(0.44 0.093 171);  --cat-roll-2: oklch(0.45 0.1 239);
+  --cat-diddle-1: oklch(0.442 0.126 134); --cat-diddle-2: oklch(0.44 0.093 171);
+  --cat-flam-1: oklch(0.47 0.172 297);  --cat-flam-2: oklch(0.475 0.162 351);
+  --cat-dur-1: oklch(0.458 0.099 76);   --cat-dur-2: oklch(0.455 0.094 76);
+  --cat-solo-1: oklch(0.474 0.156 10);  --cat-solo-2: oklch(0.464 0.125 50);
 }
 
 /* ============================================================
@@ -216,7 +238,7 @@ nav {
   border-radius: var(--pill);
   color: var(--on-accent);
   background: linear-gradient(180deg, var(--accent-top), var(--amber));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px -8px var(--amber);
+  box-shadow: inset 0 1px 0 var(--btn-inset), 0 6px 20px -8px var(--amber);
 }
 .theme-toggle { border-radius: var(--pill); border-color: var(--line-2); width: 44px; height: 44px; }
 .nav-toggle { width: 44px; height: 44px; padding: 0; align-items: center; justify-content: center; border: 1px solid var(--line-2); border-radius: var(--pill); background: transparent; }
@@ -279,7 +301,7 @@ html:has(nav.open) { overflow: hidden; }
   font-size: 15px;
   color: var(--on-accent);
   background: linear-gradient(180deg, var(--accent-top), var(--amber));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 10px 30px -12px var(--amber);
+  box-shadow: inset 0 1px 0 var(--btn-inset), 0 10px 30px -12px var(--amber);
   transition: transform .2s var(--ease), box-shadow .2s var(--ease);
 }
 .btn-primary,
@@ -305,7 +327,7 @@ html:has(nav.open) { overflow: hidden; }
   .book-cta:hover::after { transform: translateX(110%); transition: transform .7s var(--ease); }
 }
 .nav-cta:hover { opacity: 1; transform: translateY(-1px); }
-.btn-primary:hover { opacity: 1; transform: translateY(-1px); box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -10px var(--amber); }
+.btn-primary:hover { opacity: 1; transform: translateY(-1px); box-shadow: inset 0 1px 0 var(--btn-inset), 0 14px 36px -10px var(--amber); }
 .btn-ghost {
   padding: 13px 22px;
   border: 1px solid var(--line-2);
@@ -969,7 +991,7 @@ footer::before {
   border-radius: var(--pill);
   color: var(--on-accent);
   background: linear-gradient(180deg, var(--accent-top), var(--amber));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 6px 20px -8px var(--amber);
+  box-shadow: inset 0 1px 0 var(--btn-inset), 0 6px 20px -8px var(--amber);
 }
 .mini-links a.mini-cta:hover { color: var(--on-accent); background: linear-gradient(180deg, var(--accent-top), var(--amber)); }
 @media (max-width: 560px) {
@@ -1131,7 +1153,7 @@ h1:not(.hero-name) em {
 .book-cta {
   border-radius: var(--r);
   background: linear-gradient(180deg, var(--accent-top), var(--amber));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 14px 36px -14px var(--amber);
+  box-shadow: inset 0 1px 0 var(--btn-inset), 0 14px 36px -14px var(--amber);
 }
 .book-cta:hover, .book-cta:focus-visible { opacity: 1; }
 .book-cta-label, .book-cta-arrow { color: var(--on-accent); }
