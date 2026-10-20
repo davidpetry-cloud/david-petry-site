@@ -1114,7 +1114,7 @@ h1:not(.hero-name) em {
 
 /* Prompt book: a flat cover given depth by light and shadow (its title never tilts).
    Top edge catches the light, a crease marks the spine, a page block shows on the
-   fore-edge, and a layered shadow sets it on the page. Hover lifts it straight up. */
+   fore-edge, and a layered shadow sets it on the page. Hover or focus lifts it straight up. */
 .book-cover {
   --cover-crease: rgba(0, 0, 0, 0.42);
   --cover-rest:
@@ -1150,11 +1150,14 @@ h1:not(.hero-name) em {
     0 34px 54px -24px rgba(48, 32, 12, 0.38),
     0 72px 112px -44px rgba(48, 32, 12, 0.4);
 }
+/* The cover opens the PDF to read; the button beside it downloads it */
+.book-cover { color: inherit; text-decoration: none; }
+.book-cover:focus-visible { border-radius: 20px; outline-offset: 8px; }
 .book-cover::before { opacity: 0.35; }
 .book-cover-title { font-family: var(--sans); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
 @media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
   .book-cover { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
-  .book-cover:hover { transform: translateY(-6px); --cover-drop: var(--cover-lift); }
+  .book-cover:is(:hover, :focus-visible) { transform: translateY(-6px); --cover-drop: var(--cover-lift); }
 }
 .book-cta {
   border-radius: var(--r);
