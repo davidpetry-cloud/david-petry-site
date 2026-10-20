@@ -1134,21 +1134,52 @@ h1:not(.hero-name) em {
 .platform-arrow { transition: transform .25s var(--ease); }
 .platform-link:hover .platform-arrow { transform: translate(2px, -2px); color: var(--amber); }
 
-/* Prompt book: a cover with depth that straightens on hover */
+/* Prompt book: a flat cover given depth by light and shadow (its title never tilts).
+   Top edge catches the light, a crease marks the spine, a page block shows on the
+   fore-edge, and a layered shadow sets it on the page. Hover or focus lifts it straight up. */
 .book-cover {
+  --cover-crease: rgba(0, 0, 0, 0.42);
+  --cover-rest:
+    0 2px 4px -1px rgba(0, 0, 0, 0.5),
+    0 22px 40px -22px rgba(0, 0, 0, 0.7),
+    0 50px 90px -40px rgba(0, 0, 0, 0.7);
+  --cover-lift:
+    0 6px 10px -3px rgba(0, 0, 0, 0.45),
+    0 34px 54px -24px rgba(0, 0, 0, 0.75),
+    0 72px 112px -44px rgba(0, 0, 0, 0.75);
+  --cover-drop: var(--cover-rest);
   border-radius: 20px;
   border-color: var(--line-2);
   background:
     radial-gradient(120% 80% at 20% 0%, color-mix(in oklab, var(--amber) 35%, transparent), transparent 60%),
     radial-gradient(100% 70% at 100% 100%, color-mix(in oklab, var(--teal) 30%, transparent), transparent 60%),
     linear-gradient(160deg, var(--surface), var(--bg2));
-  box-shadow: inset 0 1px 0 var(--hi), 0 40px 80px -40px rgba(0, 0, 0, 0.7);
+  box-shadow:
+    inset 0 1px 0 var(--hi),
+    inset 14px 0 16px -14px var(--cover-crease),
+    5px 4px 0 -1px var(--bg2),
+    5px 4px 0 0 var(--line-2),
+    var(--cover-drop);
 }
+:root[data-theme="light"] .book-cover {
+  --cover-crease: rgba(48, 32, 12, 0.14);
+  --cover-rest:
+    0 2px 4px -1px rgba(48, 32, 12, 0.2),
+    0 22px 40px -22px rgba(48, 32, 12, 0.34),
+    0 50px 90px -40px rgba(48, 32, 12, 0.36);
+  --cover-lift:
+    0 6px 10px -3px rgba(48, 32, 12, 0.18),
+    0 34px 54px -24px rgba(48, 32, 12, 0.38),
+    0 72px 112px -44px rgba(48, 32, 12, 0.4);
+}
+/* The cover opens the PDF to read; the button beside it downloads it */
+.book-cover { color: inherit; text-decoration: none; }
+.book-cover:focus-visible { border-radius: 20px; outline-offset: 8px; }
 .book-cover::before { opacity: 0.35; }
 .book-cover-title { font-family: var(--sans); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
 @media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
-  .book-cover { transform: perspective(1200px) rotateY(-10deg) rotateX(3deg); transition: transform .6s var(--ease); }
-  .book-cover:hover { transform: perspective(1200px) rotateY(0) rotateX(0); }
+  .book-cover { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
+  .book-cover:is(:hover, :focus-visible) { transform: translateY(-6px); --cover-drop: var(--cover-lift); }
 }
 .book-cta {
   border-radius: var(--r);
