@@ -1134,9 +1134,11 @@ h1:not(.hero-name) em {
 .platform-arrow { transition: transform .25s var(--ease); }
 .platform-link:hover .platform-arrow { transform: translate(2px, -2px); color: var(--amber); }
 
-/* Prompt book: a flat cover given depth by light and shadow (its title never tilts).
-   Top edge catches the light, a crease marks the spine, a page block shows on the
-   fore-edge, and a layered shadow sets it on the page. Hover or focus lifts it straight up. */
+/* Prompt book: a cover that rests at a slight tilt, like a book on a shelf, and turns
+   to face you on hover or focus, lifting with a deeper shadow (David, 2026-11-04: keep
+   the tilt). Top edge catches the light, a crease marks the spine, a page block shows
+   on the fore-edge, and a layered shadow sets it on the page. The tilt is desktop
+   only and needs motion on; on phones and with reduce motion the cover stays flat. */
 .book-cover {
   --cover-crease: rgba(0, 0, 0, 0.42);
   --cover-rest:
@@ -1179,8 +1181,14 @@ h1:not(.hero-name) em {
 .book-cover-title { font-family: var(--sans); font-weight: 700; letter-spacing: -0.04em; line-height: 0.95; }
 .book-cover-sub { padding-inline: 16px; text-align: center; }
 @media (prefers-reduced-motion: no-preference) and (min-width: 901px) {
-  .book-cover { transition: transform .45s var(--ease), box-shadow .45s var(--ease); }
-  .book-cover:is(:hover, :focus-visible) { transform: translateY(-6px); --cover-drop: var(--cover-lift); }
+  .book-cover {
+    transform: perspective(1200px) rotateY(-10deg) rotateX(3deg) translateY(0);
+    transition: transform .6s var(--ease), box-shadow .45s var(--ease);
+  }
+  .book-cover:is(:hover, :focus-visible) {
+    transform: perspective(1200px) rotateY(0) rotateX(0) translateY(-6px);
+    --cover-drop: var(--cover-lift);
+  }
 }
 .book-cta {
   border-radius: var(--r);
