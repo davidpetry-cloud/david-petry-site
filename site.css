@@ -706,14 +706,162 @@ footer { border-top-color: var(--line); color: var(--muted2); }
 .back-to-top { background: var(--nav-bg); backdrop-filter: blur(12px); border-color: var(--line-2); }
 
 /* ============================================================
-   HERO BENTO — status and contacts move into a glass card on the
-   right. Pure CSS: the card and its ring art are the grid's own
-   ::before and ::after, so the markup is unchanged.
+   HERO ARCADE — an arch-topped window onto a colonnade: six walls
+   standing one behind the other in real 3D space, a tiled floor
+   running back to a low sun. Decorative, text-free and hidden from
+   assistive tech. The pointer shifts the viewpoint a little and
+   scrolling walks you in (site.js and a scroll timeline); with
+   reduce motion on, it is a still picture.
+   Depths are in cqh, so the scene keeps its proportions at any size.
+   ============================================================ */
+:root {
+  --arc-near: #0b0e15;                         /* wall in shade, nearest */
+  --arc-far:  #8a5a1e;                         /* wall lit by the sun, farthest */
+  --arc-sky-1: #0c1424;
+  --arc-sky-2: #1d4a52;
+  --arc-sun:  #ffc56b;
+  --arc-water: #0e2a33;
+  --arc-tile: rgba(232, 160, 48, 0.55);
+  --arc-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 -40px 60px -30px rgba(0, 0, 0, 0.7);
+}
+:root[data-theme="light"] {
+  --arc-near: oklch(0.80 0.045 74);
+  --arc-far:  oklch(0.935 0.055 88);
+  --arc-sky-1: oklch(0.80 0.05 215);
+  --arc-sky-2: oklch(0.90 0.06 95);
+  --arc-sun:  oklch(0.97 0.07 95);
+  --arc-water: oklch(0.72 0.06 200);
+  --arc-tile: oklch(0.453 0.094 76 / 0.5);
+  --arc-inset: inset 0 0 0 1px oklch(0.96 0.02 85 / 0.5), inset 0 -40px 60px -30px rgba(48, 32, 12, 0.25);
+}
+.hero-aside { margin-top: 40px; }
+.hero-arcade {
+  --px: 0;
+  --py: 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  container-type: size;
+  width: min(100%, 400px);
+  aspect-ratio: 1;
+  border: 1px solid var(--line-2);
+  border-radius: 200px 200px 20px 20px;
+  background: var(--arc-sky-1);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  animation: fadeUp .8s .85s ease forwards;
+}
+.hero-arcade::after {                          /* glass: a soft inner edge over the scene */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: var(--arc-inset);
+  pointer-events: none;
+}
+.arcade-defs { position: absolute; }
+/* Sky, sun and water sit at infinity, so they follow the vanishing point */
+.arcade-sky {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 64%;
+  scale: 1.3;
+  translate: calc(var(--px) * 7cqw) calc(var(--py) * 4cqh);
+  background:
+    radial-gradient(circle at 50% 64%, var(--arc-sun) 0 5cqh, transparent 5.3cqh),
+    repeating-radial-gradient(circle at 50% 64%, transparent 0 3.4cqh, color-mix(in oklab, var(--arc-sun) 30%, transparent) 3.4cqh 3.7cqh),
+    radial-gradient(circle at 50% 64%, color-mix(in oklab, var(--arc-sun) 60%, transparent), transparent 34cqh),
+    linear-gradient(180deg, var(--arc-sky-1) 12%, var(--arc-sky-2) 64%, var(--arc-water) 64.2%);
+  /* the rings fade out with distance from the sun */
+  transition: translate .6s var(--ease);
+}
+.arcade-view {
+  position: absolute;
+  inset: 0;
+  perspective: 140cqh;
+  perspective-origin: calc(50% + var(--px) * 7%) calc(64% + var(--py) * 4%);
+  transition: perspective-origin .6s var(--ease);
+}
+.arcade-world {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  height: 100%;
+  aspect-ratio: 4 / 5;
+  translate: -50% 0;
+  transform-style: preserve-3d;
+}
+.arcade-arch {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: translateZ(calc(var(--i) * -52cqh));
+  /* Atmospheric depth: walls warm toward the sun, line colour cools from amber to teal */
+  fill: color-mix(in oklab, var(--arc-near), var(--arc-far) calc(var(--i) * 18%));
+  color: color-mix(in oklab, var(--amber), var(--teal) calc(var(--i) * 17%));
+}
+.arcade-arch:nth-of-type(1) { --i: 0; }
+.arcade-arch:nth-of-type(2) { --i: 1; }
+.arcade-arch:nth-of-type(3) { --i: 2; }
+.arcade-arch:nth-of-type(4) { --i: 3; }
+.arcade-arch:nth-of-type(5) { --i: 4; }
+.arcade-arch:nth-of-type(6) { --i: 5; }
+/* The floor lies flat and runs away from you: ceramic tile, lighter toward the sun */
+.arcade-floor {
+  position: absolute;
+  left: -200%;
+  width: 500%;
+  bottom: 0;
+  height: 330cqh;
+  transform-origin: 50% 100%;
+  transform: rotateX(90deg);
+  background: linear-gradient(0deg, var(--arc-near), color-mix(in oklab, var(--arc-near), var(--arc-far) 80%) 85%);
+}
+.arcade-floor::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--arc-tile);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M40 2 78 40 40 78 2 40Z'/%3E%3Ccircle cx='40' cy='40' r='11'/%3E%3Cpath d='M0 0h80v80H0z' stroke-width='1.5'/%3E%3Ccircle cx='0' cy='0' r='7'/%3E%3Ccircle cx='80' cy='0' r='7'/%3E%3Ccircle cx='0' cy='80' r='7'/%3E%3Ccircle cx='80' cy='80' r='7'/%3E%3C/svg%3E") 50% 100% / 26cqh 26cqh;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M40 2 78 40 40 78 2 40Z'/%3E%3Ccircle cx='40' cy='40' r='11'/%3E%3Cpath d='M0 0h80v80H0z' stroke-width='1.5'/%3E%3Ccircle cx='0' cy='0' r='7'/%3E%3Ccircle cx='80' cy='0' r='7'/%3E%3Ccircle cx='0' cy='80' r='7'/%3E%3Ccircle cx='80' cy='80' r='7'/%3E%3C/svg%3E") 50% 100% / 26cqh 26cqh;
+}
+
+/* Scrolling walks you a few steps into the arcade. On a wide screen the window
+   is in view from the start, so the walk follows the first stretch of the page;
+   on a phone it sits further down, so the walk follows the window itself as it
+   climbs the top third of the screen. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .arcade-world {
+      animation: dp-arcade-walk linear both;
+      animation-timeline: view(block 30% 0%);
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+    @media (min-width: 1024px) {
+      .arcade-world {
+        animation-timeline: scroll(root);
+        animation-range: 0 70vh;
+      }
+    }
+    @keyframes dp-arcade-walk { to { transform: translateZ(46cqh); } }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-arcade { opacity: 1; animation: none; }
+  .arcade-sky, .arcade-view { transition: none; }
+}
+
+/* ============================================================
+   HERO BENTO — on wide screens the arcade, status and contacts
+   stack in one arch-topped glass card on the right.
    ============================================================ */
 @media (min-width: 1024px) {
   .hero-inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+    grid-template-rows: repeat(6, auto) 1fr;
     column-gap: clamp(40px, 5vw, 72px);
     align-items: start;
   }
@@ -725,62 +873,53 @@ footer { border-top-color: var(--line); color: var(--muted2); }
   .hero-proof   { grid-row: 5; }
   .hero-actions { grid-row: 6; }
 
-  .hero-inner::before {
-    content: '';
+  .hero-aside {
     grid-column: 2;
-    grid-row: 1 / 7;
-    align-self: stretch;
+    grid-row: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 10px 10px 14px;
     border: 1px solid var(--line-2);
-    border-radius: 28px;
+    border-radius: 180px 180px 28px 28px;
     background:
-      radial-gradient(120% 80% at 100% 0%, var(--glow-a), transparent 60%),
-      radial-gradient(100% 70% at 0% 100%, var(--glow-t), transparent 60%),
+      radial-gradient(120% 60% at 100% 0%, var(--glow-a), transparent 60%),
+      radial-gradient(100% 50% at 0% 100%, var(--glow-t), transparent 60%),
       var(--card);
     backdrop-filter: blur(16px);
     box-shadow: var(--shadow);
     animation: fadeUp .8s .3s ease both;
   }
-  /* Concentric rings: a drum head, or a sound wave leaving it */
-  .hero-inner::after {
-    content: '';
-    grid-column: 2;
-    grid-row: 1 / 7;
-    align-self: center;
-    justify-self: center;
-    width: 200px;
-    aspect-ratio: 1;
-    margin-top: -48px;
-    border-radius: 50%;
-    background:
-      radial-gradient(circle at 38% 34%, color-mix(in oklab, var(--amber) 70%, transparent), transparent 46%),
-      radial-gradient(circle at 66% 72%, color-mix(in oklab, var(--teal) 55%, transparent), transparent 50%),
-      repeating-radial-gradient(circle, transparent 0 15px, var(--line-2) 15px 16px);
-    -webkit-mask: radial-gradient(circle, #000 52%, transparent 71%);
-    mask: radial-gradient(circle, #000 52%, transparent 71%);
-    pointer-events: none;
-    animation: fadeUp .8s .5s ease both;
+  .hero-arcade {
+    width: 100%;
+    aspect-ratio: 4 / 4.7;
+    border-radius: 170px 170px 18px 18px;
+    box-shadow: none;
+    opacity: 1;
+    animation: none;
   }
-
   .hero-status {
-    grid-column: 2;
-    grid-row: 1 / 7;
-    align-self: start;
-    margin: 24px 24px 0;
+    margin: 0 4px;
     padding: 10px 14px;
     border: 1px solid var(--line);
     border-radius: 14px;
     background: var(--hi);
     line-height: 1.5;
+    opacity: 1;
+    animation: none;
   }
   .hero-contact {
-    grid-column: 2;
-    grid-row: 1 / 7;
-    align-self: end;
     flex-direction: column;
     gap: 8px;
-    margin: 0 24px 24px;
+    margin: 0 4px;
+    opacity: 1;
+    animation: none;
   }
   .hero-contact a { justify-content: flex-start; padding: 11px 16px; }
+}
+@media (min-width: 1024px) and (prefers-reduced-motion: reduce) {
+  .hero-aside { animation: none; }
 }
 
 /* ============================================================
@@ -820,16 +959,79 @@ footer::before {
 }
 
 /* ============================================================
+   SKYLINE — a river city above the footer, drawn in outline: far
+   hills, the domed hall and bathhouse, and a chain bridge in
+   front. Three layers (art/skyline-*.svg, used as masks so each
+   takes its colour from the theme). As it scrolls into view the
+   far layers rise a little more slowly than the near one, which
+   is how distance looks from a moving tram. Decorative.
+   ============================================================ */
+.skyline {
+  position: relative;
+  flex: none;
+  order: -2;
+  width: calc(100% + 80px);
+  margin: 0 -40px 28px;
+  /* the drawings are 1600 x 300 and never shrink below 900px wide */
+  height: max(18.75vw, 169px);
+  pointer-events: none;
+}
+.skyline i {
+  position: absolute;
+  inset: 0;
+  -webkit-mask: var(--art) 50% 100% / max(100%, 900px) auto no-repeat;
+          mask: var(--art) 50% 100% / max(100%, 900px) auto no-repeat;
+}
+.skyline-far   { --art: url("art/skyline-far.svg");   background: color-mix(in oklab, var(--teal) 62%, transparent); }
+.skyline-mid   { --art: url("art/skyline-mid.svg");   background: linear-gradient(90deg, color-mix(in oklab, var(--amber) 70%, var(--teal)), var(--amber) 50%, color-mix(in oklab, var(--amber) 70%, var(--teal))); }
+.skyline-front { --art: url("art/skyline-front.svg"); background: linear-gradient(90deg, var(--amber), color-mix(in oklab, var(--amber) 45%, var(--teal)) 45%, var(--teal)); opacity: .9; }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .skyline-far, .skyline-mid {
+      animation: dp-skyline-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+    .skyline-far { --rise: 26px; }
+    .skyline-mid { --rise: 11px; }
+    @keyframes dp-skyline-rise { from { transform: translateY(var(--rise)); } }
+  }
+}
+@media (max-width: 900px) {
+  .skyline { width: calc(100% + 80px); }
+}
+
+/* ============================================================
    RHYTHM & DETAIL
    ============================================================ */
-/* Section breaks: a soft amber-to-teal hairline instead of a hard rule */
+/* Section breaks: a chain-bridge span in miniature. Two cables hang from a
+   ceramic rosette to the page edges and fade out; drawn once as a mask, so
+   the amber-to-teal wash shows through it in either theme. Decorative. */
 .divider {
+  --orn: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 32' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M0 9Q60 9 98 16M240 9Q180 9 142 16M0 15Q60 15 98 20M240 15Q180 15 142 20' opacity='.9'/%3E%3Cpath d='M14 9v6M34 9v6M54 10v6M74 12v6M226 9v6M206 9v6M186 10v6M166 12v6' stroke-width='1'/%3E%3Ccircle cx='120' cy='16' r='13'/%3E%3Ccircle cx='120' cy='16' r='4'/%3E%3Cpath d='M120 3v9M120 20v9M107 16h9M124 16h9M110.800 6.800l6.300 6.300M122.900 18.900l6.300 6.300M129.200 6.800l-6.300 6.300M117.100 18.900l-6.300 6.300'/%3E%3Cpath d='M98 12v10M142 12v10' stroke-width='2'/%3E%3C/svg%3E");
   width: min(1100px, calc(100% - 80px));
+  height: 32px;
   opacity: 1;
   background: linear-gradient(90deg, transparent,
-              color-mix(in oklab, var(--amber) 40%, transparent) 30%,
-              color-mix(in oklab, var(--teal) 35%, transparent) 70%, transparent);
+              color-mix(in oklab, var(--amber) 75%, transparent) 30%,
+              var(--amber) 50%,
+              color-mix(in oklab, var(--teal) 70%, transparent) 70%, transparent);
+  -webkit-mask:
+    var(--orn) 50% 50% / 240px 32px no-repeat,
+    linear-gradient(#000 0 0) 0 9px / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 100% 9px / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 0 15px / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 100% 15px / calc(50% - 120px) 1.5px no-repeat;
+          mask:
+    var(--orn) 50% 50% / 240px 32px no-repeat,
+    linear-gradient(#000 0 0) 0 9px / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 100% 9px / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 0 15px / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 100% 15px / calc(50% - 120px) 1.5px no-repeat;
 }
+
+/* The proof bar has no bottom padding, so its rule needs its own air */
+#proof-bar + .divider { margin-top: 56px; }
 
 .proof-num, .exp-date { font-variant-numeric: tabular-nums; }
 
@@ -1485,4 +1687,6 @@ h1:not(.hero-name) em {
   .proof-stat { padding: 18px 6px; }
   .proof-lbl { font-size: 12px; }
   .hero-contact a { max-width: 100%; min-width: 0; overflow-wrap: anywhere; }
+  .hero-contact a .ico { flex: none; overflow-wrap: normal; }
+  footer::before { font-size: 13vw; }
 }
