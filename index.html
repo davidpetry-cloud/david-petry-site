@@ -1410,44 +1410,14 @@ nav.open .nav-cta {
       <a href="#about" class="btn-ghost">Learn More →</a>
     </div>
     <div class="hero-aside">
-      <!-- Decorative: an arcade of arches receding to a low sun. No text; hidden from assistive tech. -->
-      <div class="hero-arcade" aria-hidden="true">
-        <svg class="arcade-defs" width="0" height="0" focusable="false">
-          <symbol id="dp-arch" viewBox="0 0 400 500" overflow="visible">
-            <!-- The wall, wider than the frame so its ends never show; the arch is cut out of it -->
-            <path fill-rule="evenodd" d="M-500-400H900V500H-500ZM70 500V230A130 130 0 0 1 330 230V500Z"/>
-            <g class="arch-line" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M70 500V230A130 130 0 0 1 330 230V500"/>
-              <path d="M52 500V230A148 148 0 0 1 348 230V500" opacity=".55"/>
-              <!-- A row of ceramic studs round the arch -->
-              <path d="M61 230A139 139 0 0 1 339 230" stroke-width="5" stroke-dasharray="0 14.56"/>
-              <!-- Capitals where the arch springs, and plinths at the floor -->
-              <path d="M40 230h42M40 240h42M46 240v-10M76 240v-10M318 230h42M318 240h42M324 240v-10M354 240v-10"/>
-              <path d="M40 486h42M318 486h42" opacity=".7"/>
-              <!-- Keystone: a tulip bud -->
-              <path d="M200 100C188 86 190 68 200 56C210 68 212 86 200 100ZM200 100V82M186 96C176 92 172 82 174 72M214 96C224 92 228 82 226 72"/>
-              <!-- Spandrel rosettes -->
-              <g opacity=".8">
-                <circle cx="52" cy="76" r="26"/><circle cx="52" cy="76" r="9"/>
-                <path d="M52 50V67M52 85V102M26 76H43M61 76H78M34 58L46 70M58 82L70 94M70 58L58 70M46 82L34 94"/>
-                <circle cx="348" cy="76" r="26"/><circle cx="348" cy="76" r="9"/>
-                <path d="M348 50V67M348 85V102M322 76H339M357 76H374M330 58L342 70M354 82L366 94M366 58L354 70M342 82L330 94"/>
-              </g>
-              <!-- Cornice -->
-              <path d="M-500 22H900M-500 30H900" opacity=".5"/>
-            </g>
-          </symbol>
-        </svg>
-        <div class="arcade-sky"></div>
-        <div class="arcade-view"><div class="arcade-world">
-          <div class="arcade-floor"></div>
-          <svg class="arcade-arch" viewBox="0 0 400 500" focusable="false"><use href="#dp-arch"/></svg>
-          <svg class="arcade-arch" viewBox="0 0 400 500" focusable="false"><use href="#dp-arch"/></svg>
-          <svg class="arcade-arch" viewBox="0 0 400 500" focusable="false"><use href="#dp-arch"/></svg>
-          <svg class="arcade-arch" viewBox="0 0 400 500" focusable="false"><use href="#dp-arch"/></svg>
-          <svg class="arcade-arch" viewBox="0 0 400 500" focusable="false"><use href="#dp-arch"/></svg>
-          <svg class="arcade-arch" viewBox="0 0 400 500" focusable="false"><use href="#dp-arch"/></svg>
-        </div></div>
+      <!-- The drumhead: a Chladni figure. Sand gathers where a struck drumhead stays still.
+           The picture is decorative; the button and the line under it carry the meaning. -->
+      <div class="hero-drum" id="heroDrum">
+        <canvas class="drum-canvas" id="drumCanvas" aria-hidden="true"></canvas>
+        <div class="drum-controls">
+          <button type="button" class="drum-strike" id="drumStrike">Strike the drum</button>
+          <p class="drum-note"><span id="drumCount" role="status">Pattern 1 of 6.</span> Sand gathers where the drumhead stays still.</p>
+        </div>
       </div>
       <div class="hero-status">
         <span class="hero-status-dot"></span>
@@ -1915,8 +1885,8 @@ nav.open .nav-cta {
 </main>
 
 <footer>
-  <!-- Decorative: a river city in three layers (hills, halls, a chain bridge). No text; hidden from assistive tech. -->
-  <div class="skyline" aria-hidden="true"><i class="skyline-far"></i><i class="skyline-mid"></i><i class="skyline-front"></i></div>
+  <!-- Decorative: a drum beat on a staff becomes a sound wave, then a network with a person in the loop. Hidden from assistive tech. -->
+  <div class="score" aria-hidden="true"><i class="score-back"></i><i class="score-front"></i></div>
   <span>© 2026 David Petry</span>
   <span style="color:var(--amber)">Human-Centered AI Implementation</span>
   <span>Built with Claude Code</span>
