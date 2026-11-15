@@ -1018,75 +1018,6 @@ p strong { color: var(--white); font-weight: 500; }
 }
 
 /* ============================================================
-   MUSIC EDUCATION
-   ============================================================ *//* glowing vertical rail *//* ============================================================
-   MUSIC ENGINEERING
-   ============================================================ *//* ============================================================
-   HUMAN-CENTERED AI
-   ============================================================ */
-.hcai-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.hcai-card {
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--teal);
-  background: var(--bg3);
-  border-radius: 0 var(--radius) var(--radius) 0;
-  transition: transform 0.2s, background 0.2s;
-}
-
-.hcai-card:hover {
-  background: var(--surface);
-  transform: translateY(-2px);
-}
-
-.hcai-card.is-negative { border-left-color: var(--amber); }
-
-.hcai-card h3 {
-  color: var(--white);
-  font-size: var(--fs-lg);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.hcai-card.is-negative h3 { color: var(--amber); }
-.hcai-card:not(.is-negative) h3 { color: var(--teal); }
-
-.hcai-card ul {
-  margin: 0;
-  padding-left: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.hcai-card li {
-  font-size: var(--fs-base);
-  color: var(--muted2);
-  line-height: 1.6;
-  padding-left: 16px;
-  position: relative;
-}
-
-.hcai-card li::before {
-  content: "—";
-  position: absolute;
-  left: 0;
-  color: var(--muted);
-}
-
-@media (max-width: 768px) {
-  .hcai-grid { grid-template-columns: 1fr; }
-}
-
-/* ============================================================
    CONTACT
    ============================================================ */
 #contact {
@@ -1374,7 +1305,7 @@ nav.open .nav-cta {
     <li><a href="music.html">Music</a></li>
     <li><a href="#lessons">Lessons</a></li>
     <li><a href="music.html#prompt-book">Resources</a></li>
-    <li><a href="#human-centered-ai">AI Philosophy</a></li>
+    <li><a href="#human-centered-ai">Human-Centered AI</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <a href="#contact" class="nav-cta">Let's Talk</a>
@@ -1595,7 +1526,7 @@ nav.open .nav-cta {
       </div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card" id="project-ai-literacy">
       <div class="project-kind">Curriculum · Live</div>
       <h3>Human-Centered AI Literacy</h3>
       <p>
@@ -1615,7 +1546,7 @@ nav.open .nav-cta {
       </div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card" id="project-ledger">
       <div class="project-kind">npm package · MIT</div>
       <h3>attestation-ledger</h3>
       <p>
@@ -1633,7 +1564,7 @@ nav.open .nav-cta {
       </div>
     </div>
 
-    <div class="project-card">
+    <div class="project-card" id="project-eq-sop">
       <div class="project-kind">Web app · Live</div>
       <h3>Live Sound EQ SOP</h3>
       <p>
@@ -1791,27 +1722,52 @@ nav.open .nav-cta {
      HUMAN-CENTERED AI
      ============================================================ -->
 <section id="human-centered-ai">
-  <div class="section-label">Philosophy &amp; Practice</div>
-  <h2>Human-Centered <em>AI</em></h2>
-  <p style="font-size:var(--fs-lg);max-width:60ch;">AI extends human capability — it doesn't replace judgment, accountability, or relationships. Skepticism about AI is often well-founded, and part of my work is knowing when <em>not</em> to use it.</p>
+  <div class="section-label">Human-Centered AI</div>
+  <h2>A model proposes.<br><em>A person decides.</em></h2>
+  <p style="font-size:var(--fs-lg);max-width:60ch;">Like any instrument, AI is as good as the person playing it. In skilled hands it drafts, explores and finds patterns faster than anyone could alone. I build it so the person stays at the centre: the model offers, the person shapes and decides, and everyone can see which was which.</p>
 
-  <div class="hcai-grid reveal" style="margin-top:32px;">
-    <div class="hcai-card">
-      <h3>What AI Is</h3>
-      <ul><li>A pattern-prediction tool — a force multiplier whose output quality depends on the person directing it.</li></ul>
-    </div>
-    <div class="hcai-card is-negative">
-      <h3>What AI Is Not</h3>
-      <ul><li>Not sentient, not accountable, not neutral — and not a substitute for expertise or trust.</li></ul>
-    </div>
-    <div class="hcai-card">
-      <h3>Ethics</h3>
-      <ul><li>Disclose AI use, respect attribution and consent, check for bias — the human owns the result.</li></ul>
-    </div>
-    <div class="hcai-card">
-      <h3>Governance</h3>
-      <ul><li>Human-in-the-loop for consequential decisions, documented workflows, written policy before rollout.</li></ul>
-    </div>
+  <figure class="trust-flow reveal">
+    <figcaption class="trust-flow-cap">How a value moves in my software</figcaption>
+    <ol class="trust-states">
+      <li class="trust-state is-proposed">
+        <svg class="trust-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="15" stroke-dasharray="3 5"/><path d="M15 20h10"/></svg>
+        <span class="trust-name">Proposed</span>
+        <span class="trust-desc">A model produced it, or nobody has signed it.</span>
+      </li>
+      <li class="trust-state is-attested">
+        <svg class="trust-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="15"/><path d="M13.5 20.5l4.5 4.5 8.5-9.5"/></svg>
+        <span class="trust-name">Attested</span>
+        <span class="trust-desc">A named person signed it, stated the grounds, and dated it.</span>
+      </li>
+      <li class="trust-state is-expired">
+        <svg class="trust-mark" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="16" stroke="none"/><path d="M20 5a15 15 0 1 1-15 15"/><path d="M20 12v8l5 3"/></svg>
+        <span class="trust-name">Expired</span>
+        <span class="trust-desc">The shelf life ran out. Re-check before relying on it.</span>
+      </li>
+    </ol>
+  </figure>
+
+  <div class="principles reveal">
+    <article class="principle">
+      <h3>Say when AI is involved</h3>
+      <p>Every value shows whether a named person attested it or it's still a model's proposal.</p>
+      <p class="principle-proof">Enforced in <a href="#project-eq-sop">Live Sound EQ SOP</a></p>
+    </article>
+    <article class="principle">
+      <h3>A model can propose; only a person can attest</h3>
+      <p>No code path turns machine output into human sign-off.</p>
+      <p class="principle-proof">Enforced in <a href="#project-ledger">attestation-ledger</a></p>
+    </article>
+    <article class="principle">
+      <h3>Trust has a shelf life</h3>
+      <p>An attestation fades unless someone re-checks it.</p>
+      <p class="principle-proof">Enforced in <a href="#project-ledger">attestation-ledger</a></p>
+    </article>
+    <article class="principle">
+      <h3>Teach people to check, not just to use</h3>
+      <p>Learners mark, check or rewrite real AI output.</p>
+      <p class="principle-proof">Enforced in <a href="#project-ai-literacy">Human-Centered AI Literacy</a></p>
+    </article>
   </div>
 </section>
 
