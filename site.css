@@ -706,156 +706,47 @@ footer { border-top-color: var(--line); color: var(--muted2); }
 .back-to-top { background: var(--nav-bg); backdrop-filter: blur(12px); border-color: var(--line-2); }
 
 /* ============================================================
-   HERO ARCADE — an arch-topped window onto a colonnade: six walls
-   standing one behind the other in real 3D space, a tiled floor
-   running back to a low sun. Decorative, text-free and hidden from
-   assistive tech. The pointer shifts the viewpoint a little and
-   scrolling walks you in (site.js and a scroll timeline); with
-   reduce motion on, it is a still picture.
-   Depths are in cqh, so the scene keeps its proportions at any size.
+   HERO DRUMHEAD — the site's own emblem: a drum drawn in three
+   dimensions on a canvas, with sand scattered on its head. Strike
+   it and the sand settles along the lines where the head stays
+   still (a Chladni figure, worked out from the real vibration
+   modes of a round drumhead). Rhythm turning into pattern is the
+   through-line from the music to the AI work. site.js draws it;
+   without script the block stays hidden. The pointer turns the
+   drum a little; with reduce motion on, the sand moves at once.
    ============================================================ */
-:root {
-  --arc-near: #0b0e15;                         /* wall in shade, nearest */
-  --arc-far:  #8a5a1e;                         /* wall lit by the sun, farthest */
-  --arc-sky-1: #0c1424;
-  --arc-sky-2: #1d4a52;
-  --arc-sun:  #ffc56b;
-  --arc-water: #0e2a33;
-  --arc-tile: rgba(232, 160, 48, 0.55);
-  --arc-inset: inset 0 0 0 1px rgba(255, 255, 255, 0.06), inset 0 -40px 60px -30px rgba(0, 0, 0, 0.7);
-}
-:root[data-theme="light"] {
-  --arc-near: oklch(0.80 0.045 74);
-  --arc-far:  oklch(0.935 0.055 88);
-  --arc-sky-1: oklch(0.80 0.05 215);
-  --arc-sky-2: oklch(0.90 0.06 95);
-  --arc-sun:  oklch(0.97 0.07 95);
-  --arc-water: oklch(0.72 0.06 200);
-  --arc-tile: oklch(0.453 0.094 76 / 0.5);
-  --arc-inset: inset 0 0 0 1px oklch(0.96 0.02 85 / 0.5), inset 0 -40px 60px -30px rgba(48, 32, 12, 0.25);
-}
 .hero-aside { margin-top: 40px; }
-.hero-arcade {
-  --px: 0;
-  --py: 0;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  container-type: size;
+.hero-drum { display: none; }
+.hero-drum.is-ready {
+  display: grid;
+  gap: 4px;
   width: min(100%, 400px);
-  aspect-ratio: 1;
-  border: 1px solid var(--line-2);
-  border-radius: 200px 200px 20px 20px;
-  background: var(--arc-sky-1);
-  box-shadow: var(--shadow);
-  opacity: 0;
-  animation: fadeUp .8s .85s ease forwards;
 }
-.hero-arcade::after {                          /* glass: a soft inner edge over the scene */
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: var(--arc-inset);
-  pointer-events: none;
-}
-.arcade-defs { position: absolute; }
-/* Sky, sun and water sit at infinity, so they follow the vanishing point */
-.arcade-sky {
-  position: absolute;
-  inset: 0;
-  transform-origin: 50% 64%;
-  scale: 1.3;
-  translate: calc(var(--px) * 7cqw) calc(var(--py) * 4cqh);
-  background:
-    radial-gradient(circle at 50% 64%, var(--arc-sun) 0 5cqh, transparent 5.3cqh),
-    repeating-radial-gradient(circle at 50% 64%, transparent 0 3.4cqh, color-mix(in oklab, var(--arc-sun) 30%, transparent) 3.4cqh 3.7cqh),
-    radial-gradient(circle at 50% 64%, color-mix(in oklab, var(--arc-sun) 60%, transparent), transparent 34cqh),
-    linear-gradient(180deg, var(--arc-sky-1) 12%, var(--arc-sky-2) 64%, var(--arc-water) 64.2%);
-  /* the rings fade out with distance from the sun */
-  transition: translate .6s var(--ease);
-}
-.arcade-view {
-  position: absolute;
-  inset: 0;
-  perspective: 140cqh;
-  perspective-origin: calc(50% + var(--px) * 7%) calc(64% + var(--py) * 4%);
-  transition: perspective-origin .6s var(--ease);
-}
-.arcade-world {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  height: 100%;
-  aspect-ratio: 4 / 5;
-  translate: -50% 0;
-  transform-style: preserve-3d;
-}
-.arcade-arch {
-  position: absolute;
-  inset: 0;
+.drum-canvas {
+  display: block;
   width: 100%;
-  height: 100%;
-  overflow: visible;
-  transform: translateZ(calc(var(--i) * -52cqh));
-  /* Atmospheric depth: walls warm toward the sun, line colour cools from amber to teal */
-  fill: color-mix(in oklab, var(--arc-near), var(--arc-far) calc(var(--i) * 18%));
-  color: color-mix(in oklab, var(--amber), var(--teal) calc(var(--i) * 17%));
+  aspect-ratio: 1 / 0.8;
+  cursor: pointer;
+  touch-action: manipulation;
 }
-.arcade-arch:nth-of-type(1) { --i: 0; }
-.arcade-arch:nth-of-type(2) { --i: 1; }
-.arcade-arch:nth-of-type(3) { --i: 2; }
-.arcade-arch:nth-of-type(4) { --i: 3; }
-.arcade-arch:nth-of-type(5) { --i: 4; }
-.arcade-arch:nth-of-type(6) { --i: 5; }
-/* The floor lies flat and runs away from you: ceramic tile, lighter toward the sun */
-.arcade-floor {
-  position: absolute;
-  left: -200%;
-  width: 500%;
-  bottom: 0;
-  height: 330cqh;
-  transform-origin: 50% 100%;
-  transform: rotateX(90deg);
-  background: linear-gradient(0deg, var(--arc-near), color-mix(in oklab, var(--arc-near), var(--arc-far) 80%) 85%);
+.drum-controls { display: grid; gap: 10px; justify-items: start; padding: 0 4px; }
+.drum-strike {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--muted2);
+  border-radius: var(--pill);
+  background: transparent;
+  color: var(--text);
+  font: 500 15px/1 var(--sans);
+  cursor: pointer;
+  transition: border-color .2s, color .2s, background .2s;
 }
-.arcade-floor::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--arc-tile);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M40 2 78 40 40 78 2 40Z'/%3E%3Ccircle cx='40' cy='40' r='11'/%3E%3Cpath d='M0 0h80v80H0z' stroke-width='1.5'/%3E%3Ccircle cx='0' cy='0' r='7'/%3E%3Ccircle cx='80' cy='0' r='7'/%3E%3Ccircle cx='0' cy='80' r='7'/%3E%3Ccircle cx='80' cy='80' r='7'/%3E%3C/svg%3E") 50% 100% / 26cqh 26cqh;
-          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' fill='none' stroke='%23000' stroke-width='2'%3E%3Cpath d='M40 2 78 40 40 78 2 40Z'/%3E%3Ccircle cx='40' cy='40' r='11'/%3E%3Cpath d='M0 0h80v80H0z' stroke-width='1.5'/%3E%3Ccircle cx='0' cy='0' r='7'/%3E%3Ccircle cx='80' cy='0' r='7'/%3E%3Ccircle cx='0' cy='80' r='7'/%3E%3Ccircle cx='80' cy='80' r='7'/%3E%3C/svg%3E") 50% 100% / 26cqh 26cqh;
-}
-
-/* Scrolling walks you a few steps into the arcade. On a wide screen the window
-   is in view from the start, so the walk follows the first stretch of the page;
-   on a phone it sits further down, so the walk follows the window itself as it
-   climbs the top third of the screen. */
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .arcade-world {
-      animation: dp-arcade-walk linear both;
-      animation-timeline: view(block 30% 0%);
-      animation-range: exit-crossing 0% exit-crossing 100%;
-    }
-    @media (min-width: 1024px) {
-      .arcade-world {
-        animation-timeline: scroll(root);
-        animation-range: 0 70vh;
-      }
-    }
-    @keyframes dp-arcade-walk { to { transform: translateZ(46cqh); } }
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-arcade { opacity: 1; animation: none; }
-  .arcade-sky, .arcade-view { transition: none; }
-}
+.drum-strike:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+.drum-note { margin: 0; font-size: 14px; line-height: 1.5; color: var(--muted2); }
 
 /* ============================================================
-   HERO BENTO — on wide screens the arcade, status and contacts
-   stack in one arch-topped glass card on the right.
+   HERO BENTO — on wide screens the drumhead, status and contacts
+   stack in one glass card on the right.
    ============================================================ */
 @media (min-width: 1024px) {
   .hero-inner {
@@ -882,7 +773,7 @@ footer { border-top-color: var(--line); color: var(--muted2); }
     margin: 0;
     padding: 10px 10px 14px;
     border: 1px solid var(--line-2);
-    border-radius: 180px 180px 28px 28px;
+    border-radius: 28px;
     background:
       radial-gradient(120% 60% at 100% 0%, var(--glow-a), transparent 60%),
       radial-gradient(100% 50% at 0% 100%, var(--glow-t), transparent 60%),
@@ -891,14 +782,7 @@ footer { border-top-color: var(--line); color: var(--muted2); }
     box-shadow: var(--shadow);
     animation: fadeUp .8s .3s ease both;
   }
-  .hero-arcade {
-    width: 100%;
-    aspect-ratio: 4 / 4.7;
-    border-radius: 170px 170px 18px 18px;
-    box-shadow: none;
-    opacity: 1;
-    animation: none;
-  }
+  .hero-drum.is-ready { width: 100%; }
   .hero-status {
     margin: 0 4px;
     padding: 10px 14px;
@@ -959,56 +843,51 @@ footer::before {
 }
 
 /* ============================================================
-   SKYLINE — a river city above the footer, drawn in outline: far
-   hills, the domed hall and bathhouse, and a chain bridge in
-   front. Three layers (art/skyline-*.svg, used as masks so each
-   takes its colour from the theme). As it scrolls into view the
-   far layers rise a little more slowly than the near one, which
-   is how distance looks from a moving tram. Decorative.
+   SCORE — above the footer, the site's story in one line: a drum
+   beat written on a staff, the staff lines pulling together into
+   a sound wave, the wave feeding a network that ends at a person.
+   Two layers (art/score-*.svg, used as masks so each takes its
+   colour from the theme). It is drawn from left to right as it
+   scrolls into view. Decorative.
    ============================================================ */
-.skyline {
+.score {
   position: relative;
   flex: none;
   order: -2;
   width: calc(100% + 80px);
   margin: 0 -40px 28px;
-  /* the drawings are 1600 x 300 and never shrink below 900px wide */
-  height: max(18.75vw, 169px);
+  /* the drawings are 1200 x 200 and never shrink below 720px wide */
+  height: max(16.667vw, 120px);
   pointer-events: none;
 }
-.skyline i {
+.score i {
   position: absolute;
   inset: 0;
-  -webkit-mask: var(--art) 50% 100% / max(100%, 900px) auto no-repeat;
-          mask: var(--art) 50% 100% / max(100%, 900px) auto no-repeat;
+  -webkit-mask: var(--art) 50% 50% / max(100%, 720px) auto no-repeat;
+          mask: var(--art) 50% 50% / max(100%, 720px) auto no-repeat;
 }
-.skyline-far   { --art: url("art/skyline-far.svg");   background: color-mix(in oklab, var(--teal) 62%, transparent); }
-.skyline-mid   { --art: url("art/skyline-mid.svg");   background: linear-gradient(90deg, color-mix(in oklab, var(--amber) 70%, var(--teal)), var(--amber) 50%, color-mix(in oklab, var(--amber) 70%, var(--teal))); }
-.skyline-front { --art: url("art/skyline-front.svg"); background: linear-gradient(90deg, var(--amber), color-mix(in oklab, var(--amber) 45%, var(--teal)) 45%, var(--teal)); opacity: .9; }
+.score-back  { --art: url("art/score-back.svg");  background: linear-gradient(90deg, color-mix(in oklab, var(--amber) 55%, transparent), color-mix(in oklab, var(--teal) 75%, transparent) 60%); }
+.score-front { --art: url("art/score-front.svg"); background: linear-gradient(90deg, var(--amber) 35%, var(--teal)); }
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
-    .skyline-far, .skyline-mid {
-      animation: dp-skyline-rise linear both;
+    .score {
+      animation: dp-score-draw linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 100%;
     }
-    .skyline-far { --rise: 26px; }
-    .skyline-mid { --rise: 11px; }
-    @keyframes dp-skyline-rise { from { transform: translateY(var(--rise)); } }
+    @keyframes dp-score-draw { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
   }
-}
-@media (max-width: 900px) {
-  .skyline { width: calc(100% + 80px); }
 }
 
 /* ============================================================
    RHYTHM & DETAIL
    ============================================================ */
-/* Section breaks: a chain-bridge span in miniature. Two cables hang from a
-   ceramic rosette to the page edges and fade out; drawn once as a mask, so
-   the amber-to-teal wash shows through it in either theme. Decorative. */
+/* Section breaks: one drum hit. A quiet line, a strike in the centre that
+   rings out both ways, and quiet again. Drawn once as a mask (the path comes
+   from art/build-score.py), so the amber-to-teal wash shows through it in
+   either theme. Decorative. */
 .divider {
-  --orn: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 32' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M0 9Q60 9 98 16M240 9Q180 9 142 16M0 15Q60 15 98 20M240 15Q180 15 142 20' opacity='.9'/%3E%3Cpath d='M14 9v6M34 9v6M54 10v6M74 12v6M226 9v6M206 9v6M186 10v6M166 12v6' stroke-width='1'/%3E%3Ccircle cx='120' cy='16' r='13'/%3E%3Ccircle cx='120' cy='16' r='4'/%3E%3Cpath d='M120 3v9M120 20v9M107 16h9M124 16h9M110.800 6.800l6.300 6.300M122.900 18.900l6.300 6.300M129.200 6.800l-6.300 6.300M117.100 18.900l-6.300 6.300'/%3E%3Cpath d='M98 12v10M142 12v10' stroke-width='2'/%3E%3C/svg%3E");
+  --orn: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 32' fill='none' stroke='%23000' stroke-width='1.5' stroke-linejoin='round'%3E%3Cpath d='M0 15.9L1 16L2 16.1L3 16.1L4 16.1L5 16L6 15.9L7 15.8L8 15.8L9 15.9L10 16L11 16.2L12 16.2L13 16.2L14 16L15 15.9L16 15.8L17 15.8L18 15.9L19 16L20 16.2L21 16.3L22 16.2L23 16.1L24 15.8L25 15.7L26 15.7L27 15.8L28 16.1L29 16.3L30 16.4L31 16.3L32 16.1L33 15.8L34 15.6L35 15.5L36 15.7L37 16.1L38 16.4L39 16.6L40 16.5L41 16.1L42 15.7L43 15.4L44 15.3L45 15.6L46 16.1L47 16.6L48 16.8L49 16.6L50 16.2L51 15.5L52 15.1L53 15.1L54 15.5L55 16.2L56 16.8L57 17.2L58 16.9L59 16.2L60 15.4L61 14.7L62 14.7L63 15.3L64 16.3L65 17.2L66 17.6L67 17.3L68 16.3L69 15.1L70 14.2L71 14.1L72 15L73 16.4L74 17.7L75 18.3L76 17.8L77 16.4L78 14.7L79 13.5L80 13.4L81 14.5L82 16.5L83 18.4L84 19.3L85 18.6L86 16.6L87 14.2L88 12.4L89 12.3L90 13.9L91 16.7L92 19.4L93 20.6L94 19.7L95 16.9L96 13.4L97 11L98 10.8L99 13.1L100 17L101 20.8L102 22.5L103 21.2L104 17.2L105 12.3L106 8.9L107 8.6L108 11.9L109 17.5L110 22.8L111 25.2L112 23.3L113 17.7L114 10.8L115 5.9L116 5.5L117 10.2L118 18.1L119 25.6L120 29L121 25.6L122 18.1L123 10.2L124 5.5L125 5.9L126 10.8L127 17.7L128 23.3L129 25.2L130 22.8L131 17.5L132 11.9L133 8.6L134 8.9L135 12.3L136 17.2L137 21.2L138 22.5L139 20.8L140 17L141 13.1L142 10.8L143 11L144 13.4L145 16.9L146 19.7L147 20.6L148 19.4L149 16.7L150 13.9L151 12.3L152 12.4L153 14.2L154 16.6L155 18.6L156 19.3L157 18.4L158 16.5L159 14.5L160 13.4L161 13.5L162 14.7L163 16.4L164 17.8L165 18.3L166 17.7L167 16.4L168 15L169 14.1L170 14.2L171 15.1L172 16.3L173 17.3L174 17.6L175 17.2L176 16.3L177 15.3L178 14.7L179 14.7L180 15.4L181 16.2L182 16.9L183 17.2L184 16.8L185 16.2L186 15.5L187 15.1L188 15.1L189 15.5L190 16.2L191 16.6L192 16.8L193 16.6L194 16.1L195 15.6L196 15.3L197 15.4L198 15.7L199 16.1L200 16.5L201 16.6L202 16.4L203 16.1L204 15.7L205 15.5L206 15.6L207 15.8L208 16.1L209 16.3L210 16.4L211 16.3L212 16.1L213 15.8L214 15.7L215 15.7L216 15.8L217 16.1L218 16.2L219 16.3L220 16.2L221 16L222 15.9L223 15.8L224 15.8L225 15.9L226 16L227 16.2L228 16.2L229 16.2L230 16L231 15.9L232 15.8L233 15.8L234 15.9L235 16L236 16.1L237 16.1L238 16.1L239 16L240 15.9'/%3E%3C/svg%3E");
   width: min(1100px, calc(100% - 80px));
   height: 32px;
   opacity: 1;
@@ -1018,16 +897,12 @@ footer::before {
               color-mix(in oklab, var(--teal) 70%, transparent) 70%, transparent);
   -webkit-mask:
     var(--orn) 50% 50% / 240px 32px no-repeat,
-    linear-gradient(#000 0 0) 0 9px / calc(50% - 120px) 1.5px no-repeat,
-    linear-gradient(#000 0 0) 100% 9px / calc(50% - 120px) 1.5px no-repeat,
-    linear-gradient(#000 0 0) 0 15px / calc(50% - 120px) 1.5px no-repeat,
-    linear-gradient(#000 0 0) 100% 15px / calc(50% - 120px) 1.5px no-repeat;
+    linear-gradient(#000 0 0) 0 50% / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 100% 50% / calc(50% - 120px) 1.5px no-repeat;
           mask:
     var(--orn) 50% 50% / 240px 32px no-repeat,
-    linear-gradient(#000 0 0) 0 9px / calc(50% - 120px) 1.5px no-repeat,
-    linear-gradient(#000 0 0) 100% 9px / calc(50% - 120px) 1.5px no-repeat,
-    linear-gradient(#000 0 0) 0 15px / calc(50% - 120px) 1.5px no-repeat,
-    linear-gradient(#000 0 0) 100% 15px / calc(50% - 120px) 1.5px no-repeat;
+    linear-gradient(#000 0 0) 0 50% / calc(50% - 120px) 1.5px no-repeat,
+    linear-gradient(#000 0 0) 100% 50% / calc(50% - 120px) 1.5px no-repeat;
 }
 
 /* The proof bar has no bottom padding, so its rule needs its own air */
