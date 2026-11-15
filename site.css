@@ -25,7 +25,6 @@
   --line-2:    rgba(255, 255, 255, 0.16);
   --hi:        rgba(255, 255, 255, 0.05);
   --glow-a:    rgba(232, 160, 48, 0.14);
-  --glow-t:    rgba(45, 212, 191, 0.10);
   --spot:      rgba(232, 160, 48, 0.06);
   --shadow:    inset 0 1px 0 var(--hi), 0 24px 48px -32px rgba(0, 0, 0, 0.8);
   --nav-bg:    rgba(12, 15, 22, 0.66);
@@ -75,7 +74,6 @@
   --line-2:    rgba(20, 17, 14, 0.20);
   --hi:        oklch(0.955 0.018 84 / 0.7);     /* warm cream tint, not white */
   --glow-a:    rgba(232, 160, 48, 0.20);
-  --glow-t:    rgba(45, 212, 191, 0.14);
   --spot:      rgba(119, 81, 10, 0.05);
   --shadow:    0 1px 2px rgba(20, 17, 14, 0.05), 0 24px 48px -32px rgba(20, 17, 14, 0.30);
   --nav-bg:    oklch(0.91 0.025 80 / 0.8);
@@ -127,11 +125,12 @@ body::after {
   z-index: 0;
 }
 main, footer { position: relative; z-index: 1; }
+/* One warm glow at the top only. The teal glows that sat on the left edge and in
+   the bottom corner were taken out (David, 2026-11-15): a tint creeping in from a
+   screen corner can look like a fault in the monitor. */
 body::before {
   background:
-    radial-gradient(60vw 50vh at 85% -5%, var(--glow-a), transparent 70%),
-    radial-gradient(50vw 45vh at -5% 35%, var(--glow-t), transparent 70%),
-    radial-gradient(40vw 40vh at 100% 100%, var(--glow-t), transparent 70%);
+    radial-gradient(60vw 50vh at 85% -5%, var(--glow-a), transparent 70%);
   background-size: auto;
 }
 .hero-glow, .contact-glow { display: none; }
@@ -262,8 +261,9 @@ nav {
   @keyframes dp-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 }
 
-/* Collapse earlier than before: eight links + CTA need ~1100px without wrapping */
-@media (max-width: 1100px) {
+/* Collapse earlier than before: eight links + CTA need ~1140px with room to
+   breathe (measured: at 1101px the logo, links and button touched) */
+@media (max-width: 1180px) {
   .nav-links, .nav-cta { display: none; }
   .nav-toggle { display: flex; }
   .theme-toggle { margin-left: auto; margin-right: 4px; }
@@ -391,7 +391,7 @@ html:has(nav.open) { overflow: hidden; }
 .edu-card,
 .lesson-card,
 .pillar,
-.hcai-card,
+.principle,
 .contact-link,
 .cta-band,
 .projects-note {
@@ -422,7 +422,7 @@ html:has(nav.open) { overflow: hidden; }
 .edu-card:hover,
 .lesson-card:hover,
 .pillar:hover,
-.hcai-card:hover,
+.principle:hover,
 .contact-link:hover {
   background:
     radial-gradient(420px circle at var(--mx, 50%) var(--my, -400px), var(--spot), transparent 60%),
@@ -437,7 +437,7 @@ html:has(nav.open) { overflow: hidden; }
 .edu-card::after,
 .lesson-card::after,
 .pillar::after,
-.hcai-card::after,
+.principle::after,
 .contact-link::after {
   content: '';
   display: block;
@@ -463,18 +463,16 @@ html:has(nav.open) { overflow: hidden; }
 .edu-card:hover::after,
 .lesson-card:hover::after,
 .pillar:hover::after,
-.hcai-card:hover::after,
+.principle:hover::after,
 .contact-link:hover::after { opacity: 1; }
 
 /* Accent cards: left rule becomes an inset line that follows the radius */
 .pillar,
-.hcai-card,
 .projects-note {
   border-left: 1px solid var(--line);
   border-radius: var(--r);
   box-shadow: inset 3px 0 0 var(--amber), var(--shadow);
 }
-.hcai-card:not(.is-negative),
 .projects-note { box-shadow: inset 3px 0 0 var(--teal), var(--shadow); }
 .pillar:hover { box-shadow: inset 3px 0 0 var(--teal), var(--shadow); }
 
@@ -537,7 +535,6 @@ html:has(nav.open) { overflow: hidden; }
   border-left: 1px solid var(--line);
   background:
     radial-gradient(600px circle at 0% 0%, var(--glow-a), transparent 60%),
-    radial-gradient(500px circle at 100% 100%, var(--glow-t), transparent 60%),
     var(--card);
 }
 .cta-band-title { font-family: var(--sans); font-weight: 600; letter-spacing: -0.02em; font-size: 24px; }
@@ -776,7 +773,6 @@ footer { border-top-color: var(--line); color: var(--muted2); }
     border-radius: 28px;
     background:
       radial-gradient(120% 60% at 100% 0%, var(--glow-a), transparent 60%),
-      radial-gradient(100% 50% at 0% 100%, var(--glow-t), transparent 60%),
       var(--card);
     backdrop-filter: blur(16px);
     box-shadow: var(--shadow);
@@ -982,29 +978,133 @@ footer::before {
   .exp-item::before { top: 38px; }
 }
 
-/* AI principles: a symbol as well as a colour marks "is" against "is not" */
-.hcai-card h3::before {
-  content: "✓";
-  content: "✓" / "";
-  flex: none;
-  display: inline-grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  font-family: system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--teal);
-  background: var(--teal-dim);
-  border: 1px solid color-mix(in oklab, var(--teal) 40%, transparent);
+/* ============================================================
+   HUMAN-CENTERED AI — the record's three states, then four
+   principles, each naming the project that enforces it. A state
+   shows by its mark's shape (dashed, check, broken ring) and its
+   name, not by colour alone.
+   ============================================================ */
+.trust-flow { margin: 8px 0 28px; }
+.trust-flow-cap {
+  margin-bottom: 14px;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted2);
 }
-.hcai-card.is-negative h3::before {
-  content: "✕";
-  content: "✕" / "";
+.trust-states {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* The line a value travels, behind the marks */
+.trust-states::before {
+  content: '';
+  position: absolute;
+  top: 21px;
+  left: 22px;
+  right: calc(33.333% - 6px);
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--amber), var(--teal) 55%, var(--muted2));
+  transform-origin: left;
+}
+.trust-state { position: relative; display: grid; gap: 4px; justify-items: start; }
+.trust-mark {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 8px;
+  fill: var(--bg);
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.trust-mark path { fill: none; }
+.is-proposed { color: var(--amber); }
+.is-attested { color: var(--teal); }
+.is-expired  { color: var(--muted2); }
+.trust-name { font-family: var(--sans); font-weight: 600; font-size: 19px; color: var(--white); }
+.trust-desc { font-size: 15px; line-height: 1.55; color: var(--muted2); max-width: 30ch; }
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .trust-states::before {
+      animation: dp-trust-line linear both;
+      animation-timeline: view();
+      animation-range: entry 40% cover 45%;
+    }
+    @keyframes dp-trust-line { from { transform: scaleX(0); } }
+  }
+}
+@media (max-width: 640px) {
+  .trust-states { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .trust-states::before { top: 22px; bottom: 22px; left: 21px; right: auto; width: 2px; height: auto; transform-origin: top;
+    background: linear-gradient(180deg, var(--amber), var(--teal) 55%, var(--muted2)); }
+  .trust-state { grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; }
+  .trust-mark { grid-row: 1 / span 2; margin: 0; }
+  .trust-name, .trust-desc { grid-column: 2; }
+  @keyframes dp-trust-line { from { transform: scaleY(0); } }
+}
+
+.principles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.principle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 26px 28px 18px;
+  border-left: 1px solid var(--line);
+  box-shadow: inset 3px 0 0 var(--teal), var(--shadow);
+}
+.principle h3 { margin: 0; font-size: 20px; line-height: 1.3; color: var(--white); }
+.principle > p { margin: 0; font-size: 16px; line-height: 1.6; color: var(--text); }
+.principle > p.principle-proof {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted2);
+}
+.principle-proof a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--amber);
-  background: var(--amber-dim);
-  border-color: color-mix(in oklab, var(--amber) 40%, transparent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.principle-proof a::after { content: '↑'; content: '↑' / ''; font-weight: 400; }
+.principle-proof a:hover { text-decoration-thickness: 2px; }
+.principle-proof a:focus-visible { border-radius: 6px; }
+@media (max-width: 768px) {
+  .principles { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Arriving from a principle's link: the project card it names lights up once */
+.project-card:target { border-color: var(--amber); }
+@media (prefers-reduced-motion: no-preference) {
+  .project-card:target { animation: dp-target 1.6s var(--ease) 1; }
+  @keyframes dp-target { from { box-shadow: 0 0 0 6px color-mix(in oklab, var(--amber) 35%, transparent), var(--shadow); } }
 }
 
 /* Contact: email is the main way in, so it leads */
@@ -1184,7 +1284,6 @@ h1:not(.hero-name) em {
   border-radius: 32px;
   background:
     radial-gradient(700px circle at 0% 0%, var(--glow-a), transparent 60%),
-    radial-gradient(600px circle at 100% 100%, var(--glow-t), transparent 60%),
     var(--card-2);
   box-shadow: var(--shadow);
 }
