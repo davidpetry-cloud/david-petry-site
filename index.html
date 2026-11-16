@@ -50,7 +50,7 @@
 }
 </script>
 <meta name="color-scheme" content="dark light">
-<script>(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
+<script>document.documentElement.classList.add('js');(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
@@ -274,7 +274,7 @@
   <div class="projects-grid reveal">
     <div class="project-card">
       <div class="project-kind">Curriculum · Live</div>
-      <h3>Singapore Math — Grade 6</h3>
+      <h3 id="project-1-title">Singapore Math — Grade 6</h3>
       <p>
         A full-year, 149-day Grade 6 math curriculum built on the Singapore
         Math CPA (Concrete–Pictorial–Abstract) method, across 10 units with
@@ -285,14 +285,14 @@
       </p>
       <div class="project-meta">Curriculum Designer &amp; Developer: David Petry, developed in collaboration with Claude (Anthropic)</div>
       <div class="project-links">
-        <a class="primary" href="https://davidpetry-cloud.github.io/grade6-singapore-math-cpa/singapore-math-6-hub.html" target="_blank" rel="noopener">Live site</a>
-        <a href="https://github.com/davidpetry-cloud/grade6-singapore-math-cpa" target="_blank" rel="noopener">Source</a>
+        <a id="project-1-link-1" aria-labelledby="project-1-link-1 project-1-title" class="primary" href="https://davidpetry-cloud.github.io/grade6-singapore-math-cpa/singapore-math-6-hub.html" target="_blank" rel="noopener">Live site</a>
+        <a id="project-1-link-2" aria-labelledby="project-1-link-2 project-1-title" href="https://github.com/davidpetry-cloud/grade6-singapore-math-cpa" target="_blank" rel="noopener">Source</a>
       </div>
     </div>
 
     <div class="project-card" id="project-ai-literacy">
       <div class="project-kind">Curriculum · Live</div>
-      <h3>Human-Centered AI Literacy</h3>
+      <h3 id="project-2-title">Human-Centered AI Literacy</h3>
       <p>
         A twelve-lesson AI literacy course for educators, professionals and
         students: how a model works, how to check what it says, how to judge
@@ -305,14 +305,14 @@
       </p>
       <div class="project-meta">Curriculum Designer &amp; Developer: David Petry, developed in collaboration with Claude (Anthropic)</div>
       <div class="project-links">
-        <a class="primary" href="https://davidpetry-cloud.github.io/ai-literacy-module/" target="_blank" rel="noopener">Live site</a>
-        <a href="https://github.com/davidpetry-cloud/ai-literacy-module" target="_blank" rel="noopener">Source</a>
+        <a id="project-2-link-1" aria-labelledby="project-2-link-1 project-2-title" class="primary" href="https://davidpetry-cloud.github.io/ai-literacy-module/" target="_blank" rel="noopener">Live site</a>
+        <a id="project-2-link-2" aria-labelledby="project-2-link-2 project-2-title" href="https://github.com/davidpetry-cloud/ai-literacy-module" target="_blank" rel="noopener">Source</a>
       </div>
     </div>
 
     <div class="project-card" id="project-ledger">
       <div class="project-kind">npm package · MIT</div>
-      <h3>attestation-ledger</h3>
+      <h3 id="project-3-title">attestation-ledger</h3>
       <p>
         A provenance engine for expert assertions. Every value carries who
         asserted it, what grounds it, and when — and status is derived from that
@@ -323,14 +323,14 @@
       </p>
       <div class="project-meta">JavaScript · zero dependencies · 21 tests · CI</div>
       <div class="project-links">
-        <a class="primary" href="https://www.npmjs.com/package/attestation-ledger" target="_blank" rel="noopener">npm</a>
-        <a href="https://github.com/davidpetry-cloud/attestation-ledger" target="_blank" rel="noopener">Source</a>
+        <a id="project-3-link-1" aria-labelledby="project-3-link-1 project-3-title" class="primary" href="https://www.npmjs.com/package/attestation-ledger" target="_blank" rel="noopener">npm</a>
+        <a id="project-3-link-2" aria-labelledby="project-3-link-2 project-3-title" href="https://github.com/davidpetry-cloud/attestation-ledger" target="_blank" rel="noopener">Source</a>
       </div>
     </div>
 
     <div class="project-card" id="project-eq-sop">
       <div class="project-kind">Web app · Live</div>
-      <h3>Live Sound EQ SOP</h3>
+      <h3 id="project-4-title">Live Sound EQ SOP</h3>
       <p>
         A field reference for front-of-house audio engineers — channel EQ
         starting points and aux routing for an Allen &amp; Heath MixWizard WZ3.
@@ -340,14 +340,14 @@
       </p>
       <div class="project-meta">JavaScript · 68 tests · GitHub Actions · Netlify</div>
       <div class="project-links">
-        <a class="primary" href="https://davidpetry-cloud.github.io/live-sound-eq-sop/" target="_blank" rel="noopener">Live site</a>
-        <a href="https://github.com/davidpetry-cloud/live-sound-eq-sop" target="_blank" rel="noopener">Source</a>
+        <a id="project-4-link-1" aria-labelledby="project-4-link-1 project-4-title" class="primary" href="https://davidpetry-cloud.github.io/live-sound-eq-sop/" target="_blank" rel="noopener">Live site</a>
+        <a id="project-4-link-2" aria-labelledby="project-4-link-2 project-4-title" href="https://github.com/davidpetry-cloud/live-sound-eq-sop" target="_blank" rel="noopener">Source</a>
       </div>
     </div>
 
     <div class="project-card">
       <div class="project-kind">Web app · Live</div>
-      <h3>DJ Mixing SOP</h3>
+      <h3 id="project-5-title">DJ Mixing SOP</h3>
       <p>
         Procedures for running a DJ source through a two-sub, two-main FOH rig —
         patching, gain staging, matching mismatched subwoofers by ear, and
@@ -357,8 +357,8 @@
       </p>
       <div class="project-meta">JavaScript · 18 tests · GitHub Actions · Netlify</div>
       <div class="project-links">
-        <a class="primary" href="https://dj-mixing-sop.netlify.app" target="_blank" rel="noopener">Live site</a>
-        <a href="https://github.com/davidpetry-cloud/dj-mixing-sop" target="_blank" rel="noopener">Source</a>
+        <a id="project-5-link-1" aria-labelledby="project-5-link-1 project-5-title" class="primary" href="https://dj-mixing-sop.netlify.app" target="_blank" rel="noopener">Live site</a>
+        <a id="project-5-link-2" aria-labelledby="project-5-link-2 project-5-title" href="https://github.com/davidpetry-cloud/dj-mixing-sop" target="_blank" rel="noopener">Source</a>
       </div>
     </div>
 
@@ -548,21 +548,21 @@
   <div class="lessons-grid reveal">
     <div class="lesson-card">
       <div class="lesson-meta">Percussion</div>
-      <h3>Private Percussion Lessons</h3>
+      <h3 id="lesson-1-title">Private Percussion Lessons</h3>
       <p>One-on-one drum set instruction for any skill level — technique, groove, reading, improvisation, and performance preparation, built around an individualized curriculum.</p>
-      <a href="mailto:davidpetry@gmail.com?subject=Private%20Percussion%20Lessons" class="btn-book">Book a session →</a>
+      <a href="mailto:davidpetry@gmail.com?subject=Private%20Percussion%20Lessons" class="btn-book" id="lesson-1-book" aria-labelledby="lesson-1-book lesson-1-title">Book a session →</a>
     </div>
     <div class="lesson-card">
       <div class="lesson-meta">Instruction</div>
-      <h3>Music Lessons</h3>
+      <h3 id="lesson-2-title">Music Lessons</h3>
       <p>General music instruction including theory, jazz harmony, ear training, and instrument fundamentals — for students, hobbyists, and working musicians alike.</p>
-      <a href="mailto:davidpetry@gmail.com?subject=Music%20Lessons" class="btn-book">Book a session →</a>
+      <a href="mailto:davidpetry@gmail.com?subject=Music%20Lessons" class="btn-book" id="lesson-2-book" aria-labelledby="lesson-2-book lesson-2-title">Book a session →</a>
     </div>
     <div class="lesson-card">
       <div class="lesson-meta">Production</div>
-      <h3>Audio Consultations</h3>
+      <h3 id="lesson-3-title">Audio Consultations</h3>
       <p>Studio workflow, mixing and mastering review, Logic Pro setup, and AI-assisted production guidance — for musicians and producers refining their sound.</p>
-      <a href="mailto:davidpetry@gmail.com?subject=Audio%20Consultation" class="btn-book">Book a session →</a>
+      <a href="mailto:davidpetry@gmail.com?subject=Audio%20Consultation" class="btn-book" id="lesson-3-book" aria-labelledby="lesson-3-book lesson-3-title">Book a session →</a>
     </div>
   </div>
 </section>
@@ -609,6 +609,7 @@
   <span>© 2026 David Petry</span>
   <span class="accent">Human-Centered AI Implementation</span>
   <span>Built with Claude Code</span>
+  <a href="#hero" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
 </footer>
 
 <script>
@@ -700,7 +701,6 @@ document.addEventListener('keydown', e => {
 const scrollProgress = document.getElementById('scrollProgress');
 
 window.addEventListener('scroll', () => {
-  // Looked up here: the button comes after this script in the page
   const backToTop = document.getElementById('backToTop');
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -717,7 +717,6 @@ window.addEventListener('scroll', () => {
 });
 </script>
 
-<a href="#hero" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
 
 <script>
 (function(){

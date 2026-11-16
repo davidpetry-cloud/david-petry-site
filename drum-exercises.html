@@ -13,16 +13,16 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="dark light">
-<script>(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
+<script>document.documentElement.classList.add('js');(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <nav class="mini-nav" aria-label="Site">
-  <a href="index.html" class="mini-logo" aria-label="David Petry home">DP</a>
+  <a href="index.html" class="mini-logo" aria-label="DP, David Petry home">DP</a>
   <ul class="mini-links">
     <li><a href="music.html">Music</a></li>
-    <li><a href="drum-exercises.html" class="current">Exercises</a></li>
+    <li><a href="drum-exercises.html" class="current" aria-current="page">Exercises</a></li>
     <li><a href="index.html#lessons" class="mini-cta">Book a Session</a></li>
     <li><button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light theme"><span aria-hidden="true">&#9728;</span></button></li>
   </ul>
@@ -92,7 +92,7 @@
   <div id="drumset" class="ex-panel active reveal" role="tabpanel" aria-labelledby="tab-drumset">
     <div class="ex-category">
       <div class="ex-category-header">
-        <span class="ex-category-title">Rock & Funk</span>
+        <span class="ex-category-title" role="heading" aria-level="2">Rock & Funk</span>
         <span class="ex-count">7 exercises</span>
       </div>
       <div class="ex-grid">
@@ -107,7 +107,7 @@
     </div>
     <div class="ex-category">
       <div class="ex-category-header">
-        <span class="ex-category-title">Jazz</span>
+        <span class="ex-category-title" role="heading" aria-level="2">Jazz</span>
         <span class="ex-count">3 exercises</span>
       </div>
       <div class="ex-grid">
@@ -118,7 +118,7 @@
     </div>
     <div class="ex-category">
       <div class="ex-category-header">
-        <span class="ex-category-title">Blues</span>
+        <span class="ex-category-title" role="heading" aria-level="2">Blues</span>
         <span class="ex-count">1 exercise</span>
       </div>
       <div class="ex-grid">
@@ -127,7 +127,7 @@
     </div>
     <div class="ex-category">
       <div class="ex-category-header">
-        <span class="ex-category-title">Latin</span>
+        <span class="ex-category-title" role="heading" aria-level="2">Latin</span>
         <span class="ex-count">5 exercises</span>
       </div>
       <div class="ex-grid">
@@ -142,14 +142,14 @@
 
   <div id="snare" class="ex-panel reveal" role="tabpanel" aria-labelledby="tab-snare">
     <div class="ex-category">
-      <div class="ex-category-header"><span class="ex-category-title">Roll Rudiments</span><span class="ex-count">2 exercises</span></div>
+      <div class="ex-category-header"><span class="ex-category-title" role="heading" aria-level="2">Roll Rudiments</span><span class="ex-count">2 exercises</span></div>
       <div class="ex-grid">
         <a href="https://david-petry.netlify.app/snare-exercises/ROLL RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Roll Rudiments</span><span class="ex-dl">PDF ↓</span></a>
         <a href="https://david-petry.netlify.app/snare-exercises/16th Notes with Accents with Roll.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Notes with Accents & Roll</span><span class="ex-dl">PDF ↓</span></a>
       </div>
     </div>
     <div class="ex-category">
-      <div class="ex-category-header"><span class="ex-category-title">Diddle Rudiments</span><span class="ex-count">4 exercises</span></div>
+      <div class="ex-category-header"><span class="ex-category-title" role="heading" aria-level="2">Diddle Rudiments</span><span class="ex-count">4 exercises</span></div>
       <div class="ex-grid">
         <a href="https://david-petry.netlify.app/snare-exercises/DIDDLE RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Diddle Rudiments</span><span class="ex-dl">PDF ↓</span></a>
         <a href="https://david-petry.netlify.app/snare-exercises/16 th Notes Accents and Diddlles.pdf" class="ex-item"><span class="ex-item-name">Sixteenth Notes: Accents & Diddles</span><span class="ex-dl">PDF ↓</span></a>
@@ -158,14 +158,14 @@
       </div>
     </div>
     <div class="ex-category">
-      <div class="ex-category-header"><span class="ex-category-title">Drag & Flam Rudiments</span><span class="ex-count">2 exercises</span></div>
+      <div class="ex-category-header"><span class="ex-category-title" role="heading" aria-level="2">Drag & Flam Rudiments</span><span class="ex-count">2 exercises</span></div>
       <div class="ex-grid">
         <a href="https://david-petry.netlify.app/snare-exercises/DRAG RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Drag Rudiments</span><span class="ex-dl">PDF ↓</span></a>
         <a href="https://david-petry.netlify.app/snare-exercises/FLAM RUDIMENTS.pdf" class="ex-item"><span class="ex-item-name">Flam Rudiments</span><span class="ex-dl">PDF ↓</span></a>
       </div>
     </div>
     <div class="ex-category">
-      <div class="ex-category-header"><span class="ex-category-title">Note Duration</span><span class="ex-count">6 exercises</span></div>
+      <div class="ex-category-header"><span class="ex-category-title" role="heading" aria-level="2">Note Duration</span><span class="ex-count">6 exercises</span></div>
       <div class="ex-grid">
         <a href="https://david-petry.netlify.app/snare-exercises/SNARE Quarter Notes.pdf" class="ex-item"><span class="ex-item-name">Quarter Notes</span><span class="ex-dl">PDF ↓</span></a>
         <a href="https://david-petry.netlify.app/snare-exercises/SNARE Eighth Notes and Quarter Notes.pdf" class="ex-item"><span class="ex-item-name">Eighth Notes & Quarter Notes</span><span class="ex-dl">PDF ↓</span></a>
@@ -176,7 +176,7 @@
       </div>
     </div>
     <div class="ex-category">
-      <div class="ex-category-header"><span class="ex-category-title">Solos</span><span class="ex-count">2 exercises</span></div>
+      <div class="ex-category-header"><span class="ex-category-title" role="heading" aria-level="2">Solos</span><span class="ex-count">2 exercises</span></div>
       <div class="ex-grid">
         <a href="https://david-petry.netlify.app/snare-exercises/SNARE SOLO1.pdf" class="ex-item"><span class="ex-item-name">Snare Solo No. 1</span><span class="ex-dl">PDF ↓</span></a>
         <a href="https://david-petry.netlify.app/snare-exercises/SNARE SOLO 2.pdf" class="ex-item"><span class="ex-item-name">Snare Solo No. 2</span><span class="ex-dl">PDF ↓</span></a>
@@ -184,6 +184,7 @@
     </div>
   </div>
 </section>
+<a href="#main-content" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
 </main>
 <script>
 function switchTab(panelId, btn) {
@@ -210,7 +211,6 @@ document.querySelector('.exercises-tabs').addEventListener('keydown', e => {
   tab.click();
 });
 </script>
-<a href="#" id="backToTop" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑</a>
 <script>
 window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b){b.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);}});
 </script>

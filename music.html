@@ -16,15 +16,15 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="dark light">
-<script>(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
+<script>document.documentElement.classList.add('js');(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <nav class="mini-nav" aria-label="Site">
-  <a href="index.html" class="mini-logo" aria-label="David Petry home">DP</a>
+  <a href="index.html" class="mini-logo" aria-label="DP, David Petry home">DP</a>
   <ul class="mini-links">
-    <li><a href="music.html" class="current">Music</a></li>
+    <li><a href="music.html" class="current" aria-current="page">Music</a></li>
     <li><a href="drum-exercises.html">Exercises</a></li>
     <li><a href="index.html#lessons" class="mini-cta">Book a Session</a></li>
     <li><button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light theme"><span aria-hidden="true">&#9728;</span></button></li>
@@ -104,12 +104,12 @@
 <h3 class="subhead">Shared the Stage</h3>
   <p class="section-note">Artists, mentors, and fellow musicians I've performed and collaborated with — and the stages that shaped two decades of playing.</p>
 
-  <div class="section-label">Collaborators &amp; Colleagues</div>
+  <div class="section-label" role="heading" aria-level="4">Collaborators &amp; Colleagues</div>
   <p class="collab-list reveal">
     Pat Bianchi, Malcolm Lynn Baker, Jerry Bergonzi, John Kenzie, Mike Marlier, Kenny Walker, Dave Hansen, Eric Gunnison, Al Hood, Art Bouton, Dave DeMichelis
   </p>
 
-  <div class="section-label">Stages &amp; Venues</div>
+  <div class="section-label" role="heading" aria-level="4">Stages &amp; Venues</div>
   <p class="collab-list reveal">
     Bluebird Theater, Oriental Theater, Fillmore Denver, Gothic Theater, El Chapultepec, Cervantes, Red Rocks Amphitheater, Fox Theater Boulder, Boulder Theater, Oregon Country Fair, Double Diamond Aspen, ESPN X Games Snowmass, Montreux Jazz Festival, North Sea Jazz Festival
   </p>
@@ -232,7 +232,7 @@
   <div class="section-label">Suno Prompt Engineering</div>
   <h2>The Suno <em>Prompt Book</em></h2>
   <div class="book-hero reveal">
-    <a class="book-cover" href="SUNO_prompt_book_David_Petry.pdf" aria-label="Read the Suno Prompt Book (PDF, 68 pages)">
+    <a class="book-cover" href="SUNO_prompt_book_David_Petry.pdf" aria-label="Suno Prompt Book David Petry · V5.5 + V6 Toolkit — read the PDF (68 pages)">
       <div class="book-cover-title">SUNO<br>PROMPT<br>BOOK</div>
       <div class="book-cover-sub">David Petry · V5.5 + V6 Toolkit</div>
     </a>
@@ -302,13 +302,13 @@
   <a href="index.html#lessons" class="btn-primary">Book a Session</a>
 </section>
 
+<a href="#main-content" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
 </main>
 <script>
 const reveals = document.querySelectorAll('.reveal');
 const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
 reveals.forEach(el => io.observe(el));
 </script>
-<a href="#" id="backToTop" class="back-to-top" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑</a>
 <script>
 window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b){b.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);}});
 </script>

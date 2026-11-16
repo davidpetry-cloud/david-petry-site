@@ -723,7 +723,8 @@ html:has(nav.open) { overflow: hidden; }
   border-radius: 50%;
   background: var(--teal);
   box-shadow: 0 0 0 0 rgba(45,212,191,0.6);
-  animation: statusPulse 2.4s ease-out infinite;
+  /* Two pulses, then still: nothing on the page keeps moving for more than five seconds */
+  animation: statusPulse 2.4s ease-out 2;
   flex-shrink: 0;
 }
 @keyframes statusPulse {
@@ -1290,6 +1291,7 @@ html:has(nav.open) { overflow: hidden; }
   font-family: var(--mono);
   color: var(--muted2);
   text-align: right;
+  overflow-wrap: anywhere; /* a long name breaks instead of running off a narrow screen when text is spaced out */
 }
 .exp-item h3 {
   margin-bottom: 12px;
@@ -1426,6 +1428,7 @@ footer { border-top-color: var(--line); color: var(--muted2); }
   border: 1px solid var(--line-2);
   border-radius: 50%;
   color: var(--amber);
+  font-family: var(--sans);
   font-size: var(--fs-lg);
   z-index: 999;
   opacity: 0;
@@ -2504,7 +2507,10 @@ h1:not(.hero-name) em {
   color: var(--on-accent);
   background: linear-gradient(180deg, var(--accent-top), var(--amber));
 }
-.ex-panel { display: none; counter-reset: excat; }
+.ex-panel { counter-reset: excat; }
+/* Tabs need scripts. Without them both lists show and the tab buttons are hidden. */
+:where(.js) .ex-panel { display: none; }
+:where(html:not(.js)) .exercises-tabs { display: none; }
 .ex-panel.active { display: block; }
 .ex-category { margin-bottom: 36px; }
 .ex-category-title {
@@ -2748,7 +2754,9 @@ h1:not(.hero-name) em {
   from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
   to   { opacity: 1; transform: none; filter: none; }
 }
-:where(.page-home, .page-music) .reveal { opacity: 0; transform: translateY(24px); }
+/* Hidden until revealed, but only when scripts are running (each page's <head> adds
+   .js): without JavaScript nothing would ever reveal the content. */
+:where(.js.page-home, .js.page-music) .reveal { opacity: 0; transform: translateY(24px); }
 :where(.page-home, .page-music) .reveal.visible { opacity: 1; transform: translateY(0); }
 .reveal { transition: opacity .8s var(--ease), transform .8s var(--ease); }
 
@@ -2814,6 +2822,33 @@ h1:not(.hero-name) em {
   .hero-contact a .ico { flex: none; overflow-wrap: normal; }
   footer::before { font-size: 13vw; }
 }
+
+/* ============================================================
+   HIGH CONTRAST — Windows "contrast themes" (forced colours)
+   replace our colours with the user's and drop backgrounds. These
+   rules keep shapes and states visible there; they do nothing in
+   the normal themes.
+   ============================================================ */
+@media (forced-colors: active) {
+  /* Filled buttons lose their fill, so give them an outline */
+  .btn-primary,
+  .nav-cta,
+  .mini-links a.mini-cta,
+  .book-cta,
+  .metro-start,
+  .project-links a.primary { border: 1px solid ButtonText; }
+  /* States that were shown by a fill: the chosen tab and the lit beat */
+  .tab-btn.active,
+  .tab-btn.active:hover,
+  .metro-dot.is-on {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+    color: HighlightText;
+    box-shadow: none;
+  }
+}
+
 /* ============================================================
    VARIANTS & UTILITIES — last, so they win ties
    ============================================================ */
