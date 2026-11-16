@@ -11,17 +11,20 @@ projects section covering shipped software.
 | `music.html` | Music page |
 | `drum-exercises.html` | Drum exercises |
 | `suno-toolkit.html` | Interactive Suno prompt toolkit (a compiled bundle with its own styling) |
-| `site.css` | Shared modern design layer for the three pages above the toolkit |
+| `site.css` | The one stylesheet for the three pages above the toolkit: design tokens, shared components, then each page's sections |
 | `site.js` | Small enhancements: card spotlight, smooth theme switch |
 | `metronome.js` | Practice metronome on the exercises page, **compiled from Dart**; don't edit by hand |
 | `metronome/` | The metronome's Dart source, checks and build script |
 | `og-card.jpg` | Open Graph preview image |
 | `SUNO_prompt_book_David_Petry.pdf` | Free 68-page download |
 
-Static HTML with no build step. Each page keeps its original CSS and JS
-inline, then links `site.css` and `site.js` after them; the shared layer
-wins where they overlap. Change the look in `site.css`, not in the inline
-styles.
+Static HTML with no build step. All styling lives in `site.css`; the pages
+carry no `<style>` blocks and no `style=""` attributes, so change the look
+there. Colours, type sizes, radii and the like are tokens at the top of the
+file, with one block for the dark theme and one for the light theme. Each
+page's `<html>` has a class (`page-home`, `page-music`, `page-exercises`)
+for the few base rules that apply to some pages only. Each page keeps its
+own small scripts inline and loads `site.js` after them.
 
 ## The Dart metronome
 
