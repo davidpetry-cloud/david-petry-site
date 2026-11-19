@@ -9,7 +9,7 @@ projects section covering shipped software.
 |---|---|
 | `index.html` | Main page — hero, about, services, **projects**, credentials, experience, prompt book, AI philosophy, lessons, contact |
 | `music.html` | Music page |
-| `drum-exercises.html` | Drum exercises |
+| `drum-exercises.html` | Drum exercises, the practice metronome, and a link to [Drum Studio](https://davidpetry-cloud.github.io/drum-studio/) (the full metronome and tuning app; its own repo, `davidpetry-cloud/drum-studio`, on GitHub Pages) |
 | `suno-toolkit.html` | Interactive Suno prompt toolkit (a compiled bundle with its own styling) |
 | `site.css` | The one stylesheet for the three pages above the toolkit: design tokens, shared components, then each page's sections |
 | `site.js` | Small enhancements: card spotlight, smooth theme switch |
@@ -56,3 +56,11 @@ copy was live. That is the problem this repo solves.
 - [attestation-ledger](https://github.com/davidpetry-cloud/attestation-ledger) — provenance engine, published on npm
 - [live-sound-eq-sop](https://github.com/davidpetry-cloud/live-sound-eq-sop) — FOH channel EQ reference
 - [dj-mixing-sop](https://github.com/davidpetry-cloud/dj-mixing-sop) — DJ rig procedures
+
+## License
+
+© 2026 David Petry. All rights reserved. This is proprietary (see
+[`LICENSE`](LICENSE)): visitors may use the site and download the free PDFs
+for their own practice, but nothing here may be republished or reused without
+permission. Third-party fonts and code keep their own licences, listed in
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).
