@@ -56,3 +56,11 @@ copy was live. That is the problem this repo solves.
 - [attestation-ledger](https://github.com/davidpetry-cloud/attestation-ledger) — provenance engine, published on npm
 - [live-sound-eq-sop](https://github.com/davidpetry-cloud/live-sound-eq-sop) — FOH channel EQ reference
 - [dj-mixing-sop](https://github.com/davidpetry-cloud/dj-mixing-sop) — DJ rig procedures
+
+## License
+
+© 2026 David Petry. All rights reserved. This is proprietary (see
+[`LICENSE`](LICENSE)): visitors may use the site and download the free PDFs
+for their own practice, but nothing here may be republished or reused without
+permission. Third-party fonts and code keep their own licences, listed in
+[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).
