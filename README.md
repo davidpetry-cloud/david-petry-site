@@ -9,7 +9,7 @@ projects section covering shipped software.
 |---|---|
 | `index.html` | Main page — hero, about, services, **projects**, credentials, experience, prompt book, AI philosophy, lessons, contact |
 | `music.html` | Music page |
-| `drum-exercises.html` | Drum exercises |
+| `drum-exercises.html` | Drum exercises, the practice metronome, and a link to [Drum Studio](https://davidpetry-cloud.github.io/drum-studio/) (the full metronome and tuning app; its own repo, `davidpetry-cloud/drum-studio`, on GitHub Pages) |
 | `suno-toolkit.html` | Interactive Suno prompt toolkit (a compiled bundle with its own styling) |
 | `site.css` | The one stylesheet for the three pages above the toolkit: design tokens, shared components, then each page's sections |
 | `site.js` | Small enhancements: card spotlight, smooth theme switch |

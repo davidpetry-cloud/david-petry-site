@@ -2747,6 +2747,30 @@ h1:not(.hero-name) em {
   .metro { padding: 20px 16px; }
 }
 
+/* Link out to Drum Studio, the full practice app. Sits close under the
+   metronome when that shows, and stands on its own when it stays hidden. */
+.studio-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 28px;
+  margin: 0 0 48px;
+  padding: 20px 28px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  background: var(--card-2);
+}
+.metro:not([hidden]) + .studio-link { margin-top: -32px; }
+.studio-link-text { flex: 1 1 32ch; }
+.studio-link h2 { font-size: var(--fs-xl); margin-bottom: 4px; }
+.studio-link p { color: var(--muted2); font-size: var(--fs-md); max-width: 64ch; }
+.studio-link .btn-ghost { flex-shrink: 0; }
+@media (max-width: 560px) {
+  .studio-link { padding: 18px 16px; }
+  .studio-link .btn-ghost { width: 100%; justify-content: center; }
+}
+
 /* ============================================================
    MOTION — scroll-driven reveal where supported; JS fallback stays
    ============================================================ */
