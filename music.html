@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="dark light">
-<script>document.documentElement.classList.add('js');(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
+<script src="js/theme-init.js"></script>
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
@@ -304,30 +304,9 @@
 
 <a href="#main-content" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
 </main>
-<script>
-const reveals = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.08 });
-reveals.forEach(el => io.observe(el));
-</script>
-<script>
-window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b){b.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);}});
-</script>
-<script>
-(function(){
-  var b=document.getElementById('themeToggle'); if(!b) return;
-  var root=document.documentElement;
-  function paint(){var light=root.getAttribute('data-theme')==='light';
-    b.setAttribute('aria-label',light?'Switch to dark theme':'Switch to light theme');
-    b.setAttribute('title',light?'Switch to dark theme':'Switch to light theme');
-    b.firstElementChild.textContent=light?'\u263E':'\u2600';}
-  b.addEventListener('click',function(){
-    var next=root.getAttribute('data-theme')==='light'?'dark':'light';
-    root.setAttribute('data-theme',next);
-    try{localStorage.setItem('dp-theme',next);}catch(e){}
-    paint();});
-  paint();
-})();
-</script>
+<script src="js/music-reveal.js"></script>
+<script src="js/back-to-top.js"></script>
+<script src="js/theme-toggle.js"></script>
 <script src="site.js" defer></script>
 </body>
 </html>

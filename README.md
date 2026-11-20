@@ -13,6 +13,8 @@ projects section covering shipped software.
 | `suno-toolkit.html` | Interactive Suno prompt toolkit (a compiled bundle with its own styling) |
 | `site.css` | The one stylesheet for the three pages above the toolkit: design tokens, shared components, then each page's sections |
 | `site.js` | Small enhancements: card spotlight, smooth theme switch |
+| `js/` | Each page's small scripts: theme, nav and reveal effects, exercise tabs |
+| `SECURITY.md` | The site's security policies and how to report a vulnerability |
 | `metronome.js` | Practice metronome on the exercises page, **compiled from Dart**; don't edit by hand |
 | `metronome/` | The metronome's Dart source, checks and build script |
 | `og-card.jpg` | Open Graph preview image |
@@ -23,8 +25,9 @@ carry no `<style>` blocks and no `style=""` attributes, so change the look
 there. Colours, type sizes, radii and the like are tokens at the top of the
 file, with one block for the dark theme and one for the light theme. Each
 page's `<html>` has a class (`page-home`, `page-music`, `page-exercises`)
-for the few base rules that apply to some pages only. Each page keeps its
-own small scripts inline and loads `site.js` after them.
+for the few base rules that apply to some pages only. Each page's small
+scripts live in `js/` (no inline scripts or `onclick=` attributes: the
+security policy forbids them), and `site.js` loads after them.
 
 ## The Dart metronome
 

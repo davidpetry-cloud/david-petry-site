@@ -13,7 +13,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="color-scheme" content="dark light">
-<script>document.documentElement.classList.add('js');(function(){var t;try{t=localStorage.getItem('dp-theme');}catch(e){}if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'light':'dark';}document.documentElement.setAttribute('data-theme',t);})();</script>
+<script src="js/theme-init.js"></script>
 <link rel="stylesheet" href="site.css">
 </head>
 <body>
@@ -95,8 +95,8 @@
   </aside>
 
   <div class="exercises-tabs" role="tablist" aria-label="Exercise sets">
-    <button type="button" class="tab-btn active" id="tab-drumset" role="tab" aria-selected="true" aria-controls="drumset" onclick="switchTab('drumset', this)">Drum Set</button>
-    <button type="button" class="tab-btn" id="tab-snare" role="tab" aria-selected="false" aria-controls="snare" tabindex="-1" onclick="switchTab('snare', this)">Snare Drum</button>
+    <button type="button" class="tab-btn active" id="tab-drumset" role="tab" aria-selected="true" aria-controls="drumset">Drum Set</button>
+    <button type="button" class="tab-btn" id="tab-snare" role="tab" aria-selected="false" aria-controls="snare" tabindex="-1">Snare Drum</button>
   </div>
 
   <div id="drumset" class="ex-panel active reveal" role="tabpanel" aria-labelledby="tab-drumset">
@@ -196,50 +196,9 @@
 </section>
 <a href="#main-content" id="backToTop" class="back-to-top" aria-label="Back to top">↑</a>
 </main>
-<script>
-function switchTab(panelId, btn) {
-  document.querySelectorAll('.ex-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    b.classList.remove('active');
-    b.setAttribute('aria-selected', 'false');
-    b.tabIndex = -1;
-  });
-  document.getElementById(panelId).classList.add('active');
-  btn.classList.add('active');
-  btn.setAttribute('aria-selected', 'true');
-  btn.tabIndex = 0;
-}
-// Arrow keys, Home and End move between tabs (WAI-ARIA tabs pattern)
-document.querySelector('.exercises-tabs').addEventListener('keydown', e => {
-  const tabs = [...document.querySelectorAll('.tab-btn')];
-  const i = tabs.indexOf(document.activeElement);
-  const to = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
-  if (i < 0 || to === undefined) return;
-  e.preventDefault();
-  const tab = tabs[(to + tabs.length) % tabs.length];
-  tab.focus();
-  tab.click();
-});
-</script>
-<script>
-window.addEventListener('scroll',()=>{const b=document.getElementById('backToTop');if(b){b.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);}});
-</script>
-<script>
-(function(){
-  var b=document.getElementById('themeToggle'); if(!b) return;
-  var root=document.documentElement;
-  function paint(){var light=root.getAttribute('data-theme')==='light';
-    b.setAttribute('aria-label',light?'Switch to dark theme':'Switch to light theme');
-    b.setAttribute('title',light?'Switch to dark theme':'Switch to light theme');
-    b.firstElementChild.textContent=light?'\u263E':'\u2600';}
-  b.addEventListener('click',function(){
-    var next=root.getAttribute('data-theme')==='light'?'dark':'light';
-    root.setAttribute('data-theme',next);
-    try{localStorage.setItem('dp-theme',next);}catch(e){}
-    paint();});
-  paint();
-})();
-</script>
+<script src="js/exercise-tabs.js"></script>
+<script src="js/back-to-top.js"></script>
+<script src="js/theme-toggle.js"></script>
 <script src="site.js" defer></script>
 <script src="metronome.js" defer></script>
 </body>
