@@ -59,8 +59,15 @@ copy was live. That is the problem this repo solves.
 
 ## License
 
-© 2026 David Petry. All rights reserved. This is proprietary (see
-[`LICENSE`](LICENSE)): visitors may use the site and download the free PDFs
-for their own practice, but nothing here may be republished or reused without
-permission. Third-party fonts and code keep their own licences, listed in
-[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).
+© 2026 David Petry. Built with the help of AI tools (including Claude Code).
+
+- **Code** (HTML structure, `site.css`, `site.js`, the metronome,
+  `art/build-score.py`, `netlify.toml`): open for **noncommercial** use and
+  collaboration under the
+  [PolyForm Noncommercial License 1.0.0](LICENSES/PolyForm-Noncommercial-1.0.0.txt).
+  Keep the `Required Notice` line from [`LICENSE`](LICENSE) and credit David Petry.
+- **Content** (the writing, exercise PDFs, prompt book, Suno toolkit, artwork,
+  photos and music): **all rights reserved**. The free PDFs may be downloaded
+  for your own practice.
+- Commercial use needs permission. Third-party fonts and code keep their own
+  licences, listed in [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md).

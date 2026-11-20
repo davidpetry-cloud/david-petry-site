@@ -1,38 +1,102 @@
-david-petry.netlify.app
-Copyright (c) 2026 David Petry. All rights reserved.
+david-petry.netlify.app: licence
+================================
 
-This repository and everything in it that David Petry created is
-proprietary and is the intellectual property of David Petry. That
-includes the website's source code and compiled code (among them the
-practice metronome and the Suno Prompt Toolkit), its written content,
-the drum and snare exercise PDFs, the Suno prompt book, the artwork,
-photographs and music, and the design and graphics.
+Copyright (c) 2026 David Petry
+https://david-petry.netlify.app/
 
-No licence is granted, except as stated below. Except where the law
-allows it without permission, you may not copy, modify, merge, publish,
-distribute, sublicense, sell, host or create derivative works from any
-part of this repository, in whole or in part, without David Petry's prior
-written permission.
+This website was conceived, written, designed and directed by David
+Petry and built with the help of AI tools (including Claude Code). David
+Petry offers it under the terms below, to the full extent of the rights
+he holds in it.
+
+In short: the website's CODE is open for noncommercial use and
+collaboration, with credit to David Petry. The CONTENT (his writing,
+teaching materials, artwork, photos and music) stays all rights
+reserved.
+
+
+1. Code: PolyForm Noncommercial License 1.0.0
+---------------------------------------------
+
+Covers the code that builds and runs the site: the markup (HTML
+structure) of index.html, music.html and drum-exercises.html; site.css;
+site.js; the practice metronome (metronome/ and the compiled
+metronome.js); art/build-score.py; and netlify.toml.
+
+  Full text: LICENSES/PolyForm-Noncommercial-1.0.0.txt
+  Online:    https://polyformproject.org/licenses/noncommercial/1.0.0
+
+The licence requires you to pass on this line with any copy of any part
+of the code, including changed versions:
+
+Required Notice: Copyright (c) 2026 David Petry (https://david-petry.netlify.app/)
+
+Where practical, please also credit David Petry wherever your work is
+shown, such as an About page, a footer or a description.
+
+
+2. Content: all rights reserved
+-------------------------------
+
+Everything else is NOT covered by the code licence and remains all
+rights reserved. That includes:
+  - the words on the pages (biography, services, project write-ups and
+    all other text), even where they sit inside an HTML file;
+  - the drum and snare exercise PDFs (drum-exercises/, snare-exercises/);
+  - the Suno prompt book (SUNO_prompt_book_David_Petry.pdf) and the Suno
+    Prompt Toolkit (suno-toolkit.html, as a whole);
+  - the artwork and graphics (art/*.svg and the site's drumhead emblem),
+    photographs (gallery-*.jpg, og-card.jpg) and music.
 
 What you may do without asking:
-- View and use the published website at its official address.
-- Download the free drum exercise PDFs and the Suno prompt book that the
-  website offers, and use them for your own personal practice and study.
-  This does not include republishing, reselling or redistributing them.
+  - view and use the website at its official address;
+  - download the free exercise PDFs and the prompt book the site offers
+    and use them for your own personal practice and study (not to
+    republish, resell or redistribute them).
 
-Viewing this repository on GitHub, and the copying that GitHub's Terms of
-Service allow on its own platform for public repositories, does not grant
-any other right.
+Anything else, including reusing the content in other works, needs David
+Petry's prior written permission.
 
-Third-party components are not covered by this notice. They keep their
-own licences, which are listed in THIRD-PARTY-NOTICES.md and included in
-full where those licences require it.
 
-THE SOFTWARE AND CONTENT ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
-KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY ARISING FROM THE SOFTWARE OR CONTENT OR THEIR USE.
+3. Commercial use
+-----------------
 
-For permission requests, contact David Petry through
+Anything these terms don't permit, including commercial use of the code,
+needs David Petry's prior written permission. Contact him through
 https://david-petry.netlify.app/.
+
+
+4. Names and logo
+-----------------
+
+Nothing here grants any right to use the name "David Petry" or the DP
+logo, except to give the credit in section 1. Please don't use them in a
+way that suggests David Petry made or endorses your work.
+
+
+5. Third-party components
+-------------------------
+
+The fonts (SIL Open Font License 1.1), the Dart runtime compiled into
+metronome.js (BSD 3-Clause) and React/ReactDOM loaded by
+suno-toolkit.html (MIT) keep their own licences, listed in
+THIRD-PARTY-NOTICES.md.
+
+
+6. Contributions
+----------------
+
+If you send a change to this repository (for example, a pull request),
+you confirm you have the right to do so, and you license your change to
+David Petry under the same terms as the part of the site it changes. You
+also permit David Petry to offer the site, including your change, under
+other terms.
+
+
+7. No warranty
+--------------
+
+The code is provided "as is", without warranty of any kind, as set out
+in the PolyForm licence. The content is provided "as is" as well: to the
+fullest extent the law allows, David Petry is not liable for any claim,
+damages or other liability arising from the website or its use.

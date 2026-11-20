@@ -1,8 +1,9 @@
 # Third-party notices
 
-This site is proprietary (see `LICENSE`). It uses the third-party
-components below, which keep their own licences. Those licences apply only
-to these components, not to the rest of the repository.
+This site's own code and content are licensed as described in `LICENSE`
+(PolyForm Noncommercial 1.0.0 for the code; all rights reserved for the
+content). It also uses the third-party components below, which keep their
+own licences. Those licences apply only to these components.
 
 ## Fonts: SIL Open Font License 1.1
 
