@@ -1,0 +1,9 @@
+# Dependabot opens a pull request when something this repo uses has a
+# security fix or a new version.
+version: 2
+updates:
+  # The practice metronome's Dart packages (none today; ready if added).
+  - package-ecosystem: "pub"
+    directory: "/metronome"
+    schedule:
+      interval: "weekly"
