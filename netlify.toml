@@ -18,30 +18,50 @@
     Cache-Control = "public, max-age=2592000"
 
 # Content-Security-Policy for the three hand-written pages: everything comes
-# from this site. Inline scripts and styles stay allowed because the pages
-# use them. suno-toolkit.html is a compiled bundle that loads from unpkg.com
-# and Google Fonts, so it is deliberately left without a policy.
+# from this site, no inline scripts or styles (all scripts live in js/ and
+# site.js), and no network requests (connect-src 'none'), so injected code
+# could neither run nor send anything anywhere. Scripts may still change
+# the look through the CSSOM (element.style), which the policy allows.
 [[headers]]
   for = "/"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
 [[headers]]
   for = "/index.html"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
 [[headers]]
   for = "/music"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
 [[headers]]
   for = "/music.html"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
 [[headers]]
   for = "/drum-exercises"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
 [[headers]]
   for = "/drum-exercises.html"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; media-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+
+# Content-Security-Policy for suno-toolkit.html, a self-unpacking bundle.
+# React, its runtime and its fonts are packed inside the file and unpacked
+# into blob: URLs, so nothing is loaded from other sites (the unpkg.com and
+# Google Fonts addresses inside it are labels and connection hints only).
+# - script-src allows only the one inline loader, pinned by its SHA-256
+#   hash, plus the blob: files it unpacks. 'unsafe-eval' is needed because
+#   the bundle's runtime builds its components with new Function.
+#   IF THE TOOLKIT IS RE-EXPORTED, recompute the hash of its <script> block.
+# - style-src keeps 'unsafe-inline': the bundle styles with inline styles.
+# - No outside hosts anywhere, no frames, no forms, no plugins.
+[[headers]]
+  for = "/suno-toolkit"
+  [headers.values]
+    Content-Security-Policy = "default-src 'none'; script-src 'sha256-H17TXzk+pAbJsWO6df6D5/uuMuT5qjyToDv5xSrFNJA=' blob: 'unsafe-eval'; style-src 'unsafe-inline'; font-src blob: data:; img-src 'self' data: blob:; connect-src 'self' blob: data:; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"
+[[headers]]
+  for = "/suno-toolkit.html"
+  [headers.values]
+    Content-Security-Policy = "default-src 'none'; script-src 'sha256-H17TXzk+pAbJsWO6df6D5/uuMuT5qjyToDv5xSrFNJA=' blob: 'unsafe-eval'; style-src 'unsafe-inline'; font-src blob: data:; img-src 'self' data: blob:; connect-src 'self' blob: data:; frame-src 'none'; worker-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; upgrade-insecure-requests"

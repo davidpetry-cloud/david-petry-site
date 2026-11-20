@@ -21,11 +21,14 @@ unless needed and pinned). Test like an attacker before shipping, document
 protections in a `SECURITY.md`, and keep dependencies patched (Dependabot).
 Obscurity is never the protection.
 
-Known gaps to close in this repo (tracked here until fixed):
-- The pages' Content-Security-Policy (in `netlify.toml`) still allows
-  `'unsafe-inline'` scripts and styles because the pages use inline
-  `<script>` blocks. Move those into files, then drop `'unsafe-inline'`.
-- `suno-toolkit.html` loads React from unpkg.com without Subresource
-  Integrity and has no CSP. Self-host React (or add SRI) and give the page
-  a policy.
-- `connect-src 'self'` could be `'none'` if no page needs to fetch.
+In this repo that means:
+- The three hand-written pages run under a strict policy in `netlify.toml`:
+  `script-src 'self'`, `style-src 'self'`, `connect-src 'none'`. Put page
+  scripts in `js/` files and wire events with `addEventListener`: never
+  inline `<script>` blocks, `onclick=` attributes or `style=""`.
+- `suno-toolkit.html` is a self-unpacking bundle with its own policy. Its
+  one inline loader is pinned by SHA-256 hash in `netlify.toml`. If the
+  toolkit is re-exported or its loader edited, recompute that hash, keep the
+  loader setting `window.__resources` directly (not via an injected inline
+  script), and re-test that it renders with no CSP violations.
+- See `SECURITY.md`.

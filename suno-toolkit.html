@@ -309,19 +309,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     // The manifest bytes are ours; SRI protects against CDN compromise, not this.
     template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
 
-    const resourceScript = '<script>window.__resources = ' +
-      JSON.stringify(resourceMap).replace(/<\//g, '<\\/') +
-      ';</' + 'script>';
-    // Inject after <head> so the DOCTYPE stays first; prepending the script
-    // would push the parser into quirks mode. DOMParser always emits a <head>
-    // (synthesizing one if the source HTML omitted it) but may carry
-    // attributes through, so match the full opening tag. slice() rather than
-    // replace() keeps us clear of $-pattern substitution in resourceScript.
-    const headOpen = template.match(/<head[^>]*>/i);
-    if (headOpen) {
-      const i = headOpen.index + headOpen[0].length;
-      template = template.slice(0, i) + resourceScript + template.slice(i);
-    }
+    // Hand the resource map to the page directly. (It used to be injected
+    // as an inline <script>, but its blob: URLs change on every load, so the
+    // page's Content-Security-Policy, which forbids inline scripts, would
+    // block it. window survives the document swap below.)
+    window.__resources = resourceMap;
 
     // Parse the template and swap the root element. Scripts inserted via
     // DOMParser/replaceWith are inert per spec — re-create each with
