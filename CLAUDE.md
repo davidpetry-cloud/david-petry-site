@@ -21,6 +21,9 @@ unless needed and pinned). Test like an attacker before shipping, document
 protections in a `SECURITY.md`, and keep dependencies patched (Dependabot).
 Obscurity is never the protection.
 
+Before merging any new screen, run the accessibility-review and
+security-review skills and fix what they find.
+
 In this repo that means:
 - The three hand-written pages run under a strict policy in `netlify.toml`:
   `script-src 'self'`, `style-src 'self'`, `connect-src 'none'`. Put page
