@@ -35,3 +35,19 @@ In this repo that means:
   loader setting `window.__resources` directly (not via an injected inline
   script), and re-test that it renders with no CSP violations.
 - See `SECURITY.md`.
+
+## Hosting budget
+
+- Netlify is on the Free plan: each production deploy (every merge to
+  `main`) costs 15 of 300 monthly credits, and bandwidth costs credits too.
+  Deploy previews for pull requests are free. Batch site changes into as
+  few merges to `main` as possible.
+- Host new standalone apps outside this site, on Cloudflare Pages (free),
+  in their own repository: for example the Lydian Chromatic Explorer
+  (`davidpetry-cloud/Lydian-Chromatic-Explorer-`). Link to them from here
+  in a regular site update.
+
+## Music theory content
+
+- Cite a source for every music-theory claim, and where sources disagree,
+  say so rather than guessing.
