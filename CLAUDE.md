@@ -42,10 +42,11 @@ In this repo that means:
   `main`) costs 15 of 300 monthly credits, and bandwidth costs credits too.
   Deploy previews for pull requests are free. Batch site changes into as
   few merges to `main` as possible.
-- Host new standalone apps outside this site, on Cloudflare Pages (free),
-  in their own repository: for example the Lydian Chromatic Explorer
-  (`davidpetry-cloud/Lydian-Chromatic-Explorer-`). Link to them from here
-  in a regular site update.
+- Host new standalone apps outside this site, on Cloudflare Workers with
+  static assets (free), in their own repository: for example the Lydian
+  Chromatic Explorer (`davidpetry-cloud/Lydian-Chromatic-Explorer-`, live
+  at https://lydian-chromatic-explorer.davidpetry.workers.dev/, linked from
+  the exercises page). Link to them from here in a regular site update.
 
 ## Music theory content
 
